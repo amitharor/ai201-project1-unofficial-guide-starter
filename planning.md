@@ -11,25 +11,31 @@
 
 <!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
 
----
+My domain is the Unofficial UniFi Home Networking and Troubleshooting Guide. It will help in purchasing the right Ubiquiti gear, configuring it (VLANs, PoE, etc.), and fixing it when the firmware updates break things.
+
+Ubiquiti's unofficial docs tell what a device is, but not which model actually fits a real home, which firmware versions are stable for most people, or how to segment IoT devices safely. We can find this knowledge from forum threads and reddit from people who have encountered these problems.
 
 ## Documents
 
 <!-- List your specific sources: URLs, subreddit names, forum threads, or file descriptions.
      Aim for at least 10 sources that together cover different subtopics or perspectives within your domain. -->
 
-| # | Source | Description | URL or location |
-|---|--------|-------------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| #   | Source                | Description                                                     | URL or location                                                                                                                                                             |
+| --- | --------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Unifi forum           | Should I skip the U6 and purchase a U7                          | https://community.ui.com/questions/Should-I-skip-the-U6-and-purchase-a-U7/c1dda185-c2a0-447b-b3e3-215344d44b2c                                                              |
+| 2   | Unifi forum           | Dream Router vs Cloud Gateway Ultra and U6+                     | https://community.ui.com/questions/Dream-Router-vs-Cloud-Gateway-Ultra-and-U6/0914f6b2-05e8-4e1f-8eef-5583683fed3b                                                          |
+| 3   | Unifi forum           | UDM Pro vs. Cloud Gateway Ultra                                 | https://community.ui.com/questions/UDM-Pro-vs-Cloud-Gateway-Ultra/a590a25b-c3b9-498b-b399-8cf7669404af                                                                      |
+| 4   | Unifi forum           | Cloud Gateway Ultra vs Dream Machine vs Gateway Max             | https://community.ui.com/questions/Cloud-Gateway-Ultra-vs-Dream-Machine-vs-Gateway-Max/931df9fa-560d-49e0-aba0-af21c75e09ed                                                 |
+| 5   | Unifi forum           | Creating a separate IOT network - looking for best practice     | https://community.ui.com/questions/Creating-a-separate-IOT-network-looking-for-best-practice/137ef556-e12b-4270-88e0-a5b01bab9b3f                                           |
+| 6   | Unifi forum           | Attempting to make THE UniFi IoT VLAN Walk-through              | https://community.ui.com/questions/Attempting-to-make-THE-UniFi-IoT-VLAN-Walk-through/d7658f5c-e1ba-4a07-8fed-1fea240bd2fd                                                  |
+| 7   | Lazy Admin            | How to Setup and Secure UniFi VLAN                              | https://lazyadmin.nl/home-network/unifi-vlan-configuration/                                                                                                                 |
+| 8   | The Smart Home Hookup | Setting Up VLANs and Firewall Rules                             | https://www.thesmarthomehookup.com/unifi-setup-from-scratch-setting-up-vlans-and-firewall-rules/                                                                            |
+| 9   | Unifi forum           | How much power from POE do my Access Points really need?        | https://community.ui.com/questions/How-much-power-from-POE-do-my-Access-Points-really-need/71927a12-661e-41fc-b859-32f37984cd77                                             |
+| 10  | Unifi forum           | U7 Pro Power and POE/POE+ switch port                           | https://community.ui.com/questions/U7-Pro-Power-and-POE-POE-switch-port/38bb1b43-db32-4e1e-9321-539ff12bc093                                                                |
+| 11  | Unifi forum           | Firmware update to 6.2.49 bricked my UAP-AC-Pro AP in mesh mode | https://community.ui.com/questions/Firmware-update-to-6-2-49-bricked-my-UAP-AC-Pro-AP-in-mesh-mode-now-says-Offline-or-Adoption-Failed/6617e272-4f4d-4e02-9fc7-4a0b301679f4 |
+| 12  | Unifi forum           | UniFi AP-AC-IW bricked during update                            | https://community.ui.com/questions/UniFi-AP-AC-IW-bricked-during-update/6f7e930d-006e-4649-933d-86e6f0e268ea                                                                |
+| 13  | Unifi forum           | Unifi Network Controller installation with docker               | https://community.ui.com/questions/Unifi-Network-Controller-installation-with-docker/920311f0-c4fe-453f-bda3-e7e39160e5b0                                                   |
+| 14  | Pi My Life Up         | Setting up the UniFi Network Controller using Docker            | https://pimylifeup.com/unifi-docker/                                                                                                                                        |
 
 ---
 
@@ -71,13 +77,13 @@
      is right or wrong. "What are good dining halls?" is too vague.
      "What do students say about wait times at [dining hall name] during lunch?" is testable. -->
 
-| # | Question | Expected answer |
-|---|----------|-----------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+| #   | Question | Expected answer |
+| --- | -------- | --------------- |
+| 1   |          |                 |
+| 2   |          |                 |
+| 3   |          |                 |
+| 4   |          |                 |
+| 5   |          |                 |
 
 ---
 
