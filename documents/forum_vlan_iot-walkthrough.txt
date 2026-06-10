@@ -1,0 +1,52 @@
+Attempting to make THE UniFi IoT VLAN Walk-through
+
+
+
+Avatar for sjjenkins
+sjjenkins
+12.33K views
+3 replies
+Edited
+6 years ago
+Activity
+6 years ago
+For lack of a better word, I'm "workshopping" my IoT VLAN guide partially here and partially in the Ubiquiti subreddit.
+
+The concept is to present a standard "Basic" or beginner-level UniFi IoT VLAN setup, which is explained in this post. The guide will then allow users to move to an "Intermediate" IoT VLAN setup that supports devices like Sonos, Roku, AirPlay, which all require additional UniFi controller settings and/or LAN IN firewall rules to work properly. This "Intermediate" setup blocks all unauthorized traffic from the IoT VLAN to the Main (trusted) LAN, but allows IoT VLAN devices to access the Internet. Clamping down IoT WAN traffic would be an "Advanced" setup, which I will discuss and explain to the user what types of things they need to do to get there, but I will only walk them through to Intermediate. To go beyond that, they are on their own.
+
+Anyway, I'd love to get input and testing from others here to see if my proposed settings do NOT work on your network. I'm not looking for alternative methods of doing this that require more open firewall ports and/or UI settings -- unless applying my settings didn't work for your network without adding additional ports (and please tell me what those ports were). I'm looking to keep this all in UniFi, meaning suggestions to move to a zone-based firewall aren't helpful. But other suggestions to improve upon my setups is greatly appreciated.
+
+Here are the "modules" I've got so far. Once I've crowd-sourced the testing, I'll be working on a guide with screen-shots and a walk-thru video (or maybe a few videos).
+
+My Basic IoT VLAN Setup
+My current IoT VLAN Firewall Rules
+Chromecast-Specific Settings
+Sonos-Specific Settings
+Apple TV / AirPlay-Specific Settings
+Roku-Specific Settings
+HP Printer-Specific Settings
+This thread is locked and replying has been disabled.
+Newest
+Oldest
+Avatar for wotcha
+wotcha
+6 years ago
+Thank you I'm really appreciating this!
+
+Reply
+
+1
+
+okosub
+6 years ago
+This is the most comprehensive mad scientist writeup I've seen yet, THANK YOU.
+
+Reply
+
+1
+Avatar for sjjenkins
+sjjenkins
+6 years ago
+I just added Plex info (Plex server on private/trusted segment with clients on IOT segment) to the spreadsheet and will write it up soon. :)
+
+Reply

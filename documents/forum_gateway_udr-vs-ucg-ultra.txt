@@ -1,0 +1,31 @@
+Dream Router vs Cloud Gateway Ultra and U6+
+
+
+
+
+jayadb3
+5.96K views
+1 replies
+Created
+2 years ago
+Activity
+2 years ago
+Which is the way to go?
+
+I have a CloudKey Gen2+, and two AP. I’m looking at getting either the Ultra and another AP (they would be in the same physical area), or the Dream Router.
+
+What’s the better way to go? In Canada, the cost for the two items is approx $301 plus tax, and the DR is $266.
+
+If it matters I have a 1Gbe connection.
+
+This thread is locked and replying has been disabled.
+Newest
+Oldest
+
+Hoopster59
+2 years ago
+The Dream Router is limited to 700 Mbps with IDS/IPS (and that may be pushing it) if you care about that. It can also run two UniFi apps such as Network and Protect (or a different app) and has the built-in AP. The Ultra can only run Network. If adding cameras is in your plans, the UDR is the better choice.
+
+The Ultra has better hardware specs and both have 4-port switches. If you do not care as much about about the built-in AP in the Dream Router and don't plan to add cameras, I would go with the Cloud Gateway Ultra. It will also handle your Gbe connection a little better because of the 2.5 Gb WAN port. I just managed to buy a UCG after several rounds of in stock/out of stock.
+
+I even recently purchased a UXG-Lite which will now become a backup (or the router for our second home we are looking to purchase). I like that the UXG can be managed by a self-hosted controller but I will let the UCG handle the controller because I need the extra four switch ports it offers.

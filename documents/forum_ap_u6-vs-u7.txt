@@ -1,0 +1,125 @@
+Need Ubiquiti R&D attention on an issue? Mention 
+@UI-Team
+
+ in your post.
+
+
+0
+Should I skip the U6 and purchase a U7?
+
+
+
+
+brettski
+11.96K views
+8 replies
+Created
+2 years ago
+Activity
+2 years ago
+My network currently contains UAP-AC-PRO APs that have been in place for eight years. Many of the devices used on the network now support WiFi 6, so I want to update one of the APs to at least WiFi 6. Looking through the options, I noticed that a U7 AP is available. Should I upgrade to that instead? My hesitation is that I am not sure if there is any interference where the new and old equipment overlap or if there are other facts I am unaware of. Thank you.
+
+This thread is locked and replying has been disabled.
+Newest
+Oldest
+Avatar for AlexWilsonsBlog
+AlexWilsonsBlog
+2 years ago
+Wireless professional advice here... not amateur / consumer. If I were updating my tech today for a purposeful reason, like need more coverage, unit died, etc, I would go with a WiFI 6 or 6E supporting device. WiFi 7 is not a final approved standard. All WiFi 7 gear is based on a draft that won't likely see final approval until end of 2024. Most major vendors like Cisco, Meraki, Juniper, Aruba, etc, are saying 2025 (mid to late) for their WiFi 7 products to hit.
+
+UI jumped the gun a bit like many of the consumer brands. Consumer brands throw this stuff out there knowing the consumers will fall prey to the desire for the latest. Commercial vendors know most commercial accounts could give two hoots... they want stable and reliable. Not bragging rights around the neighborhood.
+
+There is nothing wrong with WiFi 5 today. The channels stay the same with WiFi 6. WiFi 6 does provide some better throughput and handling in dense environments, but if your clients are not all WiFi 6 or your needs are not that demanding, it really does not gain you any benefit. Other than being future proofed against something going EOL tomorrow.
+
+The only reason I would go with WiFi 7 is if I wanted to support 6GHz options. And then, I would skip the U7-Pro and go with the U6-Enterprise or In Wall version, both supporting WiFi 6E and thus 6GHz. None of the WiFi 7 benefits are going to help you without WiFi 7 client support and a better backbone network to support 2.5Gbps.
+
+Only you can decide. Everyone will have an opinion. Some will swear it is their way or no other. Some will criticize you. Some will support you. We are an opinionated lot. Know this... I do this for a living. My house and office is a mix of technology because we do a lot of testing. Our wireless network consists of UAP-AC-Pro, UAP-AC-M, U6-Mesh, U6-Enterprise, U6-Enterprise-IW. Notice, no U7-Pro. Why waste the energy on this power hungry beast that is noisy (fan to cool it), runs hot as hell, and makes my power meter run fast. I get ZERO benefit from it. We are doing a major upgrade here too... all new switches, fiber, replacing all the older UAPs with U6-Mesh or U6-Plus or Pro. Depends on what I have laying around. Needs are simple... reliable, stable WiFi. I am not looking to win the Indy 500 of speed tests. I want to finish the race in one piece and not wreck along the way.
+
+Reply
+
+12
+
+dlow
+2 years ago
+Many of the devices used on the network now support WiFi 6, so I want to update one of the APs to at least WiFi 6. Looking through the options, I noticed that a U7 AP is available. Should I upgrade to that instead? My hesitation is that I am not sure if there is any interference where the new and old equipment overlap or if there are other facts I am unaware of. 
+The new U6 and U7 equipment can coexist with older APs. You can theoretically banish the old APs into obscure corners where you just need basic SU-MIMO WiFi.
+
+The big concern with U7 (and U6-Enterprise) is the fact that new 6 GHz APs need 2.5 GbE PoE+ connections to reach their full potential. Without upgrading your wired Ethernet infrastructure, they are just expensive wall decorations.
+
+You are otherwise extremely vague about the rest of your network, speed requirements, and whether this is home or other setting. Without more information, it is hard to provide any more advice.
+
+Reply
+
+3
+
+phk46
+2 years ago
+@dlow, I get how the new APs may be *able* to support enough devices at high enough speeds to need a 2.5 GvE backhaul, will that really be needed in a typical home deployment? Won't the 6 Ghz in addition to the 2.4 and 5 Ghz give more opportunity for the in home devices to get better speeds even over a 1 GbE connection?
+
+Reply
+
+
+dlow
+2 years ago
+@phk46 wrote:
+@dlow, I get how the new APs may be *able* to support enough devices at high enough speeds to need a 2.5 GvE backhaul, will that really be needed in a typical home deployment? Won't the 6 Ghz in addition to the 2.4 and 5 Ghz give more opportunity for the in home devices to get better speeds even over a 1 GbE connection?
+Maybe, but the OP is too short on details for us to know.
+
+How do you even know that the OP is a home user? They just said “My network…”
+
+How do you know whether the OP has any need for saturating even a 1 GbE LAN?
+
+It is tempting to spend a lot of money on Unifi gear. FOMO alone is not a good reason because it is a never ending treadmill to nowhere.
+
+The OP said:
+
+My network currently contains UAP-AC-PRO APs that have been in place for eight years. Many of the devices used on the network now support WiFi 6, so I want to update one of the APs to at least WiFi 6. 
+Other than their old APs being longer in the tooth, they didn’t have any measurable problem to solve. Sounds like FOMO to me, or they have real WiFi issues that they haven’t described yet.
+
+I don’t want anyone to spend a few hundred (or thousand) dollars on new APs, then have no meaningful effect on their life.
+
+As @AlexWilsonsBlog said earlier, there’s nothing wrong with a WiFi 5 network.
+
+Reply
+
+2
+
+Otto-Wilhelm
+2 years ago
+One thing to consider if one wants to use Bluetooth sensors like the Protect All-I n-One Sensor (UP-Sense). It appears that the U7 Pro doesn´t support Bluetooth for some reason. For such sensors U6 devices are required.
+
+Reply
+
+2
+
+brettski
+2 years ago
+Thank you for the responses.
+
+@dlow this is a home network. The main reason for looking into the upgrade is for faster throughput using wireless devices. Making backups and downloads over WIFI faster. At least of the WiFi only devices support 6 now, so I figured I'd look into if it's a good idea at this time to update. I then saw that 7 was available and had more to consider.
+
+@AlexWilsonsBlog Thank you. "The WiFi 7 is not a final approved standard" is a very important distinction, and I am glad you pointed it out.
+
+Seeing that I have no issues with my wireless network at this time, and am only looking for a performance gain, it certainly doesn't seem worth it at this time.
+
+Again, thank you to everyone who took the time to respond. I appreciate you.
+
+Reply
+
+1
+Avatar for AlexWilsonsBlog
+AlexWilsonsBlog
+2 years ago
+@phk46 wrote:
+@dlow, I get how the new APs may be *able* to support enough devices at high enough speeds to need a 2.5 GvE backhaul, will that really be needed in a typical home deployment? Won't the 6 Ghz in addition to the 2.4 and 5 Ghz give more opportunity for the in home devices to get better speeds even over a 1 GbE connection?
+Yes, you will see improvement without the upgraded backbone. You just won't realize the full potential without it. The issue is many consumers do not understand the fine print and they see BIG NUMBERS on the box, but miss the small print that says they need the better backbone to see full potential. Creates mismatched expectations for many.
+
+I am running my office on a 1Gbps backbone right now. I have a U6-Enterprise in my office. While it is only getting 1Gbps on the LAN, I am connecting my laptop at 1.2Gbps right now. Cannot get that out of the link, but it is maxing out just under 1Gbps. So that is a win over the older NanoHD that was in here (where I managed maybe 400Mbps most days).
+
+Reply
+
+2
+Avatar for naderelo
+naderelo
+2 years ago
+Something to note, notice how their latest gen (7) aren’t using Bluetooth? That should tell you something about their sensors line of equipment and potentially what they might do instead for their future sensors. People will always have their justifications for why they bought their equipment and why that was a good decision. Good or bad, the U7 series represents the future stratergy, U6 doesn’t. If I had to put money on it, their Bluetooth sensors would not be part of their future offerings. Only posters that have invested in it will convince you that you need it. I had an aging wifi network that I upgraded and faced this issue, in the end I with with U7 Pro because it clearly showed me that Bluetooth is not part of their strategy moving forward and that 6ghz is. Further, I also bought their switch which offers 2.5gb connections. Will I make full use of it, probably not (which also potentially means it won’t really draw the full rated current) but why invest money in deprecated tech.

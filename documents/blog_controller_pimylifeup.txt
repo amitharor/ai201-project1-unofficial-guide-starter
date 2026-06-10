@@ -1,0 +1,207 @@
+Setting up the UniFi Network Controller using Docker
+Emmet Avatarby
+Emmet
+Updated
+Jun 16, 2024
+Docker
+Linux Guides
+Favorite
+If you buy through our links, we may earn an affiliate commission. Learn More.
+In this guide, we will show you how to set up the UniFi Network Controller using a Docker container.
+
+UniFi Network Controller Docker Container
+The UniFi network controller allows you to manage your UniFi network devices from an easy-to-use self-hosted dashboard. You don’t have to purchase specific hardware to control your network devices.
+
+You can install this UniFi controller on your device in numerous ways, but in this guide, we will focus on Docker.
+
+The advantage of using a Docker container is that it can simplify setting up the UniFi controller. If you already have Docker installed, you can have it up and running in minutes.
+
+Suppose you have tried installing the network controller to an operating system like Ubuntu. In that case, you will likely have to install old releases of software that might not necessarily work with other software you are utilizing.
+
+With a container, you don’t have to stress about this as it is all stored within its self-contained environment.
+
+While the following steps focus on Linux-based systems, the UniFi docker container we use has also been tested on Windows and macOS-based devices.
+
+Running the UniFi Controller using a Docker Container
+Over the following few sections, we will be walking you through installing Docker and setting up the UniFi network controller container.
+
+While Ubiquiti doesn’t provide its own Docker images, we will be using one provided by Jacob Alberty. You can check out the Dockerfile from which this image is built by visiting their official GitHub.
+
+Installing Docker to your Operating System
+1. For this tutorial to work, you must install Docker to your chosen operating system.
+
+Docker is what will grab and run the UniFi controller on your system. Luckily, installing Docker is a relatively simple process.
+
+If you use a Linux-based operating system, you can install Docker by running the following command in the terminal.
+
+curl -sSL https://get.docker.com | sh
+Copy
+2. Once you have installed Docker, you will want to add your current user to the “docker” group using the chmod command.
+
+sudo usermod -aG docker $USER
+Copy
+3. After changing a user’s groups, you must either log out or restart your system.
+
+If you use an SSH connection, you can log out using the following command.
+
+logout
+Copy
+If that doesn’t work, try restarting your system by running the below command.
+
+sudo reboot
+Copy
+Preparing your System for the UniFi Network Docker Container
+4. Once you have Docker installed, our next step is to prepare your system to run the UniFi Network Controller container.
+
+The main thing we need to do here is create a directory to store the UniFi containers Compose file and all of its data.
+
+You can create this directory by running the following command within the terminal.
+
+sudo mkdir -p /opt/stacks/unifi
+Copy
+By utilizing the “-p” option, this command will create any missing directories in the given path.
+
+5. After creating a directory to store our Compose file, we can change to the directory by using the cd command.
+
+cd /opt/stacks/unifi
+Copy
+Writing a Compose file for the UniFi Docker Container
+6. Our next step is writing the Compose file for the UniFi docker container. This Compose file will instruct Docker what image to download and the environment variables to pass through to it.
+
+You can begin writing this file by typing in the following command.
+
+sudo nano compose.yaml
+Copy
+7. Within this file, you will want to type in the following lines.
+
+You must replace “<TIMEZONE>” with a valid TZ Identifier. You can find a list of time zone identifiers from Wikipedia.
+
+For example, we would use “Australia/Hobart” for our time zone.
+
+services:
+  unifi:
+    user: unifi
+    image: ghcr.io/jacobalberty/unifi-docker
+    container_name: unifi-controller
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "3478:3478/udp"
+      - "10001:10001/udp"
+    environment:
+      TZ: "<TIMEZONE>"
+    volumes:
+      - ./data:/unifi
+Copy
+8. Once you have written the lines above, save and quit by pressing CTRL + X, followed by Y, and then the ENTER key.
+
+Starting the UniFi Docker Container
+9. With the Compose file written, all you need to do to bring the UniFi network controller Docker container online is to use the following command.
+
+We use the “-d” option to detach from the current terminal session once the container has started.
+
+docker compose up -d
+Copy
+Accessing the UniFi Network Controller Web Interface
+10. Now that you have the Docker container for the UniFi network controller running, you will want to access its web interface. You will also need to know the IP address later in this guide.
+
+If you don’t know the local IP address of your machine, you can get it by running the following command.
+
+hostname -I
+Copy
+Ensure you set up your device with a static IP address before proceeding further. You do not want your UniFi controller to be assigned a dynamic IP address.
+
+11. Once you know the IP address of your device, go to the following address in your favourite web browser.
+
+Ensure that you replace “<IPADDRESS>” with your IP.
+
+https://<IPADDRESS>:8443
+Initial Set Up of the UniFi Network Controller
+12. When you first access your new Docker-based UniFi Network controller, you must complete some initial set up steps.
+
+If you are setting up this controller as a brand new one, give it a server name, select your country, and accept the terms and conditions (1.).
+
+After filling out your servers details, click the “Next” button (3.) to continue.
+
+However, if you are restoring this from an older UniFi backup, click the “Restore Server from a Backup” link (2.)
+
+Name your Docker UniFi Network Controller or Restore from Backup
+13. If you are setting this controller up from scratch, you will now be asked to sign in to your Ubiquiti account (1.).
+
+After filling out an email and password you can click the “Create a UI Account” button to create a new account, or you can click the “Sign In” button (3.) if you already have an account.
+
+If you prefer not to use a Ubiquiti account on your controller, click the “Advanced Setup” link and follow the prompts (2.).
+
+Sign in to UI Account
+14. At this point, you should now have access to the UniFi network controller web interface.
+
+However, before you can start adopting your Ubiquiti network devices, there is an option you must enable.
+
+UniFi Network Controller Running in Docker Container
+Enabling the Inform Host Option
+15. For your Ubiquiti devices to detect your Docker-based UniFi network controller, we must enable the “Inform Host” option.
+
+This option lets us tell the IP address the controller should broadcast to available devices. Currently, it will be using the Dockers internal IP rather than the host IP.
+
+To set this option, you must first switch to the settings page by clicking the cog in the sidebar.
+
+Open Settings page
+16. Once you are on the settings screen, change to the “System” menu (1.).
+
+After changing to the system settings page, swap to the “Advanced” tab (2.).
+
+Change to Advanced Settings
+17. On this page, you should find an option labeled “Inform Host“.
+
+Click the checkbox to allow us to begin overriding the host IP.
+
+Toggle on Inform Host
+18. Before you can override the inform host value, you will get a warning that misconfiguring this option can cause you to lose access to your devices. You may have to physically reset your Ubiquiti devices if something goes wrong.
+
+You need to ensure that the IP address of your host is correct and reachable. If you are happy to proceed, click the “Confirm” button.
+
+Confirm you want to Inform Host
+19. A text box will now appear below the “Inform Host” option. Type in the local IP address (1.) of the machine on which you are running the UniFi network controller using Docker.
+
+Once you are happy that you have typed in the correct IP address, click the “Apply Changes” button (2.).
+
+Type in HOST IP For UniFi Docker Container Machine
+20. Once you have applied your settings, you must restart the UniFi Docker container.
+
+Back in the terminal, you can bring the UniFi container down by using the following command
+
+docker compose down
+Copy
+21. Start UniFi back up on your device by running the following command within the terminal.
+
+docker compose up -d
+Copy
+Updating your UniFi Docker Container
+One massive advantage of using the UniFi network controller through a Docker container is that updating it is straightforward.
+
+The following steps will walk you through the effortless way of updating to the latest version. You can see what versions are available by visiting the GitHub page for this project.
+
+1. To update the UniFI container, we must change to the directory we created earlier in this guide.
+
+We need to use the Compose file we wrote to pull the latest version of the image.
+
+cd /opt/stacks/unifi
+Copy
+2. After swapping to the directory where we wrote the Compose file, you can use the command below to download the latest version of the UniFi container.
+
+docker compose pull
+Copy
+3. Finally, if a new version is found, you can get Docker to move over to it using the command below in the terminal.
+
+Docker will detect the new image and restart the container using it.
+
+docker compose up -d
+Copy
+Conclusion
+Hopefully, you will now have the UniFi network controller running on your device, thanks to the Docker container.
+
+The advantage of using a Docker container to run the UniFi controller is that you don’t have to worry about any of its dependencies being available on your own operating system.
+
+Additionally, it makes updating this software an incredibly simple process that can be done using a couple of commands.
+

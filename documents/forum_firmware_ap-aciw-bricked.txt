@@ -1,0 +1,318 @@
+tom8344
+7 years ago
+Thanks, I'll give UBNT a shot since Amazon was my distributor.
+
+Reply
+
+Avatar for RoodAwakening
+RoodAwakening
+7 years ago
+Tom:
+
+ 
+
+Please let me know how the RMA experience went. Mine is out of warranty and I've basically written it off. I'm sure shipping it to them, having it repaired, and the shipping back will be more than the price of a new one but maybe I'm underestimating Ubiquiti's customer service.
+
+Reply
+
+
+EngineerSB
+7 years ago
+This happens frrom time to time and even the urescue proceedure doesnt work. Have you tried this ;
+
+ 
+
+Alternative Recovery
+
+ 
+
+I posted this a while ago and its bought back a number of devices.
+
+ 
+
+I've also got another way to bring them back but it requires an eeprom programmer and some soldering. If the above doesn't work and you don't want to throw it away, I can try the more in depth recovery process. I'm in the UK.
+
+Reply
+
+
+jltnol
+7 years ago
+Ditto.
+
+ 
+
+Same Update
+
+ 
+
+I have 2, and did both about the same time.  one worked just fine, one is bricked.
+
+ 
+
+I tried the TFTP method to restore, but alas, nada.  No lights, no flahses, no reset falshing codes.. zero.
+
+ 
+
+Any other ideas to try ? ?
+
+Reply
+
+Avatar for AmazedMender16
+AmazedMender16
+7 years ago
+Hello  @jltnol ,
+
+ 
+
+What UAP model is it?
+
+What is the MAC address of the unit?
+
+What is the datecode?
+
+What firmware was previously installed?
+
+What firmware version did it upgrade to?
+
+Controller version?
+
+Was auto upgrades turned on?
+
+Did you press the upgrade button in the controller or did you upgrade via CLI?
+
+Was it POE+ powered or 24v?
+
+ 
+
+Regards,
+
+Glenn R.
+
+ 
+
+CC  @UBNT-JaM  
+
+ 
+
+Reply
+
+
+jltnol
+7 years ago
+What UAP model is it?   UAP-AC-Pro
+
+What is the MAC address of the unit?  1650GF09FC233C0C3-x317M6
+
+What is the datecode?  (not sure where to find this)
+
+What firmware was previously installed?  not positive, but it was a 3.x one, and I had upgraded to the latest about 2-3 months ago
+
+What firmware version did it upgrade to?   4.0.21.9965
+
+Controller version?  5.6.37
+
+Was auto upgrades turned on?  No
+
+Did you press the upgrade button in the controller or did you upgrade via CLI?  Controller
+
+Was it POE+ powered or 24v?  PoE
+
+Reply
+
+
+UI-Team
+7 years ago
+@RoodAwakening  wrote:
+Tom:
+
+ 
+
+Please let me know how the RMA experience went. Mine is out of warranty and I've basically written it off. I'm sure shipping it to them, having it repaired, and the shipping back will be more than the price of a new one but maybe I'm underestimating Ubiquiti's customer service.
+
+
+I will reach out to you over PM.
+
+
+ 
+
+
+Thanks,
+
+
+Jeff
+
+
+ 
+
+Reply
+
+
+UI-Team
+7 years ago
+@jltnol  wrote:
+What UAP model is it?   UAP-AC-Pro
+
+What is the MAC address of the unit?  1650GF09FC233C0C3-x317M6
+
+What is the datecode?  (not sure where to find this)
+
+What firmware was previously installed?  not positive, but it was a 3.x one, and I had upgraded to the latest about 2-3 months ago
+
+What firmware version did it upgrade to?   4.0.21.9965
+
+Controller version?  5.6.37
+
+Was auto upgrades turned on?  No
+
+Did you press the upgrade button in the controller or did you upgrade via CLI?  Controller
+
+Was it POE+ powered or 24v?  PoE
+
+
+I will be reaching out to you over PM.
+
+
+ 
+
+
+Thanks,
+
+
+Jeff
+
+
+ 
+
+Reply
+
+
+EngineerSB
+7 years ago
+Hello.
+
+ 
+
+Have you tried the TTL console recovery route desribed above in my earlier post?
+
+ 
+
+I also repair these if you want me to take it on and you're in the UK. (£25 including return postage)
+
+Reply
+
+
+MASSv1
+7 years ago
+Jeff,
+
+I have the identical issue as the OP with a AP-AC- In-Wall
+
+What UAP model is it? UAP-AC-In-all
+
+What is the MAC address of the unit? 1735K 788A20837E38-0MKWPC
+
+What is the datecode? (not sure where to find this)
+
+What firmware was previously installed? unknown
+
+What firmware version did it upgrade to? 4.0.21.9965
+
+Controller version? 5.10.19.0 (Mac)
+
+Was auto upgrades turned on? No
+
+Did you press the upgrade button in the controller or did you upgrade via CLI? Controller
+
+Was it POE+ powered or 24v? PoE
+
+All of my symptoms are identical to the OP including the half-second flash of the LED when the ethernet cable is plugged in.
+
+I also tried all reset methods that I am aware of, and attempted TFTP recovery, but also never get to step 5 where the LED indicates that the AC is in upgrade mode.
+
+I believe my unit is less than a year since purchase, but I will have to confirm that.
+
+Reply
+
+
+MASSv1
+7 years ago
+@UBNT-JaM  wrote:
+@jltnol  wrote:
+What UAP model is it?   UAP-AC-Pro
+
+What is the MAC address of the unit?  1650GF09FC233C0C3-x317M6
+
+What is the datecode?  (not sure where to find this)
+
+What firmware was previously installed?  not positive, but it was a 3.x one, and I had upgraded to the latest about 2-3 months ago
+
+What firmware version did it upgrade to?   4.0.21.9965
+
+Controller version?  5.6.37
+
+Was auto upgrades turned on?  No
+
+Did you press the upgrade button in the controller or did you upgrade via CLI?  Controller
+
+Was it POE+ powered or 24v?  PoE
+
+I will be reaching out to you over PM.
+
+ 
+
+Thanks,
+
+Jeff
+
+ 
+
+Jeff,I have the identical issue as the OP with a AP-AC- In-WallWhat UAP model is it? UAP-AC-In-allWhat is the MAC address of the unit? 1735K 788A20837E38-0MKWPCWhat is the datecode? (not sure where to find this)What firmware was previously installed? unknownWhat firmware version did it upgrade to? 4.0.21.9965Controller version? 5.10.19.0 (Mac)Was auto upgrades turned on? NoDid you press the upgrade button in the controller or did you upgrade via CLI? ControllerWas it POE+ powered or 24v? PoEAll of my symptoms are identical to the OP including the half-second flash of the LED when the ethernet cable is plugged in.I also tried all reset methods that I am aware of, and attempted TFTP recovery, but also never get to step 5 where the LED indicates that the AC is in upgrade mode.I believe my unit is less than a year since purchase, but I will have to confirm that.
+
+ 
+
+Sorry about the duplicate post. I forgot to quote you in the first one, and the system is not allowing me to delete it. 
+
+Reply
+
+1
+
+UI-Team
+7 years ago
+@MASSv1  wrote:Jeff,I have the identical issue as the OP with a AP-AC- In-WallWhat UAP model is it? UAP-AC-In-allWhat is the MAC address of the unit? 1735K 788A20837E38-0MKWPCWhat is the datecode? (not sure where to find this)What firmware was previously installed? unknownWhat firmware version did it upgrade to? 4.0.21.9965Controller version? 5.10.19.0 (Mac)Was auto upgrades turned on? NoDid you press the upgrade button in the controller or did you upgrade via CLI? ControllerWas it POE+ powered or 24v? PoEAll of my symptoms are identical to the OP including the half-second flash of the LED when the ethernet cable is plugged in.I also tried all reset methods that I am aware of, and attempted TFTP recovery, but also never get to step 5 where the LED indicates that the AC is in upgrade mode.I believe my unit is less than a year since purchase, but I will have to confirm that.
+
+I will be reaching out!
+
+
+ 
+
+
+Thanks,
+
+
+Jeff
+
+
+ 
+
+Reply
+
+Avatar for AmazedMender16
+AmazedMender16
+7 years ago
+Hello  @MASSv1 ,
+
+ 
+
+You can see the previous installed firmware version in the controller logs.
+
+The datecode is the first 4 numbers and 1 letter for the MAC ID.
+
+ 
+
+Regards,
+
+Glenn R.
+
+Reply
+
+1

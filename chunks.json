@@ -1,0 +1,1088 @@
+[
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk0",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 0,
+    "text": "Setting up the UniFi Network Controller using Docker\nEmmet\nDocker\nLinux Guides\nIn this guide, we will show you how to set up the UniFi Network Controller using a Docker container. UniFi Network Controller Docker Container\nThe UniFi network controller allows you to manage your UniFi network devices from an easy-to-use self-hosted dashboard. You don’t have to purchase specific hardware to control your network devices. You can install this UniFi controller on your device in numerous ways, but in this guide, we will focus on Docker. The advantage of using a Docker container is that it can simplify setting up the UniFi controller. If you already have Docker installed, you can have it up and running in minutes."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk1",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 1,
+    "text": "container is that it can simplify setting up the UniFi controller. If you already have Docker installed, you can have it up and running in minutes. Suppose you have tried installing the network controller to an operating system like Ubuntu. In that case, you will likely have to install old releases of software that might not necessarily work with other software you are utilizing. With a container, you don’t have to stress about this as it is all stored within its self-contained environment. While the following steps focus on Linux-based systems, the UniFi docker container we use has also been tested on Windows and macOS-based devices."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk2",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 2,
+    "text": "While the following steps focus on Linux-based systems, the UniFi docker container we use has also been tested on Windows and macOS-based devices. Running the UniFi Controller using a Docker Container\nOver the following few sections, we will be walking you through installing Docker and setting up the UniFi network controller container. While Ubiquiti doesn’t provide its own Docker images, we will be using one provided by Jacob Alberty. You can check out the Dockerfile from which this image is built by visiting their official GitHub. Installing Docker to your Operating System\n1. For this tutorial to work, you must install Docker to your chosen operating system. Docker is what will grab and run the UniFi controller on your system. Luckily, installing Docker is a relatively simple process."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk3",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 3,
+    "text": "operating system. Docker is what will grab and run the UniFi controller on your system. Luckily, installing Docker is a relatively simple process. If you use a Linux-based operating system, you can install Docker by running the following command in the terminal. curl -sSL https://get.docker.com | sh\nCopy\n2. Once you have installed Docker, you will want to add your current user to the “docker” group using the chmod command. sudo usermod -aG docker $USER\nCopy\n3. After changing a user’s groups, you must either log out or restart your system. If you use an SSH connection, you can log out using the following command. logout\nCopy\nIf that doesn’t work, try restarting your system by running the below command."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk4",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 4,
+    "text": "connection, you can log out using the following command. logout\nCopy\nIf that doesn’t work, try restarting your system by running the below command. sudo reboot\nCopy\nPreparing your System for the UniFi Network Docker Container\n4. Once you have Docker installed, our next step is to prepare your system to run the UniFi Network Controller container. The main thing we need to do here is create a directory to store the UniFi containers Compose file and all of its data. You can create this directory by running the following command within the terminal. sudo mkdir -p /opt/stacks/unifi\nCopy\nBy utilizing the “-p” option, this command will create any missing directories in the given path. 5. After creating a directory to store our Compose file, we can change to the directory by using the cd command."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk5",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 5,
+    "text": "directories in the given path. 5. After creating a directory to store our Compose file, we can change to the directory by using the cd command. cd /opt/stacks/unifi\nCopy\nWriting a Compose file for the UniFi Docker Container\n6. Our next step is writing the Compose file for the UniFi docker container. This Compose file will instruct Docker what image to download and the environment variables to pass through to it. You can begin writing this file by typing in the following command. sudo nano compose.yaml\nCopy\n7. Within this file, you will want to type in the following lines. You must replace “<TIMEZONE>” with a valid TZ Identifier. You can find a list of time zone identifiers from Wikipedia. For example, we would use “Australia/Hobart” for our time zone."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk6",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 6,
+    "text": "a valid TZ Identifier. You can find a list of time zone identifiers from Wikipedia. For example, we would use “Australia/Hobart” for our time zone. services:\n unifi:\n user: unifi\n image: ghcr.io/jacobalberty/unifi-docker\n container_name: unifi-controller\n restart: unless-stopped\n ports:\n - \"8080:8080\"\n - \"8443:8443\"\n - \"3478:3478/udp\"\n - \"10001:10001/udp\"\n environment:\n TZ: \"<TIMEZONE>\"\n volumes:\n - ./data:/unifi\nCopy\n8. Once you have written the lines above, save and quit by pressing CTRL + X, followed by Y, and then the ENTER key. Starting the UniFi Docker Container\n9. With the Compose file written, all you need to do to bring the UniFi network controller Docker container online is to use the following command."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk7",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 7,
+    "text": "With the Compose file written, all you need to do to bring the UniFi network controller Docker container online is to use the following command. We use the “-d” option to detach from the current terminal session once the container has started. docker compose up -d\nCopy\nAccessing the UniFi Network Controller Web Interface\n10. Now that you have the Docker container for the UniFi network controller running, you will want to access its web interface. You will also need to know the IP address later in this guide. If you don’t know the local IP address of your machine, you can get it by running the following command. hostname -I\nCopy\nEnsure you set up your device with a static IP address before proceeding further. You do not want your UniFi controller to be assigned a dynamic IP address."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk8",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 8,
+    "text": "you set up your device with a static IP address before proceeding further. You do not want your UniFi controller to be assigned a dynamic IP address. 11. Once you know the IP address of your device, go to the following address in your favourite web browser. Ensure that you replace “<IPADDRESS>” with your IP. https://<IPADDRESS>:8443\nInitial Set Up of the UniFi Network Controller\n12. When you first access your new Docker-based UniFi Network controller, you must complete some initial set up steps. If you are setting up this controller as a brand new one, give it a server name, select your country, and accept the terms and conditions (1.). After filling out your servers details, click the “Next” button (3.) to continue."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk9",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 9,
+    "text": "select your country, and accept the terms and conditions (1.). After filling out your servers details, click the “Next” button (3.) to continue. However, if you are restoring this from an older UniFi backup, click the “Restore Server from a Backup” link (2.) Name your Docker UniFi Network Controller or Restore from Backup\n13. If you are setting this controller up from scratch, you will now be asked to sign in to your Ubiquiti account (1.). After filling out an email and password you can click the “Create a UI Account” button to create a new account, or you can click the “Sign In” button (3.) if you already have an account. If you prefer not to use a Ubiquiti account on your controller, click the “Advanced Setup” link and follow the prompts (2.)."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk10",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 10,
+    "text": "already have an account. If you prefer not to use a Ubiquiti account on your controller, click the “Advanced Setup” link and follow the prompts (2.). Sign in to UI Account\n14. At this point, you should now have access to the UniFi network controller web interface. However, before you can start adopting your Ubiquiti network devices, there is an option you must enable. UniFi Network Controller Running in Docker Container\nEnabling the Inform Host Option\n15. For your Ubiquiti devices to detect your Docker-based UniFi network controller, we must enable the “Inform Host” option. This option lets us tell the IP address the controller should broadcast to available devices. Currently, it will be using the Dockers internal IP rather than the host IP."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk11",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 11,
+    "text": "the IP address the controller should broadcast to available devices. Currently, it will be using the Dockers internal IP rather than the host IP. To set this option, you must first switch to the settings page by clicking the cog in the sidebar. Open Settings page\n16. Once you are on the settings screen, change to the “System” menu (1.). After changing to the system settings page, swap to the “Advanced” tab (2.). Change to Advanced Settings\n17. On this page, you should find an option labeled “Inform Host“. Click the checkbox to allow us to begin overriding the host IP."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk12",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 12,
+    "text": "Advanced Settings\n17. On this page, you should find an option labeled “Inform Host“. Click the checkbox to allow us to begin overriding the host IP. Toggle on Inform Host\n18. Before you can override the inform host value, you will get a warning that misconfiguring this option can cause you to lose access to your devices. You may have to physically reset your Ubiquiti devices if something goes wrong. You need to ensure that the IP address of your host is correct and reachable. If you are happy to proceed, click the “Confirm” button. Confirm you want to Inform Host\n19. A text box will now appear below the “Inform Host” option. Type in the local IP address (1.) of the machine on which you are running the UniFi network controller using Docker."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk13",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 13,
+    "text": "below the “Inform Host” option. Type in the local IP address (1.) of the machine on which you are running the UniFi network controller using Docker. Once you are happy that you have typed in the correct IP address, click the “Apply Changes” button (2.). Type in HOST IP For UniFi Docker Container Machine\n20. Once you have applied your settings, you must restart the UniFi Docker container. Back in the terminal, you can bring the UniFi container down by using the following command docker compose down\nCopy\n21. Start UniFi back up on your device by running the following command within the terminal. docker compose up -d\nCopy\nUpdating your UniFi Docker Container\nOne massive advantage of using the UniFi network controller through a Docker container is that updating it is straightforward."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk14",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 14,
+    "text": "UniFi Docker Container\nOne massive advantage of using the UniFi network controller through a Docker container is that updating it is straightforward. The following steps will walk you through the effortless way of updating to the latest version. You can see what versions are available by visiting the GitHub page for this project. 1. To update the UniFI container, we must change to the directory we created earlier in this guide. We need to use the Compose file we wrote to pull the latest version of the image. cd /opt/stacks/unifi\nCopy\n2. After swapping to the directory where we wrote the Compose file, you can use the command below to download the latest version of the UniFi container."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk15",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 15,
+    "text": "After swapping to the directory where we wrote the Compose file, you can use the command below to download the latest version of the UniFi container. docker compose pull\nCopy\n3. Finally, if a new version is found, you can get Docker to move over to it using the command below in the terminal. Docker will detect the new image and restart the container using it. docker compose up -d\nCopy\nConclusion\nHopefully, you will now have the UniFi network controller running on your device, thanks to the Docker container. The advantage of using a Docker container to run the UniFi controller is that you don’t have to worry about any of its dependencies being available on your own operating system."
+  },
+  {
+    "id": "blog_controller_pimylifeup.txt::chunk16",
+    "source": "blog_controller_pimylifeup.txt",
+    "chunk_index": 16,
+    "text": "container to run the UniFi controller is that you don’t have to worry about any of its dependencies being available on your own operating system. Additionally, it makes updating this software an incredibly simple process that can be done using a couple of commands."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk0",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 0,
+    "text": "How to Setup and Secure UniFi VLAN\nWhen you have a UniFi Security Gateway or UniFi Dream Machine (UDM, UDM Pro) you can create different VLANs on your network. Virtual LANs (VLANs), allow you to divide your physical network into virtual networks, offering isolation, security, and scalability. Now you might think, do I really need VLANs? But when guests are connecting to your home network, you probably don’t want them to have access to all your network devices. And if you have a smart home, then creating a separate VLAN might be a good idea. Because the security of IoT devices is not always as it should be."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk1",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 1,
+    "text": "And if you have a smart home, then creating a separate VLAN might be a good idea. Because the security of IoT devices is not always as it should be. Setup UniFi VLANs\nStep 1 – Create the UniFi VLAN Networks\nStep 2 – Block traffic between VLANs\nStep 3 – Block Access to Unifi Network Console from VLANs\nAssign devices to VLANs in UniFi Network\nAssign VLAN to Switch Port\nAssign VLAN to Wireless Devices\nCreating Firewall Exceptions\nUsing a Traffic Rule\nUsing a Firewall Rule\nWrapping Up\nSo in this article, I will explain how to set up and secure VLANs in the UniFi Network Console. Note"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk2",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 2,
+    "text": "a Traffic Rule\nUsing a Firewall Rule\nWrapping Up\nSo in this article, I will explain how to set up and secure VLANs in the UniFi Network Console. Note When you are using UniFi Network 9.x or higher, you should read this article about the Zone-Based Firewall instead\nSetup UniFi VLANs\nCreating VLANs in UniFi exists out of a couple of steps because we not only have to create the different networks, but we also need to secure the VLANs. The “problem” with UniFi is that inter-VLAN traffic is allowed by default. So without any firewall rules, traffic from for example the guest VLAN can just access the main VLAN. In this example, we will be creating 3 VLAN networks for:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk3",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 3,
+    "text": "any firewall rules, traffic from for example the guest VLAN can just access the main VLAN. In this example, we will be creating 3 VLAN networks for: Guests – VLAN 20\nCameras – VLAN 30\nIoT devices – VLAN 40\nThe guest VLAN is a bit different from the other VLANs because UniFi will automatically create the necessary firewall rules for the guest network. All you have to do is Isolate the network in the network settings. So in the steps below, we will create the guest network, with the correct settings, but further on I will use the IoT VLAN as an example."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk4",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 4,
+    "text": "settings. So in the steps below, we will create the guest network, with the correct settings, but further on I will use the IoT VLAN as an example. Step 1 – Create the UniFi VLAN Networks\nThe first step is to create the different networks for the VLANs. I have used custom VLAN IDs in the steps below, but you can also leave Auto Scale Network on. This way UniFi will automatically create the IP Range and VLAN ID. Open your UniFi network console and navigate to: Settings >Networks\nClick on New Virtual Network We are first going to create the guest network:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk5",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 5,
+    "text": "ID. Open your UniFi network console and navigate to: Settings >Networks\nClick on New Virtual Network We are first going to create the guest network: Enter Guests at the Network Name\nDeselect Auto-Scale Network\nSet the host address to 192.168.20.1\nChange Advanced Configuration to Manual\nChange the VLAN ID to 20 so it matches the IP range\nEnable Isolation by checking Network\nChange the Content Filtering to Family (optional)\nClick Apply Changes Next, we need to create the network for the Cameras and IoT devices. Click again on New Virtual network, and repeat the steps below for both Cameras and IoT, using VLAN 30 for cameras and 40 for IoT:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk6",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 6,
+    "text": "and IoT devices. Click again on New Virtual network, and repeat the steps below for both Cameras and IoT, using VLAN 30 for cameras and 40 for IoT: Network Name: IoT\nDisable Auto Scale Network\nHost Address: 192.168.40.1\nAdvanced Configuration: Manual\nVLAN ID: 40\nIsolation: Off\nClick Apply Changes (and repeat for cameras)\nCreate UniFi VLAN\nUsing VLAN Magic\nIf you are running UniFi Network 8.0.24 or higher, then you can also use the new VLAN Magic feature to create virtual networks. It allows you to create a new virtual network from the device overview, and simply assign devices to the VLAN by selecting them."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk7",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 7,
+    "text": "virtual networks. It allows you to create a new virtual network from the device overview, and simply assign devices to the VLAN by selecting them. UniFi Network will then use the virtual network override feature to move the device to the assigned VLAN. The advantage of this method is that you don’t need to create wireless networks for your VLANs, but when applying this on a wired device, you will need to make sure that your ports are configured correctly (I will explain that later in the article). UniFi VLAN Magic\nTo create a new VLAN with VLAN Magic:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk8",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 8,
+    "text": "make sure that your ports are configured correctly (I will explain that later in the article). UniFi VLAN Magic\nTo create a new VLAN with VLAN Magic: Open the Topology view\nClick on the plus icon the create a new VLAN\nSelect the devices in the overview to assign them\nClick on Apply Changes\nStep 2 – Block traffic between VLANs\nWith the networks and VLANs created, we need to block the traffic between them. By default, devices in, for example, the IoT VLAN, can access the device in your main VLAN. Guests however are already isolated by the automatically generated firewall rules by the Isolated Network option. There are two options to block inter-VLAN traffic, we can create custom firewall rules, or use a Traffic Rule. The latter is a lot quicker to create, but I will explain both methods."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk9",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 9,
+    "text": "traffic, we can create custom firewall rules, or use a Traffic Rule. The latter is a lot quicker to create, but I will explain both methods. Note If you plan to use Teleport or VPN, then use the custom firewall rules. When using the traffic rules, clients connected through Teleport, will be able to access all other vLANs.\nUsing Traffic Rules\nUbiquiti is really promoting the use of Traffic Rules to block or allow traffic on your network. In the last update, they merged the Traffic Rules and Firewall rules into one screen. You can now create two rule types: Simple and Advanced. Simple is the “old” Traffic Rule, and Advanced is the Firewall rule."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk10",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 10,
+    "text": "rules into one screen. You can now create two rule types: Simple and Advanced. Simple is the “old” Traffic Rule, and Advanced is the Firewall rule. Click on Security\nChoose Traffic & Firewall Rules\nClick on Create Entry\nMake sure Simple is selected as Rule type\nCreate Traffic Rule\nWhen creating Traffic rules, make sure that you have set the Rule Type to simple. Rule type: Simple\nName: Block Inter-VLAN\nAction: Block\nSource: All Devices\nDestination: All Local Networks\nTraffic Direction: Both Directions\nSchedule: Always"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk11",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 11,
+    "text": "Simple\nName: Block Inter-VLAN\nAction: Block\nSource: All Devices\nDestination: All Local Networks\nTraffic Direction: Both Directions\nSchedule: Always You probably want to access your IoT device, for example, from your main (default) VLAN. To do this we can create another Traffic Rule to allow traffic from the Default network to the IoT network. Now this is where Traffic Rules become a bit confusing for most, let’s first create the rule and I will then explain it a bit: In the Traffic Rules click on Create Entry: Name: Allow Default to Access IoT Devices\nAction: Allow\nSource: Default\nDestination: Local Network\nSelect: Iot\nTraffic Direction: Source to Destination\nSchedule: Always"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk12",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 12,
+    "text": "to Access IoT Devices\nAction: Allow\nSource: Default\nDestination: Local Network\nSelect: Iot\nTraffic Direction: Source to Destination\nSchedule: Always So what we have done here, is Allow all traffic from the Default network (Device/Network) to a local network, in this case IoT. The Traffic Direction is set to Traffic to all local network, which means that traffic initiated from the default network is allowed, but traffic initiated from the IoT network not. I have only selected IoT here as the local network, but you can also select the other VLANs you want to have access to from your default network. Using Firewall Rules\nWe can also block the inter-VLAN traffic with custom firewall rules. This is however a bit more work compared to the Traffic Rules."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk13",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 13,
+    "text": "Firewall Rules\nWe can also block the inter-VLAN traffic with custom firewall rules. This is however a bit more work compared to the Traffic Rules. Before we can block the inter-VLAN traffic, we first need to create 3 other rules: Allow established and related connections\nDrop invalid state connections\nAllow the main VLAN to access all VLANs\nTo create a new Firewall rule, we create a new entry in the Traffic & Firewall Rules. But make sure that you set the type to Advanced in the new rule. Click on Create New Rule\nCreate new firewall rule\nWe are first going to create the rule that allows all established and related sessions."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk14",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 14,
+    "text": "new rule. Click on Create New Rule\nCreate new firewall rule\nWe are first going to create the rule that allows all established and related sessions. Rule Type: Advanced\nType: LAN in\nDescription: Allow established and related sessions\nAction: Accept\nSource Type: Port/IP Group\nIPv4 Address Group: Any\nPort Group: Any\nDestination Type: Port/IP Group\nIPv4 Address Group: Any\nPort Group: Any\nUnder Advanced: select Match State Established and Match State Related\nApply Changes The second rule that we are going to create is to drop all invalid states:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk15",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 15,
+    "text": "select Match State Established and Match State Related\nApply Changes The second rule that we are going to create is to drop all invalid states: Rule Type: Advanced\nType: LAN in\nDescription: Drop invalid state\nAction: Drop\nSource Type: Port/IP Group\nIPv4 Address Group: Any\nPort Group: Any\nDestination Type: Port/IP Group\nIPv4 Address Group: Any\nPort Group: Any\nUnder Advanced: select Match State Invalid\nApply Changes\nDrop invalid state\nAnd the third rule that we need to add is to allow traffic from our main VLAN to the other VLAN. This way we will be able to manage all the devices even if they are in IoT VLAN for example."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk16",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 16,
+    "text": "to allow traffic from our main VLAN to the other VLAN. This way we will be able to manage all the devices even if they are in IoT VLAN for example. To create this rule we will first need to define an IP Group. Port/Ip Groups allow you to easily apply a rule to multiple port numbers or IP ranges. In this case, we want to match the IP ranges of all VLANs. In the settings menu, click on Profiles\nScroll down and click Create New under IP Groups\nProfile name: All Private IPs\nType: IPv4 Address/Subnet\nAddress: 192.168.0.0/16 (this will match all addresses that start with 192.168.x.x)\nClick Add\nPrivate IP Group\nWith the IP group created, go back to Traffic & Firewall Rules and create the following rule:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk17",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 17,
+    "text": "that start with 192.168.x.x)\nClick Add\nPrivate IP Group\nWith the IP group created, go back to Traffic & Firewall Rules and create the following rule: Rule Type: Advanced\nType: LAN in\nDescription: Allow main VLAN access to all VLAN\nAction: Accept\nSource Type: Network\nNetwork: Default\nNetwork Type: IPv4 Subnet\nDestination Type: Port/IP Group\nIPv4 Address Group: All Private IPs (the IP Group that we just created\nPort Group: Any\nAllow main to access all VLANS\nWe can now create the rule that will block traffic between the VLANs. The rules that we just created will ensure that we can still access the devices in the other VLANs from the main VLAN. For this rule, we are also going to use the IP Group that we created earlier."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk18",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 18,
+    "text": "we can still access the devices in the other VLANs from the main VLAN. For this rule, we are also going to use the IP Group that we created earlier. Click on Create New Rule in Traffic & Firewall Rules and add the following rule: Rule Type: Advanced\nType: LAN in\nDescription: Block VLAN to VLAN\nAction: Drop\nSource Type: Port/IP Group\nIPv4 Address Group: All Private IPs\nDestination Type: Port/IP Group\nIPv4 Address Group: All Private IPs\nPort Group: Any\nBlock VLAN to VLAN Unifi\nWe now have separated the VLANs in our UniFi network, preventing unwanted inter-VLAN traffic."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk19",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 19,
+    "text": "Private IPs\nPort Group: Any\nBlock VLAN to VLAN Unifi\nWe now have separated the VLANs in our UniFi network, preventing unwanted inter-VLAN traffic. Step 3 – Block Access to Unifi Network Console from VLANs\nDevices in your VLAN will need to have access to your network console (UDM Pro for example). But what we don’t want is that users (guests or IoT devices) are able to access the interface of our UniFi network console. What we also want to prevent is that devices from IoT can access the gateway of the main VLAN. Now this is something that should be possible with a Traffic Rule in my opinion, but honestly, I can’t get it to work. I am still waiting for an answer about this from Ubiquiti. I created the following rule, if anybody knows why this isn’t working, please drop a comment below:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk20",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 20,
+    "text": "waiting for an answer about this from Ubiquiti. I created the following rule, if anybody knows why this isn’t working, please drop a comment below: Action: Block\nCategory: IP Address\nIP Address:\n192.168.1.1 – Port 22,80,443\n192.168.20.1 – Port 22,80,443\n192.168.30.1 – Port 22,80,443\n192.168.40.1 – Port 22,80,443\nDevice/Network: IoT, Cameras, Guests\nSchedule: Always\nDescription: Block VLANs to Gateway except Default So for now, we will create a firewall rule for this. First, we need to create a couple of Port and IP Groups. Open the Profiles in the settings menu and click on Create New Group under Port and IP Groups. Create the following IP Groups:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk21",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 21,
+    "text": "of Port and IP Groups. Open the Profiles in the settings menu and click on Create New Group under Port and IP Groups. Create the following IP Groups: Profile Name\tType\tAddress / Port\nBlock IoT to Gateways\tIPv4 Address/Subnet\t192.168.1.1\n192.168.20.1\n192.168.30.1\nBlock IoT Gateway Interface\tIPv4 Address/Subnet\t192.168.40.1\nBlock Cameras to Gateways\tIPv4 Address/Subnet\t192.168.1.1\n192.168.20.1\n192.168.40.1\nBlock Cameras Gateway interface\tIPv4 Address/Subnet\t192.168.30.1\nThe last Port Group that we need to create is to block only HTTP, HTTPS, and SSH access to the UniFi Network Console. The device will need to be able to access the gateway, but as mentioned, we don’t want to expose the console self."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk22",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 22,
+    "text": "to the UniFi Network Console. The device will need to be able to access the gateway, but as mentioned, we don’t want to expose the console self. Profile Name: http,https,ssh\nType: Port Group\nPort: 80, 443, 22\ncreate port group\nNext, we are going to add the firewall rules. This time we will be using the type LAN Local Rule Type: Advanced\nType: LAN local\nDescription: Block IoT to Gateways\nAction: Drop\nSource Type: Network\nNetwork: IoT\nDestination Type: Port/IP Group\nIPv4 Address Group: Block IoT to Gateways\nPort Group: Any\nBlock Gateway Access\nAnd the rule to block access to the UDM Console. Note that we will be using the Port Group http,https,ssh here that we created earlier!"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk23",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 23,
+    "text": "Access\nAnd the rule to block access to the UDM Console. Note that we will be using the Port Group http,https,ssh here that we created earlier! Rule Type: Advanced\nType: LAN local\nDescription: Block IoT to UDM Interface\nAction: Drop\nSource Type: Network\nNetwork: IoT\nDestination Type: Port/IP Group\nIPv4 Address Group: Block IoT Gateway Interface\nPort Group: http,https,ssh\nBlock interface acces rule\nRepeat the steps above but this time for the Cameras VLAN. Assign devices to VLANs in UniFi Network\nWe have created all necessary rules to block inter-VLAN traffic, so all we need to do now is assign our devices to the correct VLAN in UniFi Network. For wired devices, we can assign a network to the port on the switch. And for the wireless devices, we will need to create a separate SSID."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk24",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 24,
+    "text": "Network. For wired devices, we can assign a network to the port on the switch. And for the wireless devices, we will need to create a separate SSID. Assign VLAN to Switch Port\nBy default, each switch port allows all tagged VLAN traffic. This means that if the connected device has the correct VLAN ID configured, it can access that VLAN. Which for most situations. It also allows access points or switches to pass through traffic from all VLANs if needed. But when we have a network camera or smart home device connected to a switch, then we want to only allow access to the corresponding VLAN. The device should not be able to access any other VLAN (by changing its VLAN ID for example). To do this, we will need to configure the Native VLAN on the port and block all tagged VLAN traffic."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk25",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 25,
+    "text": "VLAN (by changing its VLAN ID for example). To do this, we will need to configure the Native VLAN on the port and block all tagged VLAN traffic. In the UniFi Network console, open the new Port Manager and select your Switch. We are going to use the new Ports Manager because this will give you a create overview of all your switch ports and VLANs. Tip"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk26",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 26,
+    "text": "select your Switch. We are going to use the new Ports Manager because this will give you a create overview of all your switch ports and VLANs. Tip By default, you can select and change multiple ports by just selecting them one after another. Mind this when you want to change another port.\nOpen the Port Manager\nSelect the Switch\nSelect a port of a camera or smart home device\nChange the Native VLAN to the correct Network (VLAN)\nChange Tagged VLAN Management to Block All\nReboot your Camera by Power Cycle the port\nAssign VLAN to switch port\nChange the other ports as well, assign them to the main VLAN by selecting the Port Profile LAN or another appropriate Port Profile. Make sure that you Allow All Tagged VLAN traffic on the Uplink port (recognized by the up arrow ^) and the access points port"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk27",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 27,
+    "text": "Port Profile. Make sure that you Allow All Tagged VLAN traffic on the Uplink port (recognized by the up arrow ^) and the access points port Assign VLAN to Wireless Devices\nIf you have a UniFi doorbell, for example, you might also want to assign this device to the camera’s VLAN. The problem is that we can’t set a VLAN on the doorbell itself. The same problem occurs with a lot of IoT devices, on most, you can’t configure a VLAN ID. So the only option is to create a separate SSID (wireless network) for each VLAN and assign the wireless network to the correct VLAN. Note We can also use Private Pre-Shared keys for this. This way you only have one SSID, but depening on the used password, a device is assigned to a different virtual network (VLAN)."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk28",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 28,
+    "text": "keys for this. This way you only have one SSID, but depening on the used password, a device is assigned to a different virtual network (VLAN). But I have noticed, that not all devices seem to work well with this yet, so make sure you test it out properly.\nOpen Settings and select WiFi\nClick on Create New WiFi network\nEnter a name and password for the wireless network\nChange network to the correct VLAN (IoT for example)\nClick Add WiFi network\nAssign VLAN to UniFi WiFi network\nYou can change the WiFi connection of your UniFi Doorbell in the Protect Console > Devices > Settings > WiFi Connection."
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk29",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 29,
+    "text": "VLAN to UniFi WiFi network\nYou can change the WiFi connection of your UniFi Doorbell in the Protect Console > Devices > Settings > WiFi Connection. Creating Firewall Exceptions\nSometimes you need to allow access between specific devices in different VLANs. In these cases, there are again two options to allow this. We can create a Traffic Rule or add a Firewall rule. Using a Traffic Rule\nTraffic Rules are the most convenient to use for this. We can simply create a new rule where we can select the device that we want to give access to the specified VLAN. For example, to give the LAB01 notebook access to the Default VLAN, we can create the following traffic rule:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk30",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 30,
+    "text": "to give access to the specified VLAN. For example, to give the LAB01 notebook access to the Default VLAN, we can create the following traffic rule: Action: Allow\nSource: <select-device>\nDestination: Local Network\nSelect network: Default\nTraffic Direction: Source to Destination\nSchedule: Always Using a Firewall Rule\nWhen using a Firewall rule, we need to create an allow rule and place the rule above the Block VLAN to VLAN rule. Let’s take the following example, allowing IoT devices to access a Raspberry PI in the main VLAN. When you create an allow rule, try to be as specific as possible. If it’s only between two devices, then use the IP Address of both devices. If you know the protocol, then specify the port number as well. Create a new firewall rule:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk31",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 31,
+    "text": "two devices, then use the IP Address of both devices. If you know the protocol, then specify the port number as well. Create a new firewall rule: Type: LAN In\nDescription: IoT to Raspberry Pi\nAction: Allow\nSource Type: Network\nNetwork: IoT\nDestination Type: IP Address\nIPv4 Address: 192.168.1.x\nAllow access rule\nNext, we will need to move the rule above the Block VLAN to VLAN rule that we have created in the beginning. You can drag and drop rules using the 6 dots at the beginning of the rule:"
+  },
+  {
+    "id": "blog_vlan_lazyadmin.txt::chunk32",
+    "source": "blog_vlan_lazyadmin.txt",
+    "chunk_index": 32,
+    "text": "above the Block VLAN to VLAN rule that we have created in the beginning. You can drag and drop rules using the 6 dots at the beginning of the rule: In the Traffic & Firewall Rules select Advanced\nChoose LAN In\nDrag the new rule above the Block VLAN to VLAN (Rule index 2003)\nDrag Firewall rules\nWrapping Up\nVLANs allow you to secure your local network by making sure that devices from one VLAN can’t access the other. Because inter-VLAN access is by default allowed in UniFi, we will need to create quite an amount of rules before we can safely use it."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk0",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 0,
+    "text": "UniFi Setup from Scratch Part 3 – Setting Up VLANs and Firewall Rules\n‹\n \n› Today on the hookup I’m going to show you how to create the most secure smart home network possible by creating VLANs and firewall rules to separate your IoT and NoT devices from the rest of your network. This is part 3, the final part of my Ultimate Smart Home Network Series… here we go. In part 1 of this series I showed you how to pick the right networking hardware for your needs and price point. In part 2 I showed you how to set up your new equipment, migrate from your old network, and start dividing your network by device type. Today I’m going to walk you through creating VLANs and firewall rules to make sure your network is as safe and secure as possible without limiting functionality."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk1",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 1,
+    "text": "to walk you through creating VLANs and firewall rules to make sure your network is as safe and secure as possible without limiting functionality. At this point if you’ve been following along with this video series you should have a fully functioning home network with multiple SSIDs being broadcast for your different device types So far all of your devices are on a single subnet and can all communicate with each other, which is not great since a single compromised IoT device could allow a hacker to setup a tunnel into your home network To segregate your network by device type we are going to setup virtual local area networks or VLANS You can think of each VLAN as a completely separate network with a different router, a different switch, and different access points"
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk2",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 2,
+    "text": "or VLANS You can think of each VLAN as a completely separate network with a different router, a different switch, and different access points By default, one VLAN can’t access another VLAN any more than you can access your neighbors home network from your own The advantage of a VLAN is of course that you don’t have to actually have separate equipment, since the separation is going to happen via software The other advantage is that we can easily set up different firewall rules to allow only specific traffic to be able to cross VLANs since cutting your IoT devices off from your network completely will disable some of their most useful features."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk3",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 3,
+    "text": "traffic to be able to cross VLANs since cutting your IoT devices off from your network completely will disable some of their most useful features. To setup our first VLAN we’re going to click on settings -> network, and click on “create new network”. I’m going to call this network IoT, select “corporate” for the purpose, select LAN as the network group, assign it to vLAN 20, and I’m going to change the IP range for this group to 192.168.20.1/24, you don’t need to have the vLAN number match the subnet, but it makes it easier for me to remember. Press Update DHCP range, click the box that says enable IGMP snooping, hit save and you’re all done with that network."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk4",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 4,
+    "text": "it easier for me to remember. Press Update DHCP range, click the box that says enable IGMP snooping, hit save and you’re all done with that network. We’re going to repeat these same steps for our NoT VLAN, hit “create new network” call it NoT, select “corporate”, leave LAN as the network group, and this one I’m going to set to VLAN 30 and make my subnet 192.168.30.1/24, hit update DHCP range, enable IGMP snooping, and press save. That covers the VLANs for NoT and IoT devices, but I have one more device type on my network: My PoE IP Security cameras These devices don’t need to talk to anyone or anything"
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk5",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 5,
+    "text": "NoT and IoT devices, but I have one more device type on my network: My PoE IP Security cameras These devices don’t need to talk to anyone or anything Basically, each camera produces a video stream called RTSP and if you want to see that video stream you connect to the camera directly, but the camera doesn’t need to contact any other device, except for NTP requests to synchronize time, which we’re going to allow everything on our network to do I originally had my IP cameras on another vLAN as well, but I noticed some degradation in the quality of the stream when doing so"
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk6",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 6,
+    "text": "our network to do I originally had my IP cameras on another vLAN as well, but I noticed some degradation in the quality of the stream when doing so I did some research, and wasn’t able to find any definitive answers as to why it was occurring, but there was speculation that some of the hardware offloading that allows the USG to be such a high throughput router cannot be used across vLANs, and since 9 video streams ranging from 2 to 6 megapixels represents quite a bit of data it could cause some slowdowns I’ll show you how I regulate their traffic when we setup firewall rules, but I’m not going to set up a separate vLAN for them."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk7",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 7,
+    "text": "cause some slowdowns I’ll show you how I regulate their traffic when we setup firewall rules, but I’m not going to set up a separate vLAN for them. So now you’ve got different VLANs, what’s the point? Firewall rules is the point. We’re going to be able to manage the exact traffic that is allowed to travel across VLANS by writing different rules for the internal firewall. Go to settings, routing and firewall, and then click on firewall on the top. You’ll see lots of different areas where we can apply firewall rules, but the most efficient place to regulate traffic is at the front door of the router before any resources are wasted on determining a route. The tab titled “LAN In” corresponds to that front door, so that’s where we’ll create our rules."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk8",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 8,
+    "text": "any resources are wasted on determining a route. The tab titled “LAN In” corresponds to that front door, so that’s where we’ll create our rules. Basically when we set up rules they are processed from the top down, so if the traffic is allowed to pass based on a rule that is higher up on the list, it will not then be subsequently blocked by a rule that is lower on the list. To make things easier on myself I always make more specific rules for allowing traffic, and broad rules for dropping traffic, then I put all the allow rules at the top and the drop rules at the bottom."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk9",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 9,
+    "text": "rules for allowing traffic, and broad rules for dropping traffic, then I put all the allow rules at the top and the drop rules at the bottom. The first rules we need to create are the ones that will apply to all of the IP addresses on your network, and one of the most important ones is a rule to allow established and related sessions. This is a common rule that exists on all routers at the WAN level, which is what allows a website or service to talk back to your computer if you establish the initial connection. Since we’re going to be blocking the other networks from communicating from the LAN later on, we need to establish a rule to let them answer if talked to."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk10",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 10,
+    "text": "we’re going to be blocking the other networks from communicating from the LAN later on, we need to establish a rule to let them answer if talked to. To do this click on LAN IN, then click on “create new rule”. I always name my rules with whether they are accepting or dropping, so I’m going to call this one “Allow all established and related sessions” select “accept”, then under advanced click on “Established” and “Related”, and then for source we’ll need to create a group that contains all possible IP addresses on all the VLANs, so for me that’s 192.168.86.0/24, 192.168.30.0/24 and 192.168.20.0/24. I’ll call the group “All Local IP Addresses”, then select that group for both source and destination."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk11",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 11,
+    "text": "192.168.30.0/24 and 192.168.20.0/24. I’ll call the group “All Local IP Addresses”, then select that group for both source and destination. I also want to allow all the devices on the network to send NTP or time synchronization requests. These requests go out on port 123, so I’m going to create a rule called “Accept all NTP requests”, select “accept”, and under source I’ll select “All Local IP Addresses”, and under destination I’m going to create a port group called “NTP” that only contains port 123. There are other options for taking care of this NTP problem like creating custom DNS entries to redirect traffic to a local NTP server, or doing fancy routing to trick the NTP traffic, but this solution is plenty secure for now."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk12",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 12,
+    "text": "DNS entries to redirect traffic to a local NTP server, or doing fancy routing to trick the NTP traffic, but this solution is plenty secure for now. Next lets configure your NoT firewall rules. For me, my NoT needs to be able to communicate via MQTT with my MQTT server, so I’m going to make a rule called Allow NoT to MQTT, select accept, then under source I’ll select the NoT network, then under destination select address/port group, and I’ll add a new group under ip addresses that I’ll call Home Assistant with my specific home assistant server IP address since that is where my MQTT server lives, and under port group I’ll add a new group called MQTT ports that will contain the two common MQTT ports which are 1883 for non secure MQTT and 8883 for secure MQTT."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk13",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 13,
+    "text": "group I’ll add a new group called MQTT ports that will contain the two common MQTT ports which are 1883 for non secure MQTT and 8883 for secure MQTT. The next accept rule that I need is one to allow my IoT network to access Home Assistant, or specifically my node red server. I only need this rule because I use the Alexa Local node to configure all my echo voice commands. If you don’t use Alexa local, you probably don’t need this rule. Anyways, I’ll call it “Allow IoT to Home Assistant”, select accept, then for source select your IoT network, and for destination I’m going to put in the IP address of my Home assistant virtual machine. I could enter this as a singular IP address, but I like to use groups instead, and I already have this group defined from my previous rule."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk14",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 14,
+    "text": "machine. I could enter this as a singular IP address, but I like to use groups instead, and I already have this group defined from my previous rule. These are basic accept rules that will probably apply to your smart home, but you may need have other ones as well based on your specific devices. For instance, chromecast uses ports 8008, 8009, 5556, 5558, and 5353 when advertising and casting. So for me I needed to add an allow firewall rule to allow my IoT network to communicate on those ports. If you wanted to further limit the rule you could create a group that only contained your chromecast devices to use as the source instead of using the entire IoT network."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk15",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 15,
+    "text": "limit the rule you could create a group that only contained your chromecast devices to use as the source instead of using the entire IoT network. If you notice something on your network that doesn’t function after imposing firewall rules you can generally figure out which ports they need for their services with a quick google search. Alright, that does it for our accept rules, now its time to start blocking traffic. Our IoT network isn’t allowed to talk to the LAN or the NoT network so we’ll make a rule called “Block IoT from LAN”, select drop, then under source select the IoT network and under destination select your LAN network. Repeat the exact same process to block IoT from NoT."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk16",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 16,
+    "text": "drop, then under source select the IoT network and under destination select your LAN network. Repeat the exact same process to block IoT from NoT. Next we’ll create the rules to block the NoT. Remember, the NoT only needs to communicate with the MQTT server, which we’ve already accepted, so all that’s left is to drop the rest of the traffic. Create a rule called “Block All NoT” and select drop, then for source select the NoT network, and for destination we’re going to create a group that contains every possible ipv4 address, so call it “All IP Addresses” and start with 0.0.0.0/1, then 128.0.0.0/2, then 192.0.0.0/3, and last 224.0.0.0/4"
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk17",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 17,
+    "text": "every possible ipv4 address, so call it “All IP Addresses” and start with 0.0.0.0/1, then 128.0.0.0/2, then 192.0.0.0/3, and last 224.0.0.0/4 As I mentioned earlier, IP cameras don’t need to communicate at all, except for time synchronization to an NTP server which is already allowed by one of our first rules. And again, the reason I didn’t put the cameras on a VLAN is that there seemed to be a performance drop when routing that much data constantly over across the VLAN, so instead I’m going to create an IP address group called Cameras, and add in each of my cameras IP addresses manually. Then I’ll create a rule called “Block All Cameras”, select drop, and for source I’ll select the Cameras IP group and for destination select that All IP Addresses group."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk18",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 18,
+    "text": "rule called “Block All Cameras”, select drop, and for source I’ll select the Cameras IP group and for destination select that All IP Addresses group. If you ever need to edit these groups later on you can do it under “routing & firewall”, firewall, then groups. Since we specified this group based on specific IP addresses we need to make sure that the IP addresses of these cameras won’t change, so if you haven’t already done so you should go to clients then select each camera and click on the gear, then network and turn on the “use fixed IP” toggle. It will autofill the current IP address of the device, but you can also specify another IP address in this area if you’d like."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk19",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 19,
+    "text": "“use fixed IP” toggle. It will autofill the current IP address of the device, but you can also specify another IP address in this area if you’d like. The last thing that we need to allow in order for our smart home devices to function as expected is enable multicast DNS or mDNS. Basically these devices will advertise their IP address and their services to all of the other devices on that VLAN. This is required for things like device discovery on amazon echo devices, and chromecast streaming. Multicast traffic can cause significant slowdowns on a network since even a small amount of multicast data takes a relatively long time to process in each access point. We already enabled IGMP snooping to try to control some of this multicast data, but in a smart home multicast is a necessary evil."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk20",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 20,
+    "text": "each access point. We already enabled IGMP snooping to try to control some of this multicast data, but in a smart home multicast is a necessary evil. In order to allow mDNS is we need to turn off a feature under our site settings. So go to settings then site, and turn off the setting that says “auto optimize network and wireless performance”. We need to do this because disabling mDNS will certainly increase wireless performance, but it’s also going to stop your devices from working."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk21",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 21,
+    "text": "We need to do this because disabling mDNS will certainly increase wireless performance, but it’s also going to stop your devices from working. Now that all of our rules are in place we can force our devices onto their respective VLANS. To do this for our wireless devices we’ll go to settings, then wireless networks and first select your IoT SSID and click edit. Under advanced options we’re going to click on “use VLAN” and select VLAN 20 since that’s what we assigned to our IoT network earlier. Make sure the button for block LAN to WLAN multicast and broadcast data is unchecked. Also down at the bottom check the enable multicast enhancement button, this is the 2nd step to allowing your UniFi equipment to optimize that multicast data so it doesn’t slow down your network too much."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk22",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 22,
+    "text": "button, this is the 2nd step to allowing your UniFi equipment to optimize that multicast data so it doesn’t slow down your network too much. Repeat this process for your NoT network, assign it to VLAN 30, make sure the LAN to WLAN multicast button is unchecked, and enable multicast enhancement. While we’re at it, I got a great suggestion to eliminate some unnecessary SSID broadcasting by disabling the 5ghz NoT SSIDs since none of my NoT devices are capable of 5ghz. Do this by clicking devices, then APs, then select an AP and click the gear. Under WLANs select the 5ghz NoT network and toggle the enabled on this AP switch. Hit queue changes then apply."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk23",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 23,
+    "text": "then select an AP and click the gear. Under WLANs select the 5ghz NoT network and toggle the enabled on this AP switch. Hit queue changes then apply. After your APs provision and your wireless networks come back up should have a theoretically functioning network, but many of your IoT devices may not function well The problem is that those mDNS broadcasts cannot cross VLANs by default So what we need to do is repeat those mDNS broadcasts across all the different vLANS Luckily the unifi controller makes it pretty easy All we need to do is go to settings, services, then mDNS and turn on multicast DNS"
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk24",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 24,
+    "text": "different vLANS Luckily the unifi controller makes it pretty easy All we need to do is go to settings, services, then mDNS and turn on multicast DNS This, along with the unchecked box for blocking multicast lets devices broadcast their IP addresses across all VLANS which should allow them to function properly, and the IMGP snooping should take those multicast requests and send them only to the devices that need to hear them, which lowers the effect on your network performance It’s worth noting here that even though these devices are advertising their IP addresses, it doesn’t mean that they will be reachable because they will still have to obey the firewall rules that we setup earlier."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk25",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 25,
+    "text": "their IP addresses, it doesn’t mean that they will be reachable because they will still have to obey the firewall rules that we setup earlier. Now that your settings are all in place it’s a good idea to go through and test your most use smart home integrations to make sure they are still working in order to not lose too much of the wife approval factor. Setting up a network like this isn’t cheap, and it’s not quick, but it is orders of magnitude more secure than letting all of your IoT devices from various manufacturers comingle with your trusted devices. If you follow along with this video your network should be fully functional and very secure, but I’ve only scratched the surface of what is possible with this equipment."
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk26",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 26,
+    "text": "with this video your network should be fully functional and very secure, but I’ve only scratched the surface of what is possible with this equipment. In future videos I’ll cover VPNs, presence detection, custom DNS and other advanced functionality, but you don’t need to wait for me, there are plenty of other youtubers making great networking content, two of my personal favorites are Chris from crosstalk solutions and Willie Howe, you should check them out Remember that I’m not a network administrator by trade, and while I did consult with professionals while I was making this video I’m not claiming that what I have setup is the only way, or even the best way If you have something to add, or I got something wrong, please let me know down in the comments"
+  },
+  {
+    "id": "blog_vlan_smarthomehookup.txt::chunk27",
+    "source": "blog_vlan_smarthomehookup.txt",
+    "chunk_index": 27,
+    "text": "I have setup is the only way, or even the best way If you have something to add, or I got something wrong, please let me know down in the comments If you’re interested in buying any of the equipment that I used in this video series please consider using my Amazon affiliate links in the description, it doesn’t cost you anything extra but I get a few percent of the profit."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk0",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 0,
+    "text": "Should I skip the U6 and purchase a U7? brettski\nMy network currently contains UAP-AC-PRO APs that have been in place for eight years. Many of the devices used on the network now support WiFi 6, so I want to update one of the APs to at least WiFi 6. Looking through the options, I noticed that a U7 AP is available. Should I upgrade to that instead? My hesitation is that I am not sure if there is any interference where the new and old equipment overlap or if there are other facts I am unaware of. Thank you."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk1",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 1,
+    "text": "is that I am not sure if there is any interference where the new and old equipment overlap or if there are other facts I am unaware of. Thank you. AlexWilsonsBlog\nWireless professional advice here... not amateur / consumer. If I were updating my tech today for a purposeful reason, like need more coverage, unit died, etc, I would go with a WiFI 6 or 6E supporting device. WiFi 7 is not a final approved standard. All WiFi 7 gear is based on a draft that won't likely see final approval until end of 2024. Most major vendors like Cisco, Meraki, Juniper, Aruba, etc, are saying 2025 (mid to late) for their WiFi 7 products to hit."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk2",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 2,
+    "text": "until end of 2024. Most major vendors like Cisco, Meraki, Juniper, Aruba, etc, are saying 2025 (mid to late) for their WiFi 7 products to hit. UI jumped the gun a bit like many of the consumer brands. Consumer brands throw this stuff out there knowing the consumers will fall prey to the desire for the latest. Commercial vendors know most commercial accounts could give two hoots... they want stable and reliable. Not bragging rights around the neighborhood."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk3",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 3,
+    "text": "Commercial vendors know most commercial accounts could give two hoots... they want stable and reliable. Not bragging rights around the neighborhood. There is nothing wrong with WiFi 5 today. The channels stay the same with WiFi 6. WiFi 6 does provide some better throughput and handling in dense environments, but if your clients are not all WiFi 6 or your needs are not that demanding, it really does not gain you any benefit. Other than being future proofed against something going EOL tomorrow."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk4",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 4,
+    "text": "or your needs are not that demanding, it really does not gain you any benefit. Other than being future proofed against something going EOL tomorrow. The only reason I would go with WiFi 7 is if I wanted to support 6GHz options. And then, I would skip the U7-Pro and go with the U6-Enterprise or In Wall version, both supporting WiFi 6E and thus 6GHz. None of the WiFi 7 benefits are going to help you without WiFi 7 client support and a better backbone network to support 2.5Gbps. Only you can decide Everyone will have an opinion Some will swear it is their way or no other Some will criticize you Some will support you We are an opinionated lot Know this.. I do this for a living My house and office is a mix of technology because we do a lot of testing"
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk5",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 5,
+    "text": "support you We are an opinionated lot Know this.. I do this for a living My house and office is a mix of technology because we do a lot of testing Our wireless network consists of UAP-AC-Pro, UAP-AC-M, U6-Mesh, U6-Enterprise, U6-Enterprise-IW Notice, no U7-Pro Why waste the energy on this power hungry beast that is noisy (fan to cool it), runs hot as hell, and makes my power meter run fast I get ZERO benefit from it We are doing a major upgrade here too.. all new switches, fiber, replacing all the older UAPs with U6-Mesh or U6-Plus or Pro Depends on what I have laying around Needs are simple.. reliable, stable WiFi I am not looking to win the Indy 500 of speed tests I want to finish the race in one piece and not wreck along the way."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk6",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 6,
+    "text": "reliable, stable WiFi I am not looking to win the Indy 500 of speed tests I want to finish the race in one piece and not wreck along the way. dlow\nMany of the devices used on the network now support WiFi 6, so I want to update one of the APs to at least WiFi 6. Looking through the options, I noticed that a U7 AP is available. Should I upgrade to that instead? My hesitation is that I am not sure if there is any interference where the new and old equipment overlap or if there are other facts I am unaware of. \nThe new U6 and U7 equipment can coexist with older APs. You can theoretically banish the old APs into obscure corners where you just need basic SU-MIMO WiFi."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk7",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 7,
+    "text": "U6 and U7 equipment can coexist with older APs. You can theoretically banish the old APs into obscure corners where you just need basic SU-MIMO WiFi. The big concern with U7 (and U6-Enterprise) is the fact that new 6 GHz APs need 2.5 GbE PoE+ connections to reach their full potential. Without upgrading your wired Ethernet infrastructure, they are just expensive wall decorations. You are otherwise extremely vague about the rest of your network, speed requirements, and whether this is home or other setting. Without more information, it is hard to provide any more advice."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk8",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 8,
+    "text": "rest of your network, speed requirements, and whether this is home or other setting. Without more information, it is hard to provide any more advice. phk46\n@dlow, I get how the new APs may be *able* to support enough devices at high enough speeds to need a 2.5 GvE backhaul, will that really be needed in a typical home deployment? Won't the 6 Ghz in addition to the 2.4 and 5 Ghz give more opportunity for the in home devices to get better speeds even over a 1 GbE connection?"
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk9",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 9,
+    "text": "Won't the 6 Ghz in addition to the 2.4 and 5 Ghz give more opportunity for the in home devices to get better speeds even over a 1 GbE connection? dlow\n@phk46 wrote:\n@dlow, I get how the new APs may be *able* to support enough devices at high enough speeds to need a 2.5 GvE backhaul, will that really be needed in a typical home deployment? Won't the 6 Ghz in addition to the 2.4 and 5 Ghz give more opportunity for the in home devices to get better speeds even over a 1 GbE connection?\nMaybe, but the OP is too short on details for us to know. How do you even know that the OP is a home user? They just said “My network…” How do you know whether the OP has any need for saturating even a 1 GbE LAN?"
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk10",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 10,
+    "text": "you even know that the OP is a home user? They just said “My network…” How do you know whether the OP has any need for saturating even a 1 GbE LAN? It is tempting to spend a lot of money on Unifi gear. FOMO alone is not a good reason because it is a never ending treadmill to nowhere. The OP said: My network currently contains UAP-AC-PRO APs that have been in place for eight years. Many of the devices used on the network now support WiFi 6, so I want to update one of the APs to at least WiFi 6. \nOther than their old APs being longer in the tooth, they didn’t have any measurable problem to solve. Sounds like FOMO to me, or they have real WiFi issues that they haven’t described yet."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk11",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 11,
+    "text": "the tooth, they didn’t have any measurable problem to solve. Sounds like FOMO to me, or they have real WiFi issues that they haven’t described yet. I don’t want anyone to spend a few hundred (or thousand) dollars on new APs, then have no meaningful effect on their life. As @AlexWilsonsBlog said earlier, there’s nothing wrong with a WiFi 5 network. Otto-Wilhelm\nOne thing to consider if one wants to use Bluetooth sensors like the Protect All-I n-One Sensor (UP-Sense). It appears that the U7 Pro doesn´t support Bluetooth for some reason. For such sensors U6 devices are required. brettski\nThank you for the responses."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk12",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 12,
+    "text": "It appears that the U7 Pro doesn´t support Bluetooth for some reason. For such sensors U6 devices are required. brettski\nThank you for the responses. @dlow this is a home network. The main reason for looking into the upgrade is for faster throughput using wireless devices. Making backups and downloads over WIFI faster. At least of the WiFi only devices support 6 now, so I figured I'd look into if it's a good idea at this time to update. I then saw that 7 was available and had more to consider. @AlexWilsonsBlog Thank you. \"The WiFi 7 is not a final approved standard\" is a very important distinction, and I am glad you pointed it out. Seeing that I have no issues with my wireless network at this time, and am only looking for a performance gain, it certainly doesn't seem worth it at this time."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk13",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 13,
+    "text": "I have no issues with my wireless network at this time, and am only looking for a performance gain, it certainly doesn't seem worth it at this time. Again, thank you to everyone who took the time to respond. I appreciate you."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk14",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 14,
+    "text": "for a performance gain, it certainly doesn't seem worth it at this time. Again, thank you to everyone who took the time to respond. I appreciate you. AlexWilsonsBlog\n@phk46 wrote:\n@dlow, I get how the new APs may be *able* to support enough devices at high enough speeds to need a 2.5 GvE backhaul, will that really be needed in a typical home deployment? Won't the 6 Ghz in addition to the 2.4 and 5 Ghz give more opportunity for the in home devices to get better speeds even over a 1 GbE connection?\nYes, you will see improvement without the upgraded backbone. You just won't realize the full potential without it. The issue is many consumers do not understand the fine print and they see BIG NUMBERS on the box, but miss the small print that says they need the better backbone to see full potential. Creates mismatched expectations for many."
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk15",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 15,
+    "text": "NUMBERS on the box, but miss the small print that says they need the better backbone to see full potential. Creates mismatched expectations for many. I am running my office on a 1Gbps backbone right now. I have a U6-Enterprise in my office. While it is only getting 1Gbps on the LAN, I am connecting my laptop at 1.2Gbps right now. Cannot get that out of the link, but it is maxing out just under 1Gbps. So that is a win over the older NanoHD that was in here (where I managed maybe 400Mbps most days). naderelo Something to note, notice how their latest gen (7) aren’t using Bluetooth? That should tell you something about their sensors line of equipment and potentially what they might do instead for their future sensors"
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk16",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 16,
+    "text": "Bluetooth? That should tell you something about their sensors line of equipment and potentially what they might do instead for their future sensors People will always have their justifications for why they bought their equipment and why that was a good decision Good or bad, the U7 series represents the future stratergy, U6 doesn’t If I had to put money on it, their Bluetooth sensors would not be part of their future offerings Only posters that have invested in it will convince you that you need it I had an aging wifi network that I upgraded and faced this issue, in the end I with with U7 Pro because it clearly showed me that Bluetooth is not part of their strategy moving forward and that 6ghz is Further, I also bought their switch which offers 2.5gb connections"
+  },
+  {
+    "id": "forum_ap_u6-vs-u7.txt::chunk17",
+    "source": "forum_ap_u6-vs-u7.txt",
+    "chunk_index": 17,
+    "text": "me that Bluetooth is not part of their strategy moving forward and that 6ghz is Further, I also bought their switch which offers 2.5gb connections Will I make full use of it, probably not (which also potentially means it won’t really draw the full rated current) but why invest money in deprecated tech."
+  },
+  {
+    "id": "forum_controller_docker-install.txt::chunk0",
+    "source": "forum_controller_docker-install.txt",
+    "chunk_index": 0,
+    "text": "juergenbarth\nI suggest to install Portainer, then it will work identically. Just the creation of the mapped folders will look QNAP specific. wehoward\nI have Portainer installed. I don't use vlans as my network is relatively small. I tried to install using the ports but have run into multiple conflicts. Can I use separate IPs on the mongo/unifi-nwa separate from the NAS server IP or do I have to use VLANs to keep separate? I am trying to keep this as simple as possible as I just want to centrally manage 3 Ubiquiti APs. juergenbarth\nAs you rightly say, the other method is to piggyback on the IP of the NAS server, where you might experience port conflicts. If you adjust the port mappings in the docker-compose file, you can get around the conflicts."
+  },
+  {
+    "id": "forum_controller_docker-install.txt::chunk1",
+    "source": "forum_controller_docker-install.txt",
+    "chunk_index": 1,
+    "text": "NAS server, where you might experience port conflicts. If you adjust the port mappings in the docker-compose file, you can get around the conflicts. You can only use separate IP addresses in conjunction with macvlan. I've got another video, which explains the setup of macvlan in smaller networks: https://youtu.be/DDjs4oCJ-Zs Maybe you have watched it already. wehoward Thank you again @juergenbarth - I did watch the macvlan video I need to rethink my approach to all of this My network is currently a flat /24 network My internet router only supports a single network and I am using L2 switches, It appears there is a potential way to route between vlans on the QNAP server but that may be quite a bit of extra effort"
+  },
+  {
+    "id": "forum_controller_docker-install.txt::chunk2",
+    "source": "forum_controller_docker-install.txt",
+    "chunk_index": 2,
+    "text": "and I am using L2 switches, It appears there is a potential way to route between vlans on the QNAP server but that may be quite a bit of extra effort I am trying to understand how your network is setup/configured to route betwen vlans - you appear to have a EdgeRouter X - is that used for your internet connection routing as well or just for internal vlan routing? I am also wondering if I could just create a larger flat network using /22 - which would allow 192.168.0.0-192.168.3.255 vs segmentation on vlans Let me know if would be willing to compare your setup with what I have/could potentially setup with DM."
+  },
+  {
+    "id": "forum_controller_docker-install.txt::chunk3",
+    "source": "forum_controller_docker-install.txt",
+    "chunk_index": 3,
+    "text": "vs segmentation on vlans Let me know if would be willing to compare your setup with what I have/could potentially setup with DM. wehoward\nJust a follow-up - I have been able to get the container stack to run using port mappings but have conflicts on ports that unifi requires to communicate with the APs. I have also been able to get it to run on a separate container network but it doesn't communicate with the APs. Do the APs have to be on the same network segment as the unifi docker container? And as an extension - the IPs that clients use may have to be on the same segment/vlan (or separate from the AP IP)?"
+  },
+  {
+    "id": "forum_controller_docker-install.txt::chunk4",
+    "source": "forum_controller_docker-install.txt",
+    "chunk_index": 4,
+    "text": "as the unifi docker container? And as an extension - the IPs that clients use may have to be on the same segment/vlan (or separate from the AP IP)? Lastly - based on my small/flat network - is it possible to give the unifi docker container an IP address on my internal network? My network is simple and the only external access is through VPN to the NAS server. RobbieH\nYou can configure your docker however you want. I did find that keeping Docker installs updated was more work, that or you install something like Watchtower, which I don't like because it's harder to manage proper change control using it."
+  },
+  {
+    "id": "forum_firmware_ap-aciw-bricked.txt::chunk0",
+    "source": "forum_firmware_ap-aciw-bricked.txt",
+    "chunk_index": 0,
+    "text": "tom8344\nThanks, I'll give UBNT a shot since Amazon was my distributor. RoodAwakening\nTom: Please let me know how the RMA experience went. Mine is out of warranty and I've basically written it off. I'm sure shipping it to them, having it repaired, and the shipping back will be more than the price of a new one but maybe I'm underestimating Ubiquiti's customer service. EngineerSB\nThis happens frrom time to time and even the urescue proceedure doesnt work. Have you tried this ; Alternative Recovery I posted this a while ago and its bought back a number of devices. I've also got another way to bring them back but it requires an eeprom programmer and some soldering. If the above doesn't work and you don't want to throw it away, I can try the more in depth recovery process. I'm in the UK."
+  },
+  {
+    "id": "forum_firmware_ap-aciw-bricked.txt::chunk1",
+    "source": "forum_firmware_ap-aciw-bricked.txt",
+    "chunk_index": 1,
+    "text": "and some soldering. If the above doesn't work and you don't want to throw it away, I can try the more in depth recovery process. I'm in the UK. jltnol\nDitto. Same Update I have 2, and did both about the same time. one worked just fine, one is bricked. I tried the TFTP method to restore, but alas, nada. No lights, no flahses, no reset falshing codes.. zero. Any other ideas to try ? ? AmazedMender16\nHello @jltnol , What UAP model is it? What is the MAC address of the unit? What is the datecode? What firmware was previously installed? What firmware version did it upgrade to? Controller version? Was auto upgrades turned on? Did you press the upgrade button in the controller or did you upgrade via CLI? Was it POE+ powered or 24v? Regards, Glenn R. CC @UBNT-JaM"
+  },
+  {
+    "id": "forum_firmware_ap-aciw-bricked.txt::chunk2",
+    "source": "forum_firmware_ap-aciw-bricked.txt",
+    "chunk_index": 2,
+    "text": "turned on? Did you press the upgrade button in the controller or did you upgrade via CLI? Was it POE+ powered or 24v? Regards, Glenn R. CC @UBNT-JaM jltnol\nWhat UAP model is it? UAP-AC-Pro What is the MAC address of the unit? 1650GF09FC233C0C3-x317M6 What is the datecode? (not sure where to find this) What firmware was previously installed? not positive, but it was a 3.x one, and I had upgraded to the latest about 2-3 months ago What firmware version did it upgrade to? 4.0.21.9965 Controller version? 5.6.37 Was auto upgrades turned on? No Did you press the upgrade button in the controller or did you upgrade via CLI? Controller Was it POE+ powered or 24v? PoE UI-Team\n@RoodAwakening wrote:\nTom: I will reach out to you over PM. Thanks, Jeff"
+  },
+  {
+    "id": "forum_firmware_ap-aciw-bricked.txt::chunk3",
+    "source": "forum_firmware_ap-aciw-bricked.txt",
+    "chunk_index": 3,
+    "text": "did you upgrade via CLI? Controller Was it POE+ powered or 24v? PoE UI-Team\n@RoodAwakening wrote:\nTom: I will reach out to you over PM. Thanks, Jeff UI-Team\n@jltnol wrote:\nWhat UAP model is it? UAP-AC-Pro What is the MAC address of the unit? 1650GF09FC233C0C3-x317M6 What is the datecode? (not sure where to find this) What firmware version did it upgrade to? 4.0.21.9965 Controller version? 5.6.37 Was auto upgrades turned on? No Was it POE+ powered or 24v? PoE I will be reaching out to you over PM. Thanks, Jeff EngineerSB\nHello. Have you tried the TTL console recovery route desribed above in my earlier post? I also repair these if you want me to take it on and you're in the UK. (£25 including return postage) MASSv1\nJeff, I have the identical issue as the OP with a AP-AC- In-Wall"
+  },
+  {
+    "id": "forum_firmware_ap-aciw-bricked.txt::chunk4",
+    "source": "forum_firmware_ap-aciw-bricked.txt",
+    "chunk_index": 4,
+    "text": "want me to take it on and you're in the UK. (£25 including return postage) MASSv1\nJeff, I have the identical issue as the OP with a AP-AC- In-Wall What UAP model is it? UAP-AC-In-all What is the MAC address of the unit? 1735K 788A20837E38-0MKWPC What is the datecode? (not sure where to find this) What firmware was previously installed? unknown What firmware version did it upgrade to? 4.0.21.9965 Controller version? 5.10.19.0 (Mac) Was auto upgrades turned on? No Did you press the upgrade button in the controller or did you upgrade via CLI? Controller Was it POE+ powered or 24v? PoE All of my symptoms are identical to the OP including the half-second flash of the LED when the ethernet cable is plugged in."
+  },
+  {
+    "id": "forum_firmware_ap-aciw-bricked.txt::chunk5",
+    "source": "forum_firmware_ap-aciw-bricked.txt",
+    "chunk_index": 5,
+    "text": "POE+ powered or 24v? PoE All of my symptoms are identical to the OP including the half-second flash of the LED when the ethernet cable is plugged in. I also tried all reset methods that I am aware of, and attempted TFTP recovery, but also never get to step 5 where the LED indicates that the AC is in upgrade mode. I believe my unit is less than a year since purchase, but I will have to confirm that. MASSv1\n@UBNT-JaM wrote:\n@jltnol wrote:\nWhat UAP model is it? UAP-AC-Pro What is the MAC address of the unit? 1650GF09FC233C0C3-x317M6 What is the datecode? (not sure where to find this) What firmware version did it upgrade to? 4.0.21.9965 Controller version? 5.6.37 Was auto upgrades turned on? No Was it POE+ powered or 24v? PoE I will be reaching out to you over PM. Thanks, Jeff Jeff,I have the"
+  },
+  {
+    "id": "forum_firmware_ap-aciw-bricked.txt::chunk6",
+    "source": "forum_firmware_ap-aciw-bricked.txt",
+    "chunk_index": 6,
+    "text": "version? 5.6.37 Was auto upgrades turned on? No Was it POE+ powered or 24v? PoE I will be reaching out to you over PM. Thanks, Jeff Jeff,I have the identical issue as the OP with a AP-AC- In-WallWhat UAP model is it? UAP-AC-In-allWhat is the MAC address of the unit? 1735K 788A20837E38-0MKWPCWhat is the datecode? (not sure where to find this)What firmware was previously installed? unknownWhat firmware version did it upgrade to? 4.0.21.9965Controller version? 5.10.19.0 (Mac)Was auto upgrades turned on? NoDid you press the upgrade button in the controller or did you upgrade via CLI? ControllerWas it POE+ powered or 24v? PoEAll of my symptoms are identical to the OP including the half-second flash of the LED when the ethernet cable is plugged in.I also tried all reset methods that I am aware"
+  },
+  {
+    "id": "forum_firmware_ap-aciw-bricked.txt::chunk7",
+    "source": "forum_firmware_ap-aciw-bricked.txt",
+    "chunk_index": 7,
+    "text": "identical to the OP including the half-second flash of the LED when the ethernet cable is plugged in.I also tried all reset methods that I am aware of, and attempted TFTP recovery, but also never get to step 5 where the LED indicates that the AC is in upgrade mode.I believe my unit is less than a year since purchase, but I will have to confirm that. Sorry about the duplicate post. I forgot to quote you in the first one, and the system is not allowing me to delete it. UI-Team @MASSv1 wrote:Jeff,I have the identical issue as the OP with a AP-AC- In-WallWhat UAP model is it? UAP-AC-In-allWhat is the MAC address of the unit? 1735K 788A20837E38-0MKWPCWhat is the datecode? (not sure where to find this)What firmware was previously installed? unknownWhat firmware version did it upgrade to?"
+  },
+  {
+    "id": "forum_firmware_ap-aciw-bricked.txt::chunk8",
+    "source": "forum_firmware_ap-aciw-bricked.txt",
+    "chunk_index": 8,
+    "text": "is the datecode? (not sure where to find this)What firmware was previously installed? unknownWhat firmware version did it upgrade to? 4.0.21.9965Controller version? 5.10.19.0 (Mac)Was auto upgrades turned on? NoDid you press the upgrade button in the controller or did you upgrade via CLI? ControllerWas it POE+ powered or 24v? PoEAll of my symptoms are identical to the OP including the half-second flash of the LED when the ethernet cable is plugged in.I also tried all reset methods that I am aware of, and attempted TFTP recovery, but also never get to step 5 where the LED indicates that the AC is in upgrade mode.I believe my unit is less than a year since purchase, but I will have to confirm that. I will be reaching out! Thanks, Jeff AmazedMender16\nHello @MASSv1 ,"
+  },
+  {
+    "id": "forum_firmware_ap-aciw-bricked.txt::chunk9",
+    "source": "forum_firmware_ap-aciw-bricked.txt",
+    "chunk_index": 9,
+    "text": "my unit is less than a year since purchase, but I will have to confirm that. I will be reaching out! Thanks, Jeff AmazedMender16\nHello @MASSv1 , You can see the previous installed firmware version in the controller logs. The datecode is the first 4 numbers and 1 letter for the MAC ID. Regards, Glenn R."
+  },
+  {
+    "id": "forum_firmware_uap-acpro-bricked.txt::chunk0",
+    "source": "forum_firmware_uap-acpro-bricked.txt",
+    "chunk_index": 0,
+    "text": "barlowj\n@gregorio wrote:\nGet it wired and do the firmware regression on it and the AP to which it is meshed. While I am not familiar with specific problems on the version you are on now, broken mesh is a common issue when doing upgrades.\nHow can I downgrade the firmware if it won't reliably stay \"Online\" and I can't SSH into it (it says wrong PW)? gregorio\nIf the LED is blue, the user and pass are stored in the controller under Settings. Scroll down. If white, it is the ubnt/ubnt default. Not hard to reset until white LED and SSH in that way. UI-Glenn\nHello @barlowj, Can you SSH into it? barlowj\nI'm in! I can SSH into it using the credentials specified in the console (network settings->system->Advanced->Device Authentication)! Now what? Anything to try here besides a firmware downgrade?"
+  },
+  {
+    "id": "forum_firmware_uap-acpro-bricked.txt::chunk1",
+    "source": "forum_firmware_uap-acpro-bricked.txt",
+    "chunk_index": 1,
+    "text": "specified in the console (network settings->system->Advanced->Device Authentication)! Now what? Anything to try here besides a firmware downgrade? barlowj\nI tried an update while SSH'd in: upgrade https://dl.ui.com/unifi/firmware/U7PG2/6.0.21.13673/BZ.qca956x_6.0.21+13673.220607.2004.bin Downloading firmware from 'https://dl.ui.com/unifi/firmware/U7PG2/6.0.21.13673/BZ.qca956x_6.0.21+13673.220607.2004.bin'. Scheduling firmware upgrade... Waiting for upgrade to start... Waiting for upgrade to start... Waiting for upgrade to start... Waiting for upgrade to start... Terminated But now I can't ssh back in: Unable to negotiate with 192.168.1.96 port 22: no matching host key type found. Their offer: ssh-rsa,ssh-dss But light remains solid blue. I'm guessing the update failed?"
+  },
+  {
+    "id": "forum_firmware_uap-acpro-bricked.txt::chunk2",
+    "source": "forum_firmware_uap-acpro-bricked.txt",
+    "chunk_index": 2,
+    "text": "192.168.1.96 port 22: no matching host key type found. Their offer: ssh-rsa,ssh-dss But light remains solid blue. I'm guessing the update failed? gregorio\n@UI-Glenn this is all for you BNItree\nvery curious to see the result"
+  },
+  {
+    "id": "forum_firmware_uap-acpro-bricked.txt::chunk3",
+    "source": "forum_firmware_uap-acpro-bricked.txt",
+    "chunk_index": 3,
+    "text": "But light remains solid blue. I'm guessing the update failed? gregorio\n@UI-Glenn this is all for you BNItree\nvery curious to see the result UI-Glenn\n@barlowj wrote:\nI tried an update while SSH'd in:\nupgrade https://dl.ui.com/unifi/firmware/U7PG2/6.0.21.13673/BZ.qca956x_6.0.21+13673.220607.2004.bin\nDownloading firmware from 'https://dl.ui.com/unifi/firmware/U7PG2/6.0.21.13673/BZ.qca956x_6.0.21+13673.220607.2004.bin'.\n \nScheduling firmware upgrade...\nWaiting for upgrade to start...\nWaiting for upgrade to start...\nWaiting for upgrade to start...\nWaiting for upgrade to start...\nTerminated\nBut now I can't ssh back in:\nUnable to negotiate with 192.168.1.96 port 22: no matching host key type found. Their offer: ssh-rsa,ssh-dss\nBut light remains solid blue. I'm guessing the update failed?\nHello @barlowj,"
+  },
+  {
+    "id": "forum_firmware_uap-acpro-bricked.txt::chunk4",
+    "source": "forum_firmware_uap-acpro-bricked.txt",
+    "chunk_index": 4,
+    "text": "port 22: no matching host key type found. Their offer: ssh-rsa,ssh-dss\nBut light remains solid blue. I'm guessing the update failed?\nHello @barlowj, Can you try to SSH into it via the example command below? ssh -o HostKeyAlgorithms=ssh-rsa,ssh-dss username@192.168.1.96 barlowj\nSometimes I'm locked out of SSH'ing into the AP and sometimes I'm not (not sure why or what state it has to be in). After factory resetting the AP again, and re-adopting (this time with advanced adoption and the password that I now know can be found inside the console), the firmware downgrade DID in fact work (down to 6.0.22) and it adopts successfully! HOWEVER, the plot thickens, as this is now what I'm seeing: REGARDLESS OF THE FIRMWARE VERSION (6.0.22 and 6.2.49 does this):"
+  },
+  {
+    "id": "forum_firmware_uap-acpro-bricked.txt::chunk5",
+    "source": "forum_firmware_uap-acpro-bricked.txt",
+    "chunk_index": 5,
+    "text": "it adopts successfully! HOWEVER, the plot thickens, as this is now what I'm seeing: REGARDLESS OF THE FIRMWARE VERSION (6.0.22 and 6.2.49 does this): If I tell the AP to reboot via the console, the comes back as status \"Adoption Failed\" again! Same thing if I just unplug the AP and plug it back in (cycle power). It never stays adopted. What could be causing this? When it is adopted it works until the power goes out or it reboots. Any way to fix this? barlowj\nIf I SSH in and cat /etc/persistent/cfg/mgmt\nIt shows:"
+  },
+  {
+    "id": "forum_firmware_uap-acpro-bricked.txt::chunk6",
+    "source": "forum_firmware_uap-acpro-bricked.txt",
+    "chunk_index": 6,
+    "text": "it is adopted it works until the power goes out or it reboots. Any way to fix this? barlowj\nIf I SSH in and cat /etc/persistent/cfg/mgmt\nIt shows: mgmt.is_default=false\nmgmt.led_enabled=true\nmgmt.cfgversion=50719e49c35d7b2a\nmgmt.authkey=A886C0608A3827079870908DEBABD515\nmgmt.selfrun_guest_mode=pass\nmgmt.capability=notif,notif-assoc-stat\nmgmt.use_aes_gcm=true\nmgmt.report_crash=true\nmgmt.is_setup_completed=false\nstun_url=stun://192.168.1.1/\nmgmt.is_setup_completed=false\nmgmt_url=OMITTED BECAUSE IT ISNT POSTING\nmgmt.servers.1.url=OMITTED BECAUSE IT ISNT POSTING Could it have anything to do with the fact that mgmt.is_setup_completed=false?"
+  },
+  {
+    "id": "forum_firmware_uap-acpro-bricked.txt::chunk7",
+    "source": "forum_firmware_uap-acpro-bricked.txt",
+    "chunk_index": 7,
+    "text": "IT ISNT POSTING\nmgmt.servers.1.url=OMITTED BECAUSE IT ISNT POSTING Could it have anything to do with the fact that mgmt.is_setup_completed=false? barlowj\nI still don't have a solution here - Either the AP comes up ok and then after an hour or two goes 'Offline', or it says 'Adoption Failed'. Any ideas? @UI-Glenn ? UI-Glenn\nHello @barlowj, Are you able to SSH into it when it's reported as offline? barlowj\nYes, I can still SSH into it when it's reported as \"Adoption Failed\" after a reboot. Interestingly if I type 'info', it says: Model: UAP-AC-Pro-Gen2\nVersion: 6.2.49.14111\nMAC Address: XX:XX:XX:XX:3a:78\nIP Address: 192.168.1.96\nHostname: DownExerciseRm\nUptime: 140223 seconds Status: Connected (OMITTED8080/inform)"
+  },
+  {
+    "id": "forum_firmware_uap-acpro-bricked.txt::chunk8",
+    "source": "forum_firmware_uap-acpro-bricked.txt",
+    "chunk_index": 8,
+    "text": "Address: XX:XX:XX:XX:3a:78\nIP Address: 192.168.1.96\nHostname: DownExerciseRm\nUptime: 140223 seconds Status: Connected (OMITTED8080/inform) Why would the status be connected if it isn't really 'connected' and working? Any ideas on what I can try? UI-Glenn\nHello @barlowj, Can you update the AP to 6.5.26? barlowj\nSOLVED: Turns out I had a rogue Ubiquiti UniFi Network application running on a PC from 3 years ago (prior to UDM PROs) at IP address dot 170 that was picking up the AP and causing it to be 'offline or not adopted from the perspective of the UDM Pro SE console application running at 192.168.1.1! As soon as I uninstalled that software, the AP reboots and comes back up on the right network just fine!"
+  },
+  {
+    "id": "forum_firmware_uap-acpro-bricked.txt::chunk9",
+    "source": "forum_firmware_uap-acpro-bricked.txt",
+    "chunk_index": 9,
+    "text": "console application running at 192.168.1.1! As soon as I uninstalled that software, the AP reboots and comes back up on the right network just fine! Unbelievable how impossibly hard it was to uninstall the Network application on the Windows 10 PC-Which I am positive I tried to do years ago as well! Had to kill the 'java' process first before it could be uninstalled by windows. (You get a `UniFi is still running and cannot be uninstalled` error message if it is still running). Also shame on Ubiquiti's support community forum software for not allowing me to post whenever there is an Address in the posting--because I kept having to OMIT it and block it out just to post, I never noticed the bad inform address! This really must be fixed! It really was crucial information to solving this!"
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk0",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 0,
+    "text": "Cloud Gateway Ultra vs Dream Machine vs Gateway Max tjadams89\nEdited\nLooking to setup a smaller network and I like what Ubiquiti has to offer. I am trying to figure out the differences in their naming of products/software. Dream Machine line seems to be standard firewall with some port differences and throughput between models. How are the Gateway Ultra and Max different? Ultra is under UniFi gateway so is it all in one like the dream machine and the Max requires something else to be a full solution? Appreciate any info you have to share. Thanks! AlexWilsonsBlog\nUDM-xxx is an all in one console (router, firewall, application server for Network, Access, Protect, Talk, etc). The UDM is a small all-in-one with limited function, more for residential or SOHO. Nothing more."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk1",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 1,
+    "text": "server for Network, Access, Protect, Talk, etc). The UDM is a small all-in-one with limited function, more for residential or SOHO. Nothing more. UDR is a simple all in one targetting home users or SOHO. Like the UDMs but not rack mounted and not very robust. More a paper weight that can be dressed up to look like R2D2 or a Minion. Hopefully that gives you my impression of it! UXG-xxx is a router/firewall/security gateway. These require UniFi Network running on a UCK-G2-Plus or your own controller somewhere (self hosted). Nothing runs on them (no Protect, Access, etc). The UCG-Ultra is a cheap (aimed at developing markets) gateway. It is the UDM basically, but scaled back a smidge. All in one but very limited. The UXG-Max is described above as UXG-XXX."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk2",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 2,
+    "text": "markets) gateway. It is the UDM basically, but scaled back a smidge. All in one but very limited. The UXG-Max is described above as UXG-XXX. lexicons\nAs far as I know, the Teleport function only works on Dream Machines or Dream Router. Does anyone know if Teleport also works on the new gateway max or gateway lite when also using a Cloud Ken Gen2+? It may be the CK Gen2+ can't do Teleport at all, no matter what devices it manages. calhend\nHello there @lexicons Read this Ubiquiti link on Teleport. Here is a screenshot of the gist regarding your question"
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk3",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 3,
+    "text": "what devices it manages. calhend\nHello there @lexicons Read this Ubiquiti link on Teleport. Here is a screenshot of the gist regarding your question lexicons\n@calhend wrote:\nHello there @lexicons\nRead this Ubiquiti link on Teleport.\nHere is a screenshot of the gist regarding your question\nThanks for the link. It appears the new gatways will do Teleport. I know the CK Gen2+ by itself will not, at least with Gen1 gateway. calhend\nThe Cloudkey (Gen1 and 2) are not gateways so they have never been able to handle the VPN's and such. Teleport I believe is a Gen2 feature as it was released after the Gen1 was no longer supported. The Gateway device has always been important for feature-set availability. Cheers mwcormier @AlexWilsonsBlog wrote:"
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk4",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 4,
+    "text": "the Gen1 was no longer supported. The Gateway device has always been important for feature-set availability. Cheers mwcormier @AlexWilsonsBlog wrote: UDM-xxx is an all in one console (router, firewall, application server for Network, Access, Protect, Talk, etc). The UDM is a small all-in-one with limited function, more for residential or SOHO. Nothing more. UDR is a simple all in one targetting home users or SOHO. Like the UDMs but not rack mounted and not very robust. More a paper weight that can be dressed up to look like R2D2 or a Minion. Hopefully that gives you my impression of it! UXG-xxx is a router/firewall/security gateway. These require UniFi Network running on a UCK-G2-Plus or your own controller somewhere (self hosted). Nothing runs on them (no Protect, Access, etc)."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk5",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 5,
+    "text": "These require UniFi Network running on a UCK-G2-Plus or your own controller somewhere (self hosted). Nothing runs on them (no Protect, Access, etc). The UCG-Ultra is a cheap (aimed at developing markets) gateway. It is the UDM basically, but scaled back a smidge. All in one but very limited. The UXG-Max is described above as UXG-XXX. Can someone please translate this with out all the acronyms? Perhaps something like \"The Cloud gateway ultra is good at X, Dream Machine Y and the Gateway Max Z\" The reason for my request is I have a cloudkey+ now and would like to upgrade to either Gateway Max or Dream Machine Pro Max. Current setup at home Cloudkey+ USW Pro 24 POE 4 U6LR AP (need to add one more) 1 G4 Pro 9 AI Pro 1 NVR Pro Expanding to two other locations on my property"
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk6",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 6,
+    "text": "setup at home Cloudkey+ USW Pro 24 POE 4 U6LR AP (need to add one more) 1 G4 Pro 9 AI Pro 1 NVR Pro Expanding to two other locations on my property Barn that is about 250' from my main home. Plan is to use fiber between the structures, 16 PRO Max POE, 4-6 Camera's (AI Pro), 3 APs (undecided on which one U7 I think)\nWill also be running a fiber line to the gate 600' from the main house to run a flex Gate access kit with an other AI Pro. calhend @mwcormier wrote: Can someone please translate this with out all the acronyms? Perhaps something like \"The Cloud gateway ultra is good at X, Dream Machine Y and the Gateway Max Z\" The reason for my request is I have a cloudkey+ now and would like to upgrade to either Gateway Max or Dream Machine Pro Max. Current setup at home Cloudkey+ USW Pro 24 POE"
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk7",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 7,
+    "text": "is I have a cloudkey+ now and would like to upgrade to either Gateway Max or Dream Machine Pro Max. Current setup at home Cloudkey+ USW Pro 24 POE 4 U6LR AP (need to add one more) 1 G4 Pro 9 AI Pro 1 NVR Pro Expanding to two other locations on my property * Barn that is about 250' from my main home. Plan is to use fiber between the structures, 16 PRO Max POE, 4-6 Camera's (AI Pro), 3 APs (undecided on which one U7 I think) * Will also be running a fiber line to the gate 600' from the main house to run a flex Gate access kit with an other AI Pro. The 'translation' is really not a viable answer. The information provided is specific and should be left."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk8",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 8,
+    "text": "flex Gate access kit with an other AI Pro. The 'translation' is really not a viable answer. The information provided is specific and should be left. Now you have presented your environment BUT it really has a few more questions related to it. Is your goal to keep the UNVR-Pro, or add to your UNVR-Pro? I ask because you mention a UCG-Max device or UDM-PM device to 'upgrade' to. BUT upgrade from what? What is the intented usage? The Cludkey+ device is a console that controls Network, Protect and other features/apps. BUT you do not say if you are replacing a gateway or if you are keeping your prior gateway or even if you desire to remove the UNVR-Pro."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk9",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 9,
+    "text": "BUT you do not say if you are replacing a gateway or if you are keeping your prior gateway or even if you desire to remove the UNVR-Pro. Based on your hardware I would recommend keeping things how they are (cameras and access on the UNVR-Pro and theh Cloudkey+ for management of your Network devices. IF you need a gateway device look at one of the UXG based devices for management via the Cloudkey+ device. The UDM-PM as well as the UCG-Max devices both have self hosted network controllers in them but the UCG-Max is a lower tier device compared to the UDM-PM and depending on your usage the UDM-PM might be a device that you barely use."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk10",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 10,
+    "text": "in them but the UCG-Max is a lower tier device compared to the UDM-PM and depending on your usage the UDM-PM might be a device that you barely use. Hopefully @mwcormier you have some things to think about and can clarify your request so that you can get some better guidance. Because as of now I would say buy nothing unless your goal is to get a Unifi Gateway/Router into your network at which point I suggest UXG-Pro or UXG-Max (lower routing the Max / more routing Pro). . Cheers mwcormier @calhend wrote: The 'translation' is really not a viable answer. The information provided is specific and should be left."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk11",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 11,
+    "text": "Pro). . Cheers mwcormier @calhend wrote: The 'translation' is really not a viable answer. The information provided is specific and should be left. Now you have presented your environment BUT it really has a few more questions related to it. Is your goal to keep the UNVR-Pro, or add to your UNVR-Pro? I ask because you mention a UCG-Max device or UDM-PM device to 'upgrade' to. BUT upgrade from what? What is the intented usage? The Cludkey+ device is a console that controls Network, Protect and other features/apps. BUT you do not say if you are replacing a gateway or if you are keeping your prior gateway or even if you desire to remove the UNVR-Pro."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk12",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 12,
+    "text": "BUT you do not say if you are replacing a gateway or if you are keeping your prior gateway or even if you desire to remove the UNVR-Pro. Based on your hardware I would recommend keeping things how they are (cameras and access on the UNVR-Pro and theh Cloudkey+ for management of your Network devices. IF you need a gateway device look at one of the UXG based devices for management via the Cloudkey+ device. The UDM-PM as well as the UCG-Max devices both have self hosted network controllers in them but the UCG-Max is a lower tier device compared to the UDM-PM and depending on your usage the UDM-PM might be a device that you barely use."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk13",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 13,
+    "text": "in them but the UCG-Max is a lower tier device compared to the UDM-PM and depending on your usage the UDM-PM might be a device that you barely use. Hopefully @mwcormier you have some things to think about and can clarify your request so that you can get some better guidance. Because as of now I would say buy nothing unless your goal is to get a Unifi Gateway/Router into your network at which point I suggest UXG-Pro or UXG-Max (lower routing the Max / more routing Pro). . Cheers I currently don't have a gateway just the cloudkey+."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk14",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 14,
+    "text": "at which point I suggest UXG-Pro or UXG-Max (lower routing the Max / more routing Pro). . Cheers I currently don't have a gateway just the cloudkey+. I would like to remove my FIOS router so my thought was to add the UCG-Max or the UDM-Pro. I would be removing the cloudkey+. My understanding it isn't needed anymore if I have one of the above. I don't want to pay a monthly sub would rather just purchase hardware to solve the problem. I wasn't planning on adding an other NVR if I don't have to and based on the capacity calc here I don't have to. May in the future if i add more. Thank you @calhend for your response."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk15",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 15,
+    "text": "NVR if I don't have to and based on the capacity calc here I don't have to. May in the future if i add more. Thank you @calhend for your response. calhend\n@mwcormier wrote:\nI currently don't have a gateway just the cloudkey+.\nI would like to remove my FIOS router so my thought was to add the UCG-Max or the UDM-Pro. I would be removing the cloudkey+. My understanding it isn't needed anymore if I have one of the above. I don't want to pay a monthly sub would rather just purchase hardware to solve the problem.\nI wasn't planning on adding an other NVR if I don't have to and based on the capacity calc here I don't have to. May in the future if i add more.\nThank you @calhend for your response.\nHello there @mwcormier"
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk16",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 16,
+    "text": "to and based on the capacity calc here I don't have to. May in the future if i add more.\nThank you @calhend for your response.\nHello there @mwcormier Okay that is helpful information. So for a gateway you can get rid of the Cloudkey+ if you want to go with the UCG-M or the UDM-PM. I would recommend if you have the rack space and the cash difference then go with the UDM-PM as you will have plenty of upward performance built in for your network management needs. The UCG-M just does not offer enough upward performance I feel for what you might want to do. I run FiOS as well via Frontier and they will charge you the monthly rate for their modem even if you do not use it. I have never owned one (Verizon previously nor Frontier when they took over) and their fees are setup to include it regardless of its usage. Pretty sad, but it is what it is."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk17",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 17,
+    "text": "previously nor Frontier when they took over) and their fees are setup to include it regardless of its usage. Pretty sad, but it is what it is. I recommended the UXG-Pro as a drop in device for your network. This way you do not have to migrate from the Cloudkey+ that you have to the cloud gateway device. It is super easy to do though just take a backup of the Network App from the Cloudkey+ before you install your new gateway device and once setup open the network app and restore the backup. If you have any other questions feel free to start a new thread and we can discuss further. . Cheers"
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk18",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 18,
+    "text": "open the network app and restore the backup. If you have any other questions feel free to start a new thread and we can discuss further. . Cheers mwcormier\nThank you for your response @khtadmin. I have been tossing around the idea of the aggregation switch due to all the connections. I am going to start an other thread later this weekend to discuss removing my CK+ and adding either the max or the pro dream machine. I am leaning towards the max for the extra money just seems nominal for the upside in performance. The part I am struggling with is the aggregation switch. If i buy USW-Aggregation I will only have 3 open spots which doesn't give me a ton of scalability. The USW-Pro-Aggregation is way overkill."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk19",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 19,
+    "text": "switch. If i buy USW-Aggregation I will only have 3 open spots which doesn't give me a ton of scalability. The USW-Pro-Aggregation is way overkill. calhend\nYou can create a new post to discuss and that is fine @mwcormier but the Aggregation switch has 8 10GbE SFP+ ports on it. You can plug in the UDM-PM into one of them and provide network out to 7 devices potentially (if you do not enable LAG on some ports). You can also plug the UNVR-Pro into the same switch that has your cameras attached for the SFP+ if you want as the traffic will not need to traverse your network for cameras to UNVR-Pro and can stay on the same switch. So if you take that approach you can then have 2 switches on your Aggregation switch plus the UDM-PM connected which will leave you 5 ports free for more switches to be connected into the network."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk20",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 20,
+    "text": "2 switches on your Aggregation switch plus the UDM-PM connected which will leave you 5 ports free for more switches to be connected into the network. The one thing I would suggest you use, if possible, is OM3 or OM4 Fiber versus DAC. DAC is a great alternative if you can keep it within the distance but I would use RJ45 copper as last usage as those modules limits how many you can have in the Aggregation Switch. The other reason I suggest OM4 is that when you decide to upgrade the switches all you have to change out is the module as the cables are capable of 100GbE within the distance of the spec for those speeds. Swap out switch and module not cable is one of the easier upgrades. . Cheers"
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk21",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 21,
+    "text": "are capable of 100GbE within the distance of the spec for those speeds. Swap out switch and module not cable is one of the easier upgrades. . Cheers borfoo3\n@lexicons wrote:\nAs far as I know, the Teleport function only works on Dream Machines or Dream Router. Does anyone know if Teleport also works on the new gateway max or gateway lite when also using a Cloud Ken Gen2+? It may be the CK Gen2+ can't do Teleport at all, no matter what devices it manages.\nI'm running 2 separate home networks, one with the UCG Max and another with UCG Ultra. Both run Teleport without issue at all. My UCG Ultra setup runs Network app, 6x poe switches, 6x APs, and an UNVR (running Protect) with 6x cameras + 1 Floodlight..."
+  },
+  {
+    "id": "forum_gateway_ucg-vs-udm-vs-max.txt::chunk22",
+    "source": "forum_gateway_ucg-vs-udm-vs-max.txt",
+    "chunk_index": 22,
+    "text": "without issue at all. My UCG Ultra setup runs Network app, 6x poe switches, 6x APs, and an UNVR (running Protect) with 6x cameras + 1 Floodlight... UCG sees utilization of ~60% memory and ~20% CPU on average. IPS/IDS threat detection on Highest mode. I think the UCG Max is best bang for buck right now for an all in one solution that runs the complete Unifi stack. Unless you can saturate the 2.5gb connections, or more than 1.5gig internet, the bigger Dream Machine units are just overkill IMO. Just my 2 cents.."
+  },
+  {
+    "id": "forum_gateway_udmpro-vs-ucg.txt::chunk0",
+    "source": "forum_gateway_udmpro-vs-ucg.txt",
+    "chunk_index": 0,
+    "text": "UDM Pro vs. Cloud Gateway Ultra ACETechAug\nI normally deploy the UDM Pro with unifi switches and access points. Is the Cloud Gateway Ultra router designed to take the place of the UDM Pro? I don't normally need a 2nd WAN port. I have at most 15 access points. I also don't use a router with wifi due to the network closets are not where users sit. Thanks. mpreissner\nIn that case, then it's a great alternative. Although keep in mind that the UCG-Ultra has only a 1gbps pipe between the switch chip and the CPU, and the switch ports are all 1gbps. So if you have a heavy WiFi environment or heavy inter-vlan traffic, then that's a reason to go with the UDMP with a Pro or higher PoE switch."
+  },
+  {
+    "id": "forum_gateway_udmpro-vs-ucg.txt::chunk1",
+    "source": "forum_gateway_udmpro-vs-ucg.txt",
+    "chunk_index": 1,
+    "text": "1gbps. So if you have a heavy WiFi environment or heavy inter-vlan traffic, then that's a reason to go with the UDMP with a Pro or higher PoE switch. mpreissner\nDo you use any of the other applications like Protect, Talk, Connect, etc.? If so, the UCG-Ultra doesn't support any of them. So no, it's not really meant to replace the UDM Pro. It's great for small deployments - like homes or home-based businesses - where Network might be the only need they have. ACETechAug\nI use no other applications. the ultra had IDS/IPS, 1Gb band speed, and up to 30 devices with 100+ users (I have at most 50 on the UDM Pro). I don't use the camera recording so a HDD is not needed. Thanks!"
+  },
+  {
+    "id": "forum_gateway_udr-vs-ucg-ultra.txt::chunk0",
+    "source": "forum_gateway_udr-vs-ucg-ultra.txt",
+    "chunk_index": 0,
+    "text": "Dream Router vs Cloud Gateway Ultra and U6+ jayadb3\nWhich is the way to go? I have a CloudKey Gen2+, and two AP. I’m looking at getting either the Ultra and another AP (they would be in the same physical area), or the Dream Router. What’s the better way to go? In Canada, the cost for the two items is approx $301 plus tax, and the DR is $266. If it matters I have a 1Gbe connection. Hoopster59\nThe Dream Router is limited to 700 Mbps with IDS/IPS (and that may be pushing it) if you care about that. It can also run two UniFi apps such as Network and Protect (or a different app) and has the built-in AP. The Ultra can only run Network. If adding cameras is in your plans, the UDR is the better choice."
+  },
+  {
+    "id": "forum_gateway_udr-vs-ucg-ultra.txt::chunk1",
+    "source": "forum_gateway_udr-vs-ucg-ultra.txt",
+    "chunk_index": 1,
+    "text": "(or a different app) and has the built-in AP. The Ultra can only run Network. If adding cameras is in your plans, the UDR is the better choice. The Ultra has better hardware specs and both have 4-port switches. If you do not care as much about about the built-in AP in the Dream Router and don't plan to add cameras, I would go with the Cloud Gateway Ultra. It will also handle your Gbe connection a little better because of the 2.5 Gb WAN port. I just managed to buy a UCG after several rounds of in stock/out of stock."
+  },
+  {
+    "id": "forum_gateway_udr-vs-ucg-ultra.txt::chunk2",
+    "source": "forum_gateway_udr-vs-ucg-ultra.txt",
+    "chunk_index": 2,
+    "text": "handle your Gbe connection a little better because of the 2.5 Gb WAN port. I just managed to buy a UCG after several rounds of in stock/out of stock. I even recently purchased a UXG-Lite which will now become a backup (or the router for our second home we are looking to purchase). I like that the UXG can be managed by a self-hosted controller but I will let the UCG handle the controller because I need the extra four switch ports it offers."
+  },
+  {
+    "id": "forum_poe_ap-power-needs.txt::chunk0",
+    "source": "forum_poe_ap-power-needs.txt",
+    "chunk_index": 0,
+    "text": "How much power from POE do my Access Points really need? ARAMP1\nI currently have 5 Unifi access points, two AP Pros, two AC In-Wall Pros, and one outdoor AC Mesh Pro. I'm probably going to add at least one more once some building upgrades are done in the next couple years. My plan is to go with a single POE switch for all the access points. It looks like the smallest Ubiquiti rackmount switch that I can go with is a 16 port 150W. I'd like to go with a smaller Netgear 8 port which come in 130W and 190W. How do I figure out how much power I need? gfunkdave\nRead the data sheet for each model and add up their power requirements. They all take around 5-8W. You should be fine. The in-wall can draw more than that if you plug in something that needs POE and enable POE passthrough."
+  },
+  {
+    "id": "forum_poe_ap-power-needs.txt::chunk1",
+    "source": "forum_poe_ap-power-needs.txt",
+    "chunk_index": 1,
+    "text": "all take around 5-8W. You should be fine. The in-wall can draw more than that if you plug in something that needs POE and enable POE passthrough. dpurgert\nI'd strongly recommend against Netgear (or any of the consumer brands) -- they put a lot of pretty pictures on the box, and a lot of bullet points in the datasheets; but when it comes down to it, they tend to fall short of the mark. You'd be better off with a 12-16 port switch right now anyway (it's best to keep ~20-25% of the ports free for expansion -- and with 5 APs right now today ... )"
+  },
+  {
+    "id": "forum_poe_ap-power-needs.txt::chunk2",
+    "source": "forum_poe_ap-power-needs.txt",
+    "chunk_index": 2,
+    "text": "off with a 12-16 port switch right now anyway (it's best to keep ~20-25% of the ports free for expansion -- and with 5 APs right now today ... ) ARAMP1\nBelieve it or not, I've had very good luck with Netgear switches (though I may be the only one in the US that has, LOL). I'm been running a couple of their rack mounted ProSafe Smart Managed switches for a while now (bough one new and one used) for some time now and have never had an issue with eather. I've never used any of their smaller desktop switches though."
+  },
+  {
+    "id": "forum_poe_ap-power-needs.txt::chunk3",
+    "source": "forum_poe_ap-power-needs.txt",
+    "chunk_index": 3,
+    "text": "(bough one new and one used) for some time now and have never had an issue with eather. I've never used any of their smaller desktop switches though. eejimm\nNetgear stuff isn't bad, it's just not UniFi. There's nothing particularly bad about consumer gear - I actually have an old dumb TrendNet 8 port (4 PoE) switch on the back of my desk running a UVP-Executive and a GrandStream phone, and they have been working fine for years. But I wouldn't put them in any mission-critical installation, and being dumb devices I can't monotor or do anything fancy with them. Doesn't mean they're bad, just means they have limitations vs. the US-24-250 under my desk or the US-48-L2 on the other side of the office. Use what's appropriate for your needs and go on down the road... ;-) Jim"
+  },
+  {
+    "id": "forum_poe_ap-power-needs.txt::chunk4",
+    "source": "forum_poe_ap-power-needs.txt",
+    "chunk_index": 4,
+    "text": "the US-24-250 under my desk or the US-48-L2 on the other side of the office. Use what's appropriate for your needs and go on down the road... ;-) Jim osunifi\nI am using multiple Netgear GS105PE. It was the only PoE powered switch with PoE passthrough that was available back almost two years ago. It's been running fine (it powers my unifi APs) and wired clients. Starting with it I had an issue that after rebooting the switch it would not passthrough PoE. Opened a ticket and a week later I received an engineering FW build. That fixed the issue. Months later they released a higher version number to the public. So my experience has not been bad at all. sethmos\nI measured 3.2 Watt PoE for the original Unifi AP Pro and 3.4 Watt for the newer Unifi AC Pro. Those were idle though."
+  },
+  {
+    "id": "forum_poe_ap-power-needs.txt::chunk5",
+    "source": "forum_poe_ap-power-needs.txt",
+    "chunk_index": 5,
+    "text": "not been bad at all. sethmos\nI measured 3.2 Watt PoE for the original Unifi AP Pro and 3.4 Watt for the newer Unifi AC Pro. Those were idle though. stevenwilkes\nI have several small Netgear PoE switches as well as a Unifi 8-150. The Netgear ones have been fine but needed a firmware update recently to handle some of the Unifi AP multicast traffic which occasionally used to flood the Netgear switches and brought down anything plugged into them. Since the firmware update, they have been fine."
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk0",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 0,
+    "text": "its3am\nNot work efficiently, but work correctly, without crashing due to lack of power. Either replace the switch (USW-Lite-8-PoE is almost a drop-in replacement) or use a PoE injector like U-POE-at. malcky\nLooks like a couple of replies were made while I was writing my response too. Lol Why did you change from a U6-Pro to the U7-Pro out of curiosity?"
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk1",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 1,
+    "text": "like a couple of replies were made while I was writing my response too. Lol Why did you change from a U6-Pro to the U7-Pro out of curiosity? nharrison1710\n@malcky wrote:\nThe data sheet for the U7 Pro says it’s maximum power draw is 21w……the data sheet for your current switch says it’s maximum output per port is 15.4w.\nHow much power is your U7 Pro taking according to the controller?\nI am assuming this is a house installation, so it’s possible the U7 Pro will never be taxed enough to draw anywhere close to the 21w maximum….but it might get close to the switches maximum power output…..and then which device will get damaged…or could both get damaged?\nAt the moment it’s at 8W, it is a house, this is in the loft, most likely max clients will be 15. I don’t believe it will get to 21W"
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk2",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 2,
+    "text": "get damaged?\nAt the moment it’s at 8W, it is a house, this is in the loft, most likely max clients will be 15. I don’t believe it will get to 21W nharrison1710\n@malcky wrote:\nLooks like a couple of replies were made while I was writing my response too. Lol\nWhy did you change from a U6-Pro to the U7-Pro out of curiosity?\nhave upgraded an AP so I can shift them around, went for the 7 as I now have more devices that are WiFi 7 compatible malcky\nWould be useful/helpful if others with a U7-Pro would post their power draw based on number of client’s connected….and if the power increases when the connected clients are doing something with high-ish throughput tasks. This would give you a rough idea as to how close you might get to the switches maximum power output."
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk3",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 3,
+    "text": "doing something with high-ish throughput tasks. This would give you a rough idea as to how close you might get to the switches maximum power output. How long has the U7-Pro been in operation? nharrison1710\n@malcky wrote:\nWould be useful/helpful if others with a U7-Pro would post their power draw based on number of client’s connected….and if the power increases when the connected clients are doing something with high-ish throughput tasks.\nThis would give you a rough idea as to how close you might get to the switches maximum power output.\nHow long has the U7-Pro been in operation?\nAbout 2 hours so not long, has 6 devices connected, have not had any complaints of lack of internet. Will see how I get on. Have 4 AP's and they are all run about 6-8W power"
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk4",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 4,
+    "text": "has 6 devices connected, have not had any complaints of lack of internet. Will see how I get on. Have 4 AP's and they are all run about 6-8W power its3am\nYou're again confusing average draw with peak draw. I have a U6 Enterprise and its power draw goes right up to the maximum when I do a local speed test. I'm sure the U7 Pro will do the same. The power requirement in the spec sheet isn't a number that Ubiquiti just made up. I don't have a U7 Pro so I can't say for certain if this can happen automatically or at all, but other 6GHz-capable UniFi APs can run from a lower PoE class by disabling their 6GHz radio. And that kind of defeats the whole purpose of the upgrade. nharrison1710 @its3am wrote: You're again confusing average draw with peak draw."
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk5",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 5,
+    "text": "radio. And that kind of defeats the whole purpose of the upgrade. nharrison1710 @its3am wrote: You're again confusing average draw with peak draw. I have a U6 Enterprise and its power draw goes right up to the maximum when I do a local speed test. I'm sure the U7 Pro will do the same. The power requirement in the spec sheet isn't a number that Ubiquiti just made up. I don't have a U7 Pro so I can't say for certain if this can happen automatically or at all, but other 6GHz-capable UniFi APs can run from a lower PoE class by disabling their 6GHz radio. And that kind of defeats the whole purpose of the upgrade."
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk6",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 6,
+    "text": "other 6GHz-capable UniFi APs can run from a lower PoE class by disabling their 6GHz radio. And that kind of defeats the whole purpose of the upgrade. Yeah I get that, the max power of the U6 Pro is 13W so I wouldn't have had an issue, issue is 15W from port vs 21W on AP. Just not sure if that will ever occur, thanks for your help though. Like you said could replace with Lite 8. Have 2 of those, may go for Ultra or Pro POE as having the 8 POE ports may be better for me in long run its3am\nI just spotted my AP drawing 16W while doing a regular Internet speedtest. In other words, what happens during a software upgrade of a connected station like an iPhone. Not posting this for you since you made up your mind, but for future visitors to this thread."
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk7",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 7,
+    "text": "software upgrade of a connected station like an iPhone. Not posting this for you since you made up your mind, but for future visitors to this thread. dlow\nwent for the 7 as I now have more devices that are WiFi 7 compatible\n. . .\nLike you said could replace with Lite 8. Have 2 of those, may go for Ultra or Pro POE as having the 8 POE ports may be better for me in long run\nUltra: 1 GbE POE ports Pro POE: 1 GbE POE ports Pro Max POE: 1 GbE and 2.5 GbE POE ports U7-Pro: 2.5 GbE POE port If you will upgrade in the future, consider a switch with 2.5 GbE ports. Your “more devices that are WiFi 7 compatible” can easily crush a 1 GbE uplink. Those U7 APs have 2.5 GbE ports for a reason."
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk8",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 8,
+    "text": "with 2.5 GbE ports. Your “more devices that are WiFi 7 compatible” can easily crush a 1 GbE uplink. Those U7 APs have 2.5 GbE ports for a reason. What’s the point of all that firepower and you are bottlenecking it with under powered (in wattage and bandwidth) switches? turbov6camaro\n@malcky wrote:\nWould be useful/helpful if others with a U7-Pro would post their power draw based on number of client’s connected….and if the power increases when the connected clients are doing something with high-ish throughput tasks.\nThis would give you a rough idea as to how close you might get to the switches maximum power output.\nHow long has the U7-Pro been in operation?\nmine shows 10 watts (requesting 30) STORAGE> show poe interface Interface Admin Oper Max Priority Power Class"
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk9",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 9,
+    "text": "long has the U7-Pro been in operation?\nmine shows 10 watts (requesting 30) STORAGE> show poe interface Interface Admin Oper Max Priority Power Class status status power consumption ge-0/0/0 Enabled ON 30.0W Low 10.0W 4 18 clients - all raidos are on for client traffic - has 1 client on 6-ghz epsilonion\nidle mine consumes 9w not bench tested it yet tho cslawrence\nI'm seeing this issue as well, but my switch is not Ubiquiti. It's a Netgear GS728TPv2 and it delivers up to 30W per port. Something is going on here. its3am\n@cslawrence wrote:\nI'm seeing this issue as well, but my switch is not Ubiquiti. It's a Netgear GS728TPv2 and it delivers up to 30W per port. Something is going on here.\nSomething? Like, powersaving, a feature of every even somewhat modern CPU, and certainly of WiFi radios?"
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk10",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 10,
+    "text": "to 30W per port. Something is going on here.\nSomething? Like, powersaving, a feature of every even somewhat modern CPU, and certainly of WiFi radios? cslawrence\n@its3am wrote:\nSomething? Like, powersaving, a feature of every even somewhat modern CPU, and certainly of WiFi radios?\nNo, the message OP posted: “This access point is connected to a port, which does not supply sufficient power for optimal operation. To ensure reliable and full-capacity performance, please connect the access point to a PoE+ compliant port.” My ports can deliver the power it requires, but I still see this message."
+  },
+  {
+    "id": "forum_poe_u7pro-switch-port.txt::chunk11",
+    "source": "forum_poe_u7pro-switch-port.txt",
+    "chunk_index": 11,
+    "text": "performance, please connect the access point to a PoE+ compliant port.” My ports can deliver the power it requires, but I still see this message. moonark\nI too am seeing the same thing. I have a Ubiquiti branded PoE+ injector connected to a UAP-AC-IW as this device requires PoE+ for proper passthrough and seeing the same message. I see it in Android, iOS, and Browser. its3am\n@moonark and now you're trolling old threads by reposting the same comment in them. What are you trying to achieve by this?"
+  },
+  {
+    "id": "forum_vlan_iot-best-practice.txt::chunk0",
+    "source": "forum_vlan_iot-best-practice.txt",
+    "chunk_index": 0,
+    "text": "Uberseehandel\nI use a network design as shown below as part of sorting the sheep from the goats. One of the issues that I am working through is accessing Chromecast devices from wireless devices that are in the secure zone behind a different security appliance, but this is do-able. It also keeps SSM contained, which simplifies life. Is IoT dangerous, you bet! I have seen an attempt by the recently installed \"smart\" electricity meter (against my wishes) to access my network. We were able to pick up a footprint on an uplink in the secure network, before I split the design. There is an engineering fix being worked on right now. blackglove9\nOld thread i know, but from a Unifi perspective, is it better to do it which way:"
+  },
+  {
+    "id": "forum_vlan_iot-best-practice.txt::chunk1",
+    "source": "forum_vlan_iot-best-practice.txt",
+    "chunk_index": 1,
+    "text": "There is an engineering fix being worked on right now. blackglove9\nOld thread i know, but from a Unifi perspective, is it better to do it which way: 1. Create a second corp vlan and then block all, and allow only some ports between IOT and home network 2. Create a guest network and open some ports? I am going to isolate most things IOT, but my smart tv needs to access my PLEX server on one port - so smart tv on IOT network, and Plex server on home network. Or does it not matter at all which option above i choose? RobbieH\nI have no open ports between my IoT VLAN and my home VLAN and everything works perfectly. blackglove9\n@RobbieH wrote:\nI have no open ports between my IoT VLAN and my home VLAN and everything works perfectly."
+  },
+  {
+    "id": "forum_vlan_iot-best-practice.txt::chunk2",
+    "source": "forum_vlan_iot-best-practice.txt",
+    "chunk_index": 2,
+    "text": "and everything works perfectly. blackglove9\n@RobbieH wrote:\nI have no open ports between my IoT VLAN and my home VLAN and everything works perfectly. Your IOT network has different requirements and that is true for many IOT things that work via an Internet address. My Plex and home automation setup is different. I need to access a device at x.x.x.x:32000 from y.y.y.y - that requires a port opened. I also have local mgmt tool that i can manage OT devices and some of them have no intenet access. Just because a lot of these devices can be IOT devices doesn't mean they should be. If I can manage them via my LAN, and remote into my LAN, no need for IOT. So I want to setup one way firewall rules that let me manage OT network from corp when needed."
+  },
+  {
+    "id": "forum_vlan_iot-best-practice.txt::chunk3",
+    "source": "forum_vlan_iot-best-practice.txt",
+    "chunk_index": 3,
+    "text": "via my LAN, and remote into my LAN, no need for IOT. So I want to setup one way firewall rules that let me manage OT network from corp when needed. AF360\n@RobbieH wrote:\nI have no open ports between my IoT VLAN and my home VLAN and everything works perfectly. Then you don‘t have _any_ firewall rules between the two VLANs in place to drop/control the traffic? (If you don‘t create your own rules, all traffic between the VLANs is routed and allowed...) RobbieH\n@AF360 wrote:\n@RobbieH wrote:\nI have no open ports between my IoT VLAN and my home VLAN and everything works perfectly. Yes, I do. All of my IoT devices go out to the internet and access is granted through the vendors' cloud presence. None are directly controlled."
+  },
+  {
+    "id": "forum_vlan_iot-best-practice.txt::chunk4",
+    "source": "forum_vlan_iot-best-practice.txt",
+    "chunk_index": 4,
+    "text": "Yes, I do. All of my IoT devices go out to the internet and access is granted through the vendors' cloud presence. None are directly controlled. I do not consider a Plex server an IoT device. It sits on my home network, but I've been considering moving it to a DMZ. blackglove9\n@RobbieH wrote:\n@AF360 wrote:\n@RobbieH wrote:\nI have no open ports between my IoT VLAN and my home VLAN and everything works perfectly. They may not be directly controlled, but because you have no firewall rules between networks, anything reaching into your IOT network that controls a device, can jump over to your home LAN. As a test - put a computer on your IOT VLAN and initiate a port scan against your home LAN - If you have windows machines SMB ports are open."
+  },
+  {
+    "id": "forum_vlan_iot-best-practice.txt::chunk5",
+    "source": "forum_vlan_iot-best-practice.txt",
+    "chunk_index": 5,
+    "text": "LAN. As a test - put a computer on your IOT VLAN and initiate a port scan against your home LAN - If you have windows machines SMB ports are open. madrian\nIs there any updated guide for 2019? Robpickering guide is nice, but firewall configuration is different now. Do you I need to put my firewall rules in LAN_IN section? If I want to enable for example pi hole DNS for IOT devices, to enter destination ip&port do I need to create IPV4 address group & port group? Isn't there an option to enter only one IP & port (like on Edgerouter)? madrian\nbump madrian\nbump"
+  },
+  {
+    "id": "forum_vlan_iot-best-practice.txt::chunk6",
+    "source": "forum_vlan_iot-best-practice.txt",
+    "chunk_index": 6,
+    "text": "I need to create IPV4 address group & port group? Isn't there an option to enter only one IP & port (like on Edgerouter)? madrian\nbump madrian\nbump DanielCA\n﻿@madrian﻿ Yes, that is how I've got IoT allowing access to Plex and Channels DVR services. I haven't setup PiHole for IoT since I don't really care about blocking that traffic but have it running for my Private (laptop, phones, etc.)"
+  },
+  {
+    "id": "forum_vlan_iot-best-practice.txt::chunk7",
+    "source": "forum_vlan_iot-best-practice.txt",
+    "chunk_index": 7,
+    "text": "I haven't setup PiHole for IoT since I don't really care about blocking that traffic but have it running for my Private (laptop, phones, etc.) coxwain\n﻿@RobbieH﻿ wrote:\n﻿undefinedAF360﻿ wrote:\n﻿undefinedRobbieH﻿ wrote:\nI have no open ports between my IoT VLAN and my home VLAN and everything works perfectly.\nThen you don‘t have _any_ firewall rules between the two VLANs in place to drop/control the traffic?\n(If you don‘t create your own rules, all traffic between the VLANs is routed and allowed...)\n \n \nYes, I do. All of my IoT devices go out to the internet and access is granted through the vendors' cloud presence. None are directly controlled.\n \nI do not consider a Plex server an IoT device. It sits on my home network, but I've been considering moving it to a DMZ.\nHow do you move your plex server (Synology. Nas for me) to dmz.? That is how my old router was set up. But I can’t find dmz option on dmp"
+  },
+  {
+    "id": "forum_vlan_iot-best-practice.txt::chunk8",
+    "source": "forum_vlan_iot-best-practice.txt",
+    "chunk_index": 8,
+    "text": "to a DMZ.\nHow do you move your plex server (Synology. Nas for me) to dmz.? That is how my old router was set up. But I can’t find dmz option on dmp einaren\nI've been reading quite a few blog posts now to make this work. Then I found that Ubiquity has an excellent help page that made me rewrite my whole setup. The below works for me Step 1. Follow option 1 and 3 in https://help.ui.com/hc/en-us/articles/115010254227 note the clear-connection-tracking tip at the bottom of the page, very helpful while testing!!\nStep 2. Open IoT to use my Plex Media Server: Add firewall rule allowing IoT network to address/port for my Plex Media Server Step 3. Enable mDns (in \"Settings -> Gateway -> mDns) (for Chromecast) (I've have also disabled IGMP Snooping all over, but I'm not sure if that's necessary?)"
+  },
+  {
+    "id": "forum_vlan_iot-walkthrough.txt::chunk0",
+    "source": "forum_vlan_iot-walkthrough.txt",
+    "chunk_index": 0,
+    "text": "Attempting to make THE UniFi IoT VLAN Walk-through sjjenkins\nEdited\nFor lack of a better word, I'm \"workshopping\" my IoT VLAN guide partially here and partially in the Ubiquiti subreddit."
+  },
+  {
+    "id": "forum_vlan_iot-walkthrough.txt::chunk1",
+    "source": "forum_vlan_iot-walkthrough.txt",
+    "chunk_index": 1,
+    "text": "Walk-through sjjenkins\nEdited\nFor lack of a better word, I'm \"workshopping\" my IoT VLAN guide partially here and partially in the Ubiquiti subreddit. The concept is to present a standard \"Basic\" or beginner-level UniFi IoT VLAN setup, which is explained in this post. The guide will then allow users to move to an \"Intermediate\" IoT VLAN setup that supports devices like Sonos, Roku, AirPlay, which all require additional UniFi controller settings and/or LAN IN firewall rules to work properly. This \"Intermediate\" setup blocks all unauthorized traffic from the IoT VLAN to the Main (trusted) LAN, but allows IoT VLAN devices to access the Internet. Clamping down IoT WAN traffic would be an \"Advanced\" setup, which I will discuss and explain to the user what types of things they need to do to get there, but I will only walk them through to Intermediate. To go beyond that, they are on their own."
+  },
+  {
+    "id": "forum_vlan_iot-walkthrough.txt::chunk2",
+    "source": "forum_vlan_iot-walkthrough.txt",
+    "chunk_index": 2,
+    "text": "user what types of things they need to do to get there, but I will only walk them through to Intermediate. To go beyond that, they are on their own. Anyway, I'd love to get input and testing from others here to see if my proposed settings do NOT work on your network. I'm not looking for alternative methods of doing this that require more open firewall ports and/or UI settings -- unless applying my settings didn't work for your network without adding additional ports (and please tell me what those ports were). I'm looking to keep this all in UniFi, meaning suggestions to move to a zone-based firewall aren't helpful. But other suggestions to improve upon my setups is greatly appreciated."
+  },
+  {
+    "id": "forum_vlan_iot-walkthrough.txt::chunk3",
+    "source": "forum_vlan_iot-walkthrough.txt",
+    "chunk_index": 3,
+    "text": "UniFi, meaning suggestions to move to a zone-based firewall aren't helpful. But other suggestions to improve upon my setups is greatly appreciated. Here are the \"modules\" I've got so far. Once I've crowd-sourced the testing, I'll be working on a guide with screen-shots and a walk-thru video (or maybe a few videos). My Basic IoT VLAN Setup\nMy current IoT VLAN Firewall Rules\nChromecast-Specific Settings\nSonos-Specific Settings\nApple TV / AirPlay-Specific Settings\nRoku-Specific Settings\nHP Printer-Specific Settings\nwotcha\nThank you I'm really appreciating this! okosub\nThis is the most comprehensive mad scientist writeup I've seen yet, THANK YOU."
+  },
+  {
+    "id": "forum_vlan_iot-walkthrough.txt::chunk4",
+    "source": "forum_vlan_iot-walkthrough.txt",
+    "chunk_index": 4,
+    "text": "Settings\nwotcha\nThank you I'm really appreciating this! okosub\nThis is the most comprehensive mad scientist writeup I've seen yet, THANK YOU. sjjenkins\nI just added Plex info (Plex server on private/trusted segment with clients on IOT segment) to the spreadsheet and will write it up soon. :)"
+  }
+]

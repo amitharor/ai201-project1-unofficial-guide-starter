@@ -1,0 +1,203 @@
+barlowj
+3 years ago
+@gregorio wrote:
+Get it wired and do the firmware regression on it and the AP to which it is meshed. While I am not familiar with specific problems on the version you are on now, broken mesh is a common issue when doing upgrades.
+How can I downgrade the firmware if it won't reliably stay "Online" and I can't SSH into it (it says wrong PW)?
+
+Reply
+
+Avatar for gregorio
+gregorio
+3 years ago
+If the LED is blue, the user and pass are stored in the controller under Settings. Scroll down. If white, it is the ubnt/ubnt default.
+
+Not hard to reset until white LED and SSH in that way.
+
+Reply
+
+1
+
+UI-Glenn
+3 years ago
+Hello @barlowj,
+
+ 
+
+Can you SSH into it?
+
+Reply
+
+
+barlowj
+3 years ago
+I'm in! I can SSH into it using the credentials specified in the console (network settings->system->Advanced->Device Authentication)! Now what? Anything to try here besides a firmware downgrade?
+
+Reply
+
+
+barlowj
+3 years ago
+I tried an update while SSH'd in:
+
+upgrade https://dl.ui.com/unifi/firmware/U7PG2/6.0.21.13673/BZ.qca956x_6.0.21+13673.220607.2004.bin
+
+Downloading firmware from 'https://dl.ui.com/unifi/firmware/U7PG2/6.0.21.13673/BZ.qca956x_6.0.21+13673.220607.2004.bin'.
+
+ 
+
+Scheduling firmware upgrade...
+
+Waiting for upgrade to start...
+
+Waiting for upgrade to start...
+
+Waiting for upgrade to start...
+
+Waiting for upgrade to start...
+
+Terminated
+
+But now I can't ssh back in:
+
+Unable to negotiate with 192.168.1.96 port 22: no matching host key type found. Their offer: ssh-rsa,ssh-dss
+
+But light remains solid blue. I'm guessing the update failed?
+
+Reply
+
+Avatar for gregorio
+gregorio
+3 years ago
+@UI-Glenn this is all for you
+
+Reply
+
+
+BNItree
+3 years ago
+very curious to see the result
+
+Reply
+
+
+UI-Glenn
+3 years ago
+@barlowj wrote:
+I tried an update while SSH'd in:
+upgrade https://dl.ui.com/unifi/firmware/U7PG2/6.0.21.13673/BZ.qca956x_6.0.21+13673.220607.2004.bin
+Downloading firmware from 'https://dl.ui.com/unifi/firmware/U7PG2/6.0.21.13673/BZ.qca956x_6.0.21+13673.220607.2004.bin'.
+ 
+Scheduling firmware upgrade...
+Waiting for upgrade to start...
+Waiting for upgrade to start...
+Waiting for upgrade to start...
+Waiting for upgrade to start...
+Terminated
+But now I can't ssh back in:
+Unable to negotiate with 192.168.1.96 port 22: no matching host key type found. Their offer: ssh-rsa,ssh-dss
+But light remains solid blue. I'm guessing the update failed?
+Hello @barlowj,
+
+ 
+
+Can you try to SSH into it via the example command below?
+
+ssh -o HostKeyAlgorithms=ssh-rsa,ssh-dss username@192.168.1.96
+Reply
+
+
+barlowj
+3 years ago
+Sometimes I'm locked out of SSH'ing into the AP and sometimes I'm not (not sure why or what state it has to be in).
+
+After factory resetting the AP again, and re-adopting (this time with advanced adoption and the password that I now know can be found inside the console), the firmware downgrade DID in fact work (down to 6.0.22) and it adopts successfully! HOWEVER, the plot thickens, as this is now what I'm seeing:
+
+REGARDLESS OF THE FIRMWARE VERSION (6.0.22 and 6.2.49 does this):
+
+If I tell the AP to reboot via the console, the comes back as status "Adoption Failed" again! Same thing if I just unplug the AP and plug it back in (cycle power). It never stays adopted. What could be causing this? When it is adopted it works until the power goes out or it reboots. Any way to fix this?
+
+Reply
+
+
+barlowj
+3 years ago
+If I SSH in and 
+
+cat /etc/persistent/cfg/mgmt
+It shows:
+
+mgmt.is_default=false
+mgmt.led_enabled=true
+mgmt.cfgversion=50719e49c35d7b2a
+mgmt.authkey=A886C0608A3827079870908DEBABD515
+mgmt.selfrun_guest_mode=pass
+mgmt.capability=notif,notif-assoc-stat
+mgmt.use_aes_gcm=true
+mgmt.report_crash=true
+mgmt.is_setup_completed=false
+stun_url=stun://192.168.1.1/
+mgmt.is_setup_completed=false
+mgmt_url=OMITTED BECAUSE IT ISNT POSTING
+mgmt.servers.1.url=OMITTED BECAUSE IT ISNT POSTING
+
+Could it have anything to do with the fact that mgmt.is_setup_completed=false?
+
+Reply
+
+
+barlowj
+3 years ago
+I still don't have a solution here - Either the AP comes up ok and then after an hour or two goes 'Offline', or it says 'Adoption Failed'. Any ideas? @UI-Glenn ?
+
+Reply
+
+
+UI-Glenn
+3 years ago
+Hello @barlowj,
+
+ 
+
+Are you able to SSH into it when it's reported as offline?
+
+Reply
+
+
+barlowj
+3 years ago
+Yes, I can still SSH into it when it's reported as "Adoption Failed" after a reboot. Interestingly if I type 'info', it says:
+
+Model:       UAP-AC-Pro-Gen2
+Version:     6.2.49.14111
+MAC Address: XX:XX:XX:XX:3a:78
+IP Address:  192.168.1.96
+Hostname:    DownExerciseRm
+Uptime:      140223 seconds
+
+Status:      Connected (OMITTED8080/inform)
+
+Why would the status be connected if it isn't really 'connected' and working? Any ideas on what I can try?
+
+Reply
+
+
+UI-Glenn
+3 years ago
+Hello @barlowj,
+
+ 
+
+Can you update the AP to 6.5.26?
+
+Reply
+
+
+barlowj
+3 years ago
+SOLVED: Turns out I had a rogue Ubiquiti UniFi Network application running on a PC from 3 years ago (prior to UDM PROs) at IP address dot 170 that was picking up the AP and causing it to be 'offline or not adopted from the perspective of the UDM Pro SE console application running at 192.168.1.1! As soon as I uninstalled that software, the AP reboots and comes back up on the right network just fine!
+
+Unbelievable how impossibly hard it was to uninstall the Network application on the Windows 10 PC-Which I am positive I tried to do years ago as well! Had to kill the 'java' process first before it could be uninstalled by windows. (You get a `UniFi is still running and cannot be uninstalled` error message if it is still running).
+
+Also shame on Ubiquiti's support community forum software for not allowing me to post whenever there is an Address in the posting--because I kept having to OMIT it and block it out just to post, I never noticed the bad inform address! This really must be fixed! It really was crucial information to solving this!
+
+Reply

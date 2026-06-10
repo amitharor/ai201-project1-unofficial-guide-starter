@@ -1,0 +1,187 @@
+Avatar for its3am
+its3am
+2 years ago
+Not work efficiently, but work correctly, without crashing due to lack of power. Either replace the switch (USW-Lite-8-PoE is almost a drop-in replacement) or use a PoE injector like U-POE-at.
+
+Reply
+
+2
+
+malcky
+2 years ago
+Looks like a couple of replies were made while I was writing my response too. Lol
+
+Why did you change from a U6-Pro to the U7-Pro out of curiosity?
+
+Reply
+
+1
+Avatar for nharrison1710
+nharrison1710
+2 years ago
+@malcky wrote:
+The data sheet for the U7 Pro says it’s maximum power draw is 21w……the data sheet for your current switch says it’s maximum output per port is 15.4w.
+How much power is your U7 Pro taking according to the controller?
+I am assuming this is a house installation, so it’s possible the U7 Pro will never be taxed enough to draw anywhere close to the 21w maximum….but it might get close to the switches maximum power output…..and then which device will get damaged…or could both get damaged?
+At the moment it’s at 8W, it is a house, this is in the loft, most likely max clients will be 15. I don’t believe it will get to 21W
+
+Reply
+
+Avatar for nharrison1710
+nharrison1710
+2 years ago
+@malcky wrote:
+Looks like a couple of replies were made while I was writing my response too. Lol
+Why did you change from a U6-Pro to the U7-Pro out of curiosity?
+have upgraded an AP so I can shift them around, went for the 7 as I now have more devices that are WiFi 7 compatible
+
+Reply
+
+
+malcky
+2 years ago
+Would be useful/helpful if others with a U7-Pro would post their power draw based on number of client’s connected….and if the power increases when the connected clients are doing something with high-ish throughput tasks.
+
+This would give you a rough idea as to how close you might get to the switches maximum power output.
+
+How long has the U7-Pro been in operation?
+
+Reply
+
+1
+Avatar for nharrison1710
+nharrison1710
+2 years ago
+@malcky wrote:
+Would be useful/helpful if others with a U7-Pro would post their power draw based on number of client’s connected….and if the power increases when the connected clients are doing something with high-ish throughput tasks.
+This would give you a rough idea as to how close you might get to the switches maximum power output.
+How long has the U7-Pro been in operation?
+About 2 hours so not long, has 6 devices connected, have not had any complaints of lack of internet. Will see how I get on. Have 4 AP's and they are all run about 6-8W power
+
+Reply
+
+Avatar for its3am
+its3am
+2 years ago
+You're again confusing average draw with peak draw.
+
+I have a U6 Enterprise and its power draw goes right up to the maximum when I do a local speed test. I'm sure the U7 Pro will do the same. The power requirement in the spec sheet isn't a number that Ubiquiti just made up.
+
+I don't have a U7 Pro so I can't say for certain if this can happen automatically or at all, but other 6GHz-capable UniFi APs can run from a lower PoE class by disabling their 6GHz radio. And that kind of defeats the whole purpose of the upgrade.
+
+Reply
+
+2
+Avatar for nharrison1710
+nharrison1710
+2 years ago
+@its3am wrote:
+You're again confusing average draw with peak draw.
+I have a U6 Enterprise and its power draw goes right up to the maximum when I do a local speed test. I'm sure the U7 Pro will do the same. The power requirement in the spec sheet isn't a number that Ubiquiti just made up.
+I don't have a U7 Pro so I can't say for certain if this can happen automatically or at all, but other 6GHz-capable UniFi APs can run from a lower PoE class by disabling their 6GHz radio. And that kind of defeats the whole purpose of the upgrade.
+Yeah I get that, the max power of the U6 Pro is 13W so I wouldn't have had an issue, issue is 15W from port vs 21W on AP. Just not sure if that will ever occur, thanks for your help though. Like you said could replace with Lite 8. Have 2 of those, may go for Ultra or Pro POE as having the 8 POE ports may be better for me in long run
+
+Reply
+
+Avatar for its3am
+its3am
+2 years ago
+I just spotted my AP drawing 16W while doing a regular Internet speedtest. In other words, what happens during a software upgrade of a connected station like an iPhone.
+
+Not posting this for you since you made up your mind, but for future visitors to this thread.
+
+Reply
+
+4
+
+dlow
+2 years ago
+went for the 7 as I now have more devices that are WiFi 7 compatible
+. . .
+Like you said could replace with Lite 8. Have 2 of those, may go for Ultra or Pro POE as having the 8 POE ports may be better for me in long run
+Ultra: 1 GbE POE ports
+
+Pro POE: 1 GbE POE ports
+
+Pro Max POE: 1 GbE and 2.5 GbE POE ports
+
+U7-Pro: 2.5 GbE POE port
+
+If you will upgrade in the future, consider a switch with 2.5 GbE ports. Your “more devices that are WiFi 7 compatible” can easily crush a 1 GbE uplink. Those U7 APs have 2.5 GbE ports for a reason.
+
+What’s the point of all that firepower and you are bottlenecking it with under powered (in wattage and bandwidth) switches?
+
+Reply
+
+3
+
+turbov6camaro
+2 years ago
+@malcky wrote:
+Would be useful/helpful if others with a U7-Pro would post their power draw based on number of client’s connected….and if the power increases when the connected clients are doing something with high-ish throughput tasks.
+This would give you a rough idea as to how close you might get to the switches maximum power output.
+How long has the U7-Pro been in operation?
+mine shows 10 watts (requesting 30)
+
+STORAGE> show poe interface
+
+Interface  Admin    Oper  Max    Priority    Power     Class
+
+       status   status power           consumption
+
+ ge-0/0/0  Enabled   ON   30.0W   Low      10.0W      4
+
+18 clients - all raidos are on for client traffic - has 1 client on 6-ghz
+
+Reply
+
+1
+Avatar for epsilonion
+epsilonion
+2 years ago
+idle mine consumes 9w not bench tested it yet tho
+
+Reply
+
+1
+
+cslawrence
+2 years ago
+I'm seeing this issue as well, but my switch is not Ubiquiti. It's a Netgear GS728TPv2 and it delivers up to 30W per port. Something is going on here.
+
+Reply
+
+Avatar for its3am
+its3am
+2 years ago
+@cslawrence wrote:
+I'm seeing this issue as well, but my switch is not Ubiquiti. It's a Netgear GS728TPv2 and it delivers up to 30W per port. Something is going on here.
+Something? Like, powersaving, a feature of every even somewhat modern CPU, and certainly of WiFi radios?
+
+Reply
+
+
+cslawrence
+2 years ago
+@its3am wrote:
+Something? Like, powersaving, a feature of every even somewhat modern CPU, and certainly of WiFi radios?
+No, the message OP posted: “This access point is connected to a port, which does not supply sufficient power for optimal operation. To ensure reliable and full-capacity performance, please connect the access point to a PoE+ compliant port.”
+
+My ports can deliver the power it requires, but I still see this message.
+
+Reply
+
+2
+Avatar for moonark
+moonark
+2 years ago
+I too am seeing the same thing. I have a Ubiquiti branded PoE+ injector connected to a UAP-AC-IW as this device requires PoE+ for proper passthrough and seeing the same message. I see it in Android, iOS, and Browser.
+
+Reply
+
+Avatar for its3am
+its3am
+2 years ago
+@moonark and now you're trolling old threads by reposting the same comment in them. What are you trying to achieve by this?
+
+Reply

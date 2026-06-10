@@ -1,0 +1,223 @@
+Need Ubiquiti R&D attention on an issue? Mention 
+@UI-Team
+
+ in your post.
+
+
+1
+Cloud Gateway Ultra vs Dream Machine vs Gateway Max
+
+
+
+
+tjadams89
+30.26K views
+12 replies
+Edited
+2 years ago
+Activity
+2 years ago
+Looking to setup a smaller network and I like what Ubiquiti has to offer. I am trying to figure out the differences in their naming of products/software. Dream Machine line seems to be standard firewall with some port differences and throughput between models.
+
+How are the Gateway Ultra and Max different? Ultra is under UniFi gateway so is it all in one like the dream machine and the Max requires something else to be a full solution?
+
+Appreciate any info you have to share.
+
+Thanks!
+
+This thread is locked and replying has been disabled.
+Newest
+Oldest
+Avatar for AlexWilsonsBlog
+AlexWilsonsBlog
+2 years ago
+UDM-xxx is an all in one console (router, firewall, application server for Network, Access, Protect, Talk, etc).
+
+The UDM is a small all-in-one with limited function, more for residential or SOHO. Nothing more.
+
+UDR is a simple all in one targetting home users or SOHO. Like the UDMs but not rack mounted and not very robust. More a paper weight that can be dressed up to look like R2D2 or a Minion. Hopefully that gives you my impression of it!
+
+UXG-xxx is a router/firewall/security gateway. These require UniFi Network running on a UCK-G2-Plus or your own controller somewhere (self hosted). Nothing runs on them (no Protect, Access, etc).
+
+The UCG-Ultra is a cheap (aimed at developing markets) gateway. It is the UDM basically, but scaled back a smidge. All in one but very limited. The UXG-Max is described above as UXG-XXX.
+
+Reply
+
+
+lexicons
+2 years ago
+As far as I know, the Teleport function only works on Dream Machines or Dream Router. Does anyone know if Teleport also works on the new gateway max or gateway lite when also using a Cloud Ken Gen2+? It may be the CK Gen2+ can't do Teleport at all, no matter what devices it manages.
+
+Reply
+
+Avatar for calhend
+calhend
+2 years ago
+Hello there @lexicons
+
+Read this Ubiquiti link on Teleport.
+
+Here is a screenshot of the gist regarding your question
+
+
+Reply
+
+
+lexicons
+2 years ago
+@calhend wrote:
+Hello there @lexicons
+Read this Ubiquiti link on Teleport.
+Here is a screenshot of the gist regarding your question
+Thanks for the link. It appears the new gatways will do Teleport. I know the CK Gen2+ by itself will not, at least with Gen1 gateway.
+
+Reply
+
+Avatar for calhend
+calhend
+2 years ago
+The Cloudkey (Gen1 and 2) are not gateways so they have never been able to handle the VPN's and such. Teleport I believe is a Gen2 feature as it was released after the Gen1 was no longer supported. The Gateway device has always been important for feature-set availability.
+
+Cheers
+
+Reply
+
+
+mwcormier
+2 years ago
+@AlexWilsonsBlog wrote:
+UDM-xxx is an all in one console (router, firewall, application server for Network, Access, Protect, Talk, etc).
+The UDM is a small all-in-one with limited function, more for residential or SOHO. Nothing more.
+UDR is a simple all in one targetting home users or SOHO. Like the UDMs but not rack mounted and not very robust. More a paper weight that can be dressed up to look like R2D2 or a Minion. Hopefully that gives you my impression of it!
+UXG-xxx is a router/firewall/security gateway. These require UniFi Network running on a UCK-G2-Plus or your own controller somewhere (self hosted). Nothing runs on them (no Protect, Access, etc).
+The UCG-Ultra is a cheap (aimed at developing markets) gateway. It is the UDM basically, but scaled back a smidge. All in one but very limited. The UXG-Max is described above as UXG-XXX.
+Can someone please translate this with out all the acronyms? Perhaps something like "The Cloud gateway ultra is good at X, Dream Machine Y and the Gateway Max Z"
+
+The reason for my request is I have a cloudkey+ now and would like to upgrade to either Gateway Max or Dream Machine Pro Max.
+
+Current setup at home
+
+Cloudkey+
+
+USW Pro 24 POE
+
+4 U6LR AP (need to add one more)
+
+1 G4 Pro
+
+9 AI Pro
+
+1 NVR Pro
+
+Expanding to two other locations on my property
+
+Barn that is about 250' from my main home. Plan is to use fiber between the structures, 16 PRO Max POE, 4-6 Camera's (AI Pro), 3 APs (undecided on which one U7 I think)
+Will also be running a fiber line to the gate 600' from the main house to run a flex Gate access kit with an other AI Pro.
+Reply
+
+Avatar for calhend
+calhend
+2 years ago
+@mwcormier wrote:
+Can someone please translate this with out all the acronyms? Perhaps something like "The Cloud gateway ultra is good at X, Dream Machine Y and the Gateway Max Z"
+The reason for my request is I have a cloudkey+ now and would like to upgrade to either Gateway Max or Dream Machine Pro Max.
+Current setup at home
+Cloudkey+
+USW Pro 24 POE
+4 U6LR AP (need to add one more)
+1 G4 Pro
+9 AI Pro
+1 NVR Pro
+Expanding to two other locations on my property
+      *  Barn that is about 250' from my main home. Plan is to use fiber between the structures, 16 PRO Max POE, 4-6 Camera's (AI Pro), 3 APs (undecided on which one U7 I think)
+      *  Will also be running a fiber line to the gate 600' from the main house to run a flex Gate access kit with an other AI Pro.
+The 'translation' is really not a viable answer. The information provided is specific and should be left.
+
+Now you have presented your environment BUT it really has a few more questions related to it. Is your goal to keep the UNVR-Pro, or add to your UNVR-Pro? I ask because you mention a UCG-Max device or UDM-PM device to 'upgrade' to. BUT upgrade from what? What is the intented usage? The Cludkey+ device is a console that controls Network, Protect and other features/apps. BUT you do not say if you are replacing a gateway or if you are keeping your prior gateway or even if you desire to remove the UNVR-Pro.
+
+Based on your hardware I would recommend keeping things how they are (cameras and access on the UNVR-Pro and theh Cloudkey+ for management of your Network devices. IF you need a gateway device look at one of the UXG based devices for management via the Cloudkey+ device. The UDM-PM as well as the UCG-Max devices both have self hosted network controllers in them but the UCG-Max is a lower tier device compared to the UDM-PM and depending on your usage the UDM-PM might be a device that you barely use.
+
+Hopefully @mwcormier you have some things to think about and can clarify your request so that you can get some better guidance. Because as of now I would say buy nothing unless your goal is to get a Unifi Gateway/Router into your network at which point I suggest UXG-Pro or UXG-Max (lower routing the Max / more routing Pro).
+
+.
+
+Cheers
+
+Reply
+
+
+mwcormier
+2 years ago
+@calhend wrote:
+The 'translation' is really not a viable answer. The information provided is specific and should be left.
+Now you have presented your environment BUT it really has a few more questions related to it. Is your goal to keep the UNVR-Pro, or add to your UNVR-Pro? I ask because you mention a UCG-Max device or UDM-PM device to 'upgrade' to. BUT upgrade from what? What is the intented usage? The Cludkey+ device is a console that controls Network, Protect and other features/apps. BUT you do not say if you are replacing a gateway or if you are keeping your prior gateway or even if you desire to remove the UNVR-Pro.
+Based on your hardware I would recommend keeping things how they are (cameras and access on the UNVR-Pro and theh Cloudkey+ for management of your Network devices. IF you need a gateway device look at one of the UXG based devices for management via the Cloudkey+ device. The UDM-PM as well as the UCG-Max devices both have self hosted network controllers in them but the UCG-Max is a lower tier device compared to the UDM-PM and depending on your usage the UDM-PM might be a device that you barely use.
+Hopefully @mwcormier you have some things to think about and can clarify your request so that you can get some better guidance. Because as of now I would say buy nothing unless your goal is to get a Unifi Gateway/Router into your network at which point I suggest UXG-Pro or UXG-Max (lower routing the Max / more routing Pro).
+.
+Cheers
+I currently don't have a gateway just the cloudkey+.
+
+I would like to remove my FIOS router so my thought was to add the UCG-Max or the UDM-Pro. I would be removing the cloudkey+. My understanding it isn't needed anymore if I have one of the above. I don't want to pay a monthly sub would rather just purchase hardware to solve the problem.
+
+I wasn't planning on adding an other NVR if I don't have to and based on the capacity calc here I don't have to. May in the future if i add more.
+
+Thank you @calhend for your response.
+
+Reply
+
+Avatar for calhend
+calhend
+2 years ago
+@mwcormier wrote:
+I currently don't have a gateway just the cloudkey+.
+I would like to remove my FIOS router so my thought was to add the UCG-Max or the UDM-Pro. I would be removing the cloudkey+. My understanding it isn't needed anymore if I have one of the above. I don't want to pay a monthly sub would rather just purchase hardware to solve the problem.
+I wasn't planning on adding an other NVR if I don't have to and based on the capacity calc here I don't have to. May in the future if i add more.
+Thank you @calhend for your response.
+Hello there @mwcormier
+
+Okay that is helpful information. So for a gateway you can get rid of the Cloudkey+ if you want to go with the UCG-M or the UDM-PM. I would recommend if you have the rack space and the cash difference then go with the UDM-PM as you will have plenty of upward performance built in for your network management needs. The UCG-M just does not offer enough upward performance I feel for what you might want to do. I run FiOS as well via Frontier and they will charge you the monthly rate for their modem even if you do not use it. I have never owned one (Verizon previously nor Frontier when they took over) and their fees are setup to include it regardless of its usage. Pretty sad, but it is what it is.
+
+I recommended the UXG-Pro as a drop in device for your network. This way you do not have to migrate from the Cloudkey+ that you have to the cloud gateway device. It is super easy to do though just take a backup of the Network App from the Cloudkey+ before you install your new gateway device and once setup open the network app and restore the backup.
+
+If you have any other questions feel free to start a new thread and we can discuss further.
+
+.
+
+Cheers
+
+Reply
+
+
+mwcormier
+2 years ago
+Thank you for your response @khtadmin. I have been tossing around the idea of the aggregation switch due to all the connections. I am going to start an other thread later this weekend to discuss removing my CK+ and adding either the max or the pro dream machine. I am leaning towards the max for the extra money just seems nominal for the upside in performance. The part I am struggling with is the aggregation switch. If i buy USW-Aggregation I will only have 3 open spots which doesn't give me a ton of scalability. The USW-Pro-Aggregation is way overkill.
+
+Reply
+
+Avatar for calhend
+calhend
+2 years ago
+You can create a new post to discuss and that is fine @mwcormier but the Aggregation switch has 8 10GbE SFP+ ports on it. You can plug in the UDM-PM into one of them and provide network out to 7 devices potentially (if you do not enable LAG on some ports). You can also plug the UNVR-Pro into the same switch that has your cameras attached for the SFP+ if you want as the traffic will not need to traverse your network for cameras to UNVR-Pro and can stay on the same switch. So if you take that approach you can then have 2 switches on your Aggregation switch plus the UDM-PM connected which will leave you 5 ports free for more switches to be connected into the network.
+
+The one thing I would suggest you use, if possible, is OM3 or OM4 Fiber versus DAC. DAC is a great alternative if you can keep it within the distance but I would use RJ45 copper as last usage as those modules limits how many you can have in the Aggregation Switch. The other reason I suggest OM4 is that when you decide to upgrade the switches all you have to change out is the module as the cables are capable of 100GbE within the distance of the spec for those speeds. Swap out switch and module not cable is one of the easier upgrades.
+
+.
+
+Cheers
+
+Reply
+
+Avatar for borfoo3
+borfoo3
+2 years ago
+@lexicons wrote:
+As far as I know, the Teleport function only works on Dream Machines or Dream Router. Does anyone know if Teleport also works on the new gateway max or gateway lite when also using a Cloud Ken Gen2+? It may be the CK Gen2+ can't do Teleport at all, no matter what devices it manages.
+I'm running 2 separate home networks, one with the UCG Max and another with UCG Ultra. Both run Teleport without issue at all.
+
+My UCG Ultra setup runs Network app, 6x poe switches, 6x APs, and an UNVR (running Protect) with 6x cameras + 1 Floodlight...
+
+UCG sees utilization of ~60% memory and ~20% CPU on average. IPS/IDS threat detection on Highest mode.
+
+I think the UCG Max is best bang for buck right now for an all in one solution that runs the complete Unifi stack. Unless you can saturate the 2.5gb connections, or more than 1.5gig internet, the bigger Dream Machine units are just overkill IMO. Just my 2 cents..
+
+Reply

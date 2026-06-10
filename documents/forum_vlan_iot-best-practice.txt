@@ -1,0 +1,204 @@
+Avatar for Uberseehandel
+Uberseehandel
+8 years ago
+I use a network design as shown below as part of sorting the sheep from the goats. One of the issues that I am working through is accessing Chromecast devices from wireless devices that are in the secure zone behind a different security appliance, but this is do-able. It also keeps SSM contained, which simplifies life.
+
+ 
+
+Is IoT dangerous, you bet! I have seen an attempt by the recently installed "smart" electricity meter (against my wishes) to access my network. We were able to pick up a footprint on an uplink in the secure network, before I split the design. There is an engineering fix being worked on right now.
+
+
+Reply
+
+
+blackglove9
+7 years ago
+Old thread i know, but from a Unifi perspective, is it better to do it which way:
+
+ 
+
+1. Create a second corp vlan and then block all, and allow only some ports between IOT and home network
+
+2. Create a guest network and open some ports?
+
+ 
+
+I am going to isolate most things IOT, but my smart tv needs to access my PLEX server on one port - so smart tv on IOT network, and Plex server on home network. 
+
+ 
+
+Or does it not matter at all which option above i choose?
+
+Reply
+
+2
+
+RobbieH
+7 years ago
+I have no open ports between my IoT VLAN and my home VLAN and everything works perfectly.
+
+Reply
+
+
+blackglove9
+7 years ago
+@RobbieH  wrote:
+I have no open ports between my IoT VLAN and my home VLAN and everything works perfectly.
+
+Your IOT network has different requirements and that is true for many IOT things that work via an Internet address. My Plex and home automation setup is different. 
+
+ 
+
+I need  to access a device at x.x.x.x:32000 from y.y.y.y - that requires a port opened. I also have local mgmt tool that i can manage OT devices and some of them have no intenet access. 
+
+ 
+
+Just because a lot of these devices can be IOT devices doesn't mean they should be. If I can manage them via my LAN, and remote into my LAN, no need for IOT. So I want to setup one way firewall rules that let me manage OT network from corp when needed. 
+
+ 
+
+Reply
+
+Avatar for AF360
+AF360
+7 years ago
+@RobbieH  wrote:
+I have no open ports between my IoT VLAN and my home VLAN and everything works perfectly.
+
+Then you don‘t have _any_ firewall rules between the two VLANs in place to drop/control the traffic?
+
+(If you don‘t create your own rules, all traffic between the VLANs is routed and allowed...)
+
+ 
+
+Reply
+
+
+RobbieH
+7 years ago
+@AF360  wrote:
+@RobbieH  wrote:
+I have no open ports between my IoT VLAN and my home VLAN and everything works perfectly.
+
+Then you don‘t have _any_ firewall rules between the two VLANs in place to drop/control the traffic?
+
+(If you don‘t create your own rules, all traffic between the VLANs is routed and allowed...)
+
+ 
+
+ 
+
+Yes, I do. All of my IoT devices go out to the internet and access is granted through the vendors' cloud presence. None are directly controlled.
+
+ 
+
+I do not consider a Plex server an IoT device. It sits on my home network, but I've been considering moving it to a DMZ.
+
+Reply
+
+1
+
+blackglove9
+7 years ago
+@RobbieH  wrote:
+@AF360  wrote:
+@RobbieH  wrote:
+I have no open ports between my IoT VLAN and my home VLAN and everything works perfectly.
+
+Then you don‘t have _any_ firewall rules between the two VLANs in place to drop/control the traffic?
+
+(If you don‘t create your own rules, all traffic between the VLANs is routed and allowed...)
+
+ 
+
+ 
+
+Yes, I do. All of my IoT devices go out to the internet and access is granted through the vendors' cloud presence. None are directly controlled.
+
+ 
+
+I do not consider a Plex server an IoT device. It sits on my home network, but I've been considering moving it to a DMZ.
+
+They may not be directly controlled, but because you have no firewall rules between networks, anything reaching into your IOT network that controls a device, can jump over to your home LAN. 
+
+ 
+
+As a test - put a computer on your IOT VLAN and initiate a port scan against your home LAN - If you have windows machines SMB ports are open. 
+
+Reply
+
+1
+
+madrian
+7 years ago
+Is there any updated guide for 2019? Robpickering guide is nice, but firewall configuration is different now.
+
+ 
+
+Do you I need to put my firewall rules in LAN_IN section?
+
+
+If I want to enable for example pi hole DNS for IOT devices, to enter destination ip&port do I need to create IPV4 address group & port group? Isn't there an option to enter only one IP & port (like on Edgerouter)?
+
+
+Reply
+
+
+madrian
+7 years ago
+bump
+
+Reply
+
+
+madrian
+7 years ago
+bump
+
+Reply
+
+
+DanielCA
+7 years ago
+﻿@madrian﻿ Yes, that is how I've got IoT allowing access to Plex and Channels DVR services. I haven't setup PiHole for IoT since I don't really care about blocking that traffic but have it running for my Private (laptop, phones, etc.)
+
+
+Reply
+
+3
+
+coxwain
+6 years ago
+﻿@RobbieH﻿ wrote:
+﻿undefinedAF360﻿ wrote:
+﻿undefinedRobbieH﻿ wrote:
+I have no open ports between my IoT VLAN and my home VLAN and everything works perfectly.
+Then you don‘t have _any_ firewall rules between the two VLANs in place to drop/control the traffic?
+(If you don‘t create your own rules, all traffic between the VLANs is routed and allowed...)
+ 
+ 
+Yes, I do. All of my IoT devices go out to the internet and access is granted through the vendors' cloud presence. None are directly controlled.
+ 
+I do not consider a Plex server an IoT device. It sits on my home network, but I've been considering moving it to a DMZ.
+How do you move your plex server (Synology. Nas for me) to dmz.? That is how my old router was set up. But I can’t find dmz option on dmp
+
+Reply
+
+1
+
+einaren
+6 years ago
+I've been reading quite a few blog posts now to make this work. Then I found that Ubiquity has an excellent help page that made me rewrite my whole setup. The below works for me
+
+Step 1. Follow option 1 and 3 in https://help.ui.com/hc/en-us/articles/115010254227
+
+note the clear-connection-tracking tip at the bottom of the page, very helpful while testing!!
+Step 2. Open IoT to use my Plex Media Server: Add firewall rule allowing IoT network to address/port for my Plex Media Server
+
+Step 3. Enable mDns (in "Settings -> Gateway -> mDns) (for Chromecast)
+
+(I've have also disabled IGMP Snooping all over, but I'm not sure if that's necessary?)
+
+Reply
+
+2

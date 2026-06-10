@@ -1,0 +1,47 @@
+Avatar for juergenbarth
+juergenbarth
+3 years ago
+I suggest to install Portainer, then it will work identically. Just the creation of the mapped folders will look QNAP specific.
+
+Reply
+
+
+wehoward
+3 years ago
+I have Portainer installed. I don't use vlans as my network is relatively small. I tried to install using the ports but have run into multiple conflicts. Can I use separate IPs on the mongo/unifi-nwa separate from the NAS server IP or do I have to use VLANs to keep separate? I am trying to keep this as simple as possible as I just want to centrally manage 3 Ubiquiti APs.
+
+Reply
+
+Avatar for juergenbarth
+juergenbarth
+3 years ago
+As you rightly say, the other method is to piggyback on the IP of the NAS server, where you might experience port conflicts. If you adjust the port mappings in the docker-compose file, you can get around the conflicts.
+
+You can only use separate IP addresses in conjunction with macvlan. I've got another video, which explains the setup of macvlan in smaller networks: https://youtu.be/DDjs4oCJ-Zs Maybe you have watched it already.
+
+Reply
+
+
+wehoward
+3 years ago
+Thank you again @juergenbarth - I did watch the macvlan video. I need to rethink my approach to all of this. My network is currently a flat /24 network. My internet router only supports a single network and I am using L2 switches, It appears there is a potential way to route between vlans on the QNAP server but that may be quite a bit of extra effort. I am trying to understand how your network is setup/configured to route betwen vlans - you appear to have a EdgeRouter X - is that used for your internet connection routing as well or just for internal vlan routing? I am also wondering if I could just create a larger flat network using /22 - which would allow 192.168.0.0-192.168.3.255 vs segmentation on vlans. Let me know if would be willing to compare your setup with what I have/could potentially setup with DM.
+
+Reply
+
+
+wehoward
+3 years ago
+Just a follow-up - I have been able to get the container stack to run using port mappings but have conflicts on ports that unifi requires to communicate with the APs. I have also been able to get it to run on a separate container network but it doesn't communicate with the APs. Do the APs have to be on the same network segment as the unifi docker container? And as an extension - the IPs that clients use may have to be on the same segment/vlan (or separate from the AP IP)?
+
+Lastly - based on my small/flat network - is it possible to give the unifi docker container an IP address on my internal network? My network is simple and the only external access is through VPN to the NAS server.
+
+Reply
+
+
+RobbieH
+3 years ago
+You can configure your docker however you want.
+
+I did find that keeping Docker installs updated was more work, that or you install something like Watchtower, which I don't like because it's harder to manage proper change control using it.
+
+Reply

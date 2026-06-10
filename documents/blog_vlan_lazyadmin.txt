@@ -1,0 +1,342 @@
+How to Setup and Secure UniFi VLAN
+Last updated March 26, 2026 by Rudy Mens279 Comments
+When you have a UniFi Security Gateway or UniFi Dream Machine (UDM, UDM Pro) you can create different VLANs on your network. Virtual LANs (VLANs), allow you to divide your physical network into virtual networks, offering isolation, security, and scalability.
+
+Now you might think, do I really need VLANs? But when guests are connecting to your home network, you probably don’t want them to have access to all your network devices. And if you have a smart home, then creating a separate VLAN might be a good idea. Because the security of IoT devices is not always as it should be.
+
+In this article
+Setup UniFi VLANs
+Step 1 – Create the UniFi VLAN Networks
+Step 2 – Block traffic between VLANs
+Step 3 – Block Access to Unifi Network Console from VLANs
+Assign devices to VLANs in UniFi Network
+Assign VLAN to Switch Port
+Assign VLAN to Wireless Devices
+Creating Firewall Exceptions
+Using a Traffic Rule
+Using a Firewall Rule
+Wrapping Up
+So in this article, I will explain how to set up and secure VLANs in the UniFi Network Console.
+
+Note
+
+When you are using UniFi Network 9.x or higher, you should read this article about the Zone-Based Firewall instead
+Setup UniFi VLANs
+Creating VLANs in UniFi exists out of a couple of steps because we not only have to create the different networks, but we also need to secure the VLANs. The “problem” with UniFi is that inter-VLAN traffic is allowed by default. So without any firewall rules, traffic from for example the guest VLAN can just access the main VLAN.
+
+In this example, we will be creating 3 VLAN networks for:
+
+Guests – VLAN 20
+Cameras – VLAN 30
+IoT devices – VLAN 40
+The guest VLAN is a bit different from the other VLANs because UniFi will automatically create the necessary firewall rules for the guest network. All you have to do is Isolate the network in the network settings.
+
+So in the steps below, we will create the guest network, with the correct settings, but further on I will use the IoT VLAN as an example.
+
+Step 1 – Create the UniFi VLAN Networks
+The first step is to create the different networks for the VLANs. I have used custom VLAN IDs in the steps below, but you can also leave Auto Scale Network on. This way UniFi will automatically create the IP Range and VLAN ID.
+
+Open your UniFi network console and navigate to:
+
+Settings >Networks
+Click on New Virtual Network
+
+We are first going to create the guest network:
+
+Enter Guests at the Network Name
+Deselect Auto-Scale Network
+Set the host address to 192.168.20.1
+Change Advanced Configuration to Manual
+Change the VLAN ID to 20 so it matches the IP range
+Enable Isolation by checking Network
+Change the Content Filtering to Family (optional)
+Click Apply Changes
+
+Next, we need to create the network for the Cameras and IoT devices. Click again on New Virtual network, and repeat the steps below for both Cameras and IoT, using VLAN 30 for cameras and 40 for IoT:
+
+Network Name: IoT
+Disable Auto Scale Network
+Host Address: 192.168.40.1
+Advanced Configuration: Manual
+VLAN ID: 40
+Isolation: Off
+Click Apply Changes (and repeat for cameras)
+Create UniFi VLAN
+Using VLAN Magic
+If you are running UniFi Network 8.0.24 or higher, then you can also use the new VLAN Magic feature to create virtual networks. It allows you to create a new virtual network from the device overview, and simply assign devices to the VLAN by selecting them.
+
+UniFi Network will then use the virtual network override feature to move the device to the assigned VLAN. The advantage of this method is that you don’t need to create wireless networks for your VLANs, but when applying this on a wired device, you will need to make sure that your ports are configured correctly (I will explain that later in the article).
+
+UniFi VLAN Magic
+To create a new VLAN with VLAN Magic:
+
+Open the Topology view
+Click on the plus icon the create a new VLAN
+Select the devices in the overview to assign them
+Click on Apply Changes
+Step 2 – Block traffic between VLANs
+With the networks and VLANs created, we need to block the traffic between them. By default, devices in, for example, the IoT VLAN, can access the device in your main VLAN. Guests however are already isolated by the automatically generated firewall rules by the Isolated Network option.
+
+There are two options to block inter-VLAN traffic, we can create custom firewall rules, or use a Traffic Rule. The latter is a lot quicker to create, but I will explain both methods.
+
+Note
+
+If you plan to use Teleport or VPN, then use the custom firewall rules. When using the traffic rules, clients connected through Teleport, will be able to access all other vLANs.
+Using Traffic Rules
+Ubiquiti is really promoting the use of Traffic Rules to block or allow traffic on your network. In the last update, they merged the Traffic Rules and Firewall rules into one screen. You can now create two rule types: Simple and Advanced. Simple is the “old” Traffic Rule, and Advanced is the Firewall rule.
+
+Click on Security
+Choose Traffic & Firewall Rules
+Click on Create Entry
+Make sure Simple is selected as Rule type
+Create Traffic Rule
+When creating Traffic rules, make sure that you have set the Rule Type to simple.
+
+Rule type: Simple
+Name: Block Inter-VLAN
+Action: Block
+Source: All Devices
+Destination: All Local Networks
+Traffic Direction: Both Directions
+Schedule: Always
+
+You probably want to access your IoT device, for example, from your main (default) VLAN. To do this we can create another Traffic Rule to allow traffic from the Default network to the IoT network. Now this is where Traffic Rules become a bit confusing for most, let’s first create the rule and I will then explain it a bit:
+
+In the Traffic Rules click on Create Entry:
+
+Name: Allow Default to Access IoT Devices
+Action: Allow
+Source: Default
+Destination: Local Network
+Select: Iot
+Traffic Direction: Source to Destination
+Schedule: Always
+
+So what we have done here, is Allow all traffic from the Default network (Device/Network) to a local network, in this case IoT. The Traffic Direction is set to Traffic to all local network, which means that traffic initiated from the default network is allowed, but traffic initiated from the IoT network not.
+
+I have only selected IoT here as the local network, but you can also select the other VLANs you want to have access to from your default network.
+
+Using Firewall Rules
+We can also block the inter-VLAN traffic with custom firewall rules. This is however a bit more work compared to the Traffic Rules.
+
+Before we can block the inter-VLAN traffic, we first need to create 3 other rules:
+
+Allow established and related connections
+Drop invalid state connections
+Allow the main VLAN to access all VLANs
+To create a new Firewall rule, we create a new entry in the Traffic & Firewall Rules. But make sure that you set the type to Advanced in the new rule.
+
+Click on Create New Rule
+Create new firewall rule
+We are first going to create the rule that allows all established and related sessions.
+
+Rule Type: Advanced
+Type: LAN in
+Description: Allow established and related sessions
+Action: Accept
+Source Type: Port/IP Group
+IPv4 Address Group: Any
+Port Group: Any
+Destination Type: Port/IP Group
+IPv4 Address Group: Any
+Port Group: Any
+Under Advanced: select Match State Established and Match State Related
+Apply Changes
+
+The second rule that we are going to create is to drop all invalid states:
+
+Rule Type: Advanced
+Type: LAN in
+Description: Drop invalid state
+Action: Drop
+Source Type: Port/IP Group
+IPv4 Address Group: Any
+Port Group: Any
+Destination Type: Port/IP Group
+IPv4 Address Group: Any
+Port Group: Any
+Under Advanced: select Match State Invalid
+Apply Changes
+Drop invalid state
+And the third rule that we need to add is to allow traffic from our main VLAN to the other VLAN. This way we will be able to manage all the devices even if they are in IoT VLAN for example.
+
+To create this rule we will first need to define an IP Group. Port/Ip Groups allow you to easily apply a rule to multiple port numbers or IP ranges. In this case, we want to match the IP ranges of all VLANs.
+
+In the settings menu, click on Profiles
+Scroll down and click Create New under IP Groups
+Profile name: All Private IPs
+Type: IPv4 Address/Subnet
+Address: 192.168.0.0/16 (this will match all addresses that start with 192.168.x.x)
+Click Add
+Private IP Group
+With the IP group created, go back to Traffic & Firewall Rules and create the following rule:
+
+Rule Type: Advanced
+Type: LAN in
+Description: Allow main VLAN access to all VLAN
+Action: Accept
+Source Type: Network
+Network: Default
+Network Type: IPv4 Subnet
+Destination Type: Port/IP Group
+IPv4 Address Group: All Private IPs (the IP Group that we just created
+Port Group: Any
+Allow main to access all VLANS
+We can now create the rule that will block traffic between the VLANs. The rules that we just created will ensure that we can still access the devices in the other VLANs from the main VLAN. For this rule, we are also going to use the IP Group that we created earlier.
+
+Click on Create New Rule in Traffic & Firewall Rules and add the following rule:
+
+Rule Type: Advanced
+Type: LAN in
+Description: Block VLAN to VLAN
+Action: Drop
+Source Type: Port/IP Group
+IPv4 Address Group: All Private IPs
+Destination Type: Port/IP Group
+IPv4 Address Group: All Private IPs
+Port Group: Any
+Block VLAN to VLAN Unifi
+We now have separated the VLANs in our UniFi network, preventing unwanted inter-VLAN traffic.
+
+Step 3 – Block Access to Unifi Network Console from VLANs
+Devices in your VLAN will need to have access to your network console (UDM Pro for example). But what we don’t want is that users (guests or IoT devices) are able to access the interface of our UniFi network console.
+
+What we also want to prevent is that devices from IoT can access the gateway of the main VLAN.
+
+Now this is something that should be possible with a Traffic Rule in my opinion, but honestly, I can’t get it to work. I am still waiting for an answer about this from Ubiquiti. I created the following rule, if anybody knows why this isn’t working, please drop a comment below:
+
+Action: Block
+Category: IP Address
+IP Address:
+192.168.1.1 – Port 22,80,443
+192.168.20.1 – Port 22,80,443
+192.168.30.1 – Port 22,80,443
+192.168.40.1 – Port 22,80,443
+Device/Network: IoT, Cameras, Guests
+Schedule: Always
+Description: Block VLANs to Gateway except Default
+
+So for now, we will create a firewall rule for this. First, we need to create a couple of Port and IP Groups. Open the Profiles in the settings menu and click on Create New Group under Port and IP Groups. Create the following IP Groups:
+
+Profile Name	Type	Address / Port
+Block IoT to Gateways	IPv4 Address/Subnet	192.168.1.1
+192.168.20.1
+192.168.30.1
+Block IoT Gateway Interface	IPv4 Address/Subnet	192.168.40.1
+Block Cameras to Gateways	IPv4 Address/Subnet	192.168.1.1
+192.168.20.1
+192.168.40.1
+Block Cameras Gateway interface	IPv4 Address/Subnet	192.168.30.1
+The last Port Group that we need to create is to block only HTTP, HTTPS, and SSH access to the UniFi Network Console. The device will need to be able to access the gateway, but as mentioned, we don’t want to expose the console self.
+
+Profile Name: http,https,ssh
+Type: Port Group
+Port: 80, 443, 22
+create port group
+Next, we are going to add the firewall rules. This time we will be using the type LAN Local
+
+Rule Type: Advanced
+Type: LAN local
+Description: Block IoT to Gateways
+Action: Drop
+Source Type: Network
+Network: IoT
+Destination Type: Port/IP Group
+IPv4 Address Group: Block IoT to Gateways
+Port Group: Any
+Block Gateway Access
+And the rule to block access to the UDM Console. Note that we will be using the Port Group http,https,ssh here that we created earlier!
+
+Rule Type: Advanced
+Type: LAN local
+Description: Block IoT to UDM Interface
+Action: Drop
+Source Type: Network
+Network: IoT
+Destination Type: Port/IP Group
+IPv4 Address Group: Block IoT Gateway Interface
+Port Group: http,https,ssh
+Block interface acces rule
+Repeat the steps above but this time for the Cameras VLAN.
+
+Assign devices to VLANs in UniFi Network
+We have created all necessary rules to block inter-VLAN traffic, so all we need to do now is assign our devices to the correct VLAN in UniFi Network. For wired devices, we can assign a network to the port on the switch. And for the wireless devices, we will need to create a separate SSID.
+
+Assign VLAN to Switch Port
+By default, each switch port allows all tagged VLAN traffic. This means that if the connected device has the correct VLAN ID configured, it can access that VLAN. Which for most situations. It also allows access points or switches to pass through traffic from all VLANs if needed.
+
+But when we have a network camera or smart home device connected to a switch, then we want to only allow access to the corresponding VLAN. The device should not be able to access any other VLAN (by changing its VLAN ID for example).
+
+To do this, we will need to configure the Native VLAN on the port and block all tagged VLAN traffic.
+
+In the UniFi Network console, open the new Port Manager and select your Switch. We are going to use the new Ports Manager because this will give you a create overview of all your switch ports and VLANs.
+
+Tip
+
+By default, you can select and change multiple ports by just selecting them one after another. Mind this when you want to change another port.
+Open the Port Manager
+Select the Switch
+Select a port of a camera or smart home device
+Change the Native VLAN to the correct Network (VLAN)
+Change Tagged VLAN Management to Block All
+Reboot your Camera by Power Cycle the port
+Assign VLAN to switch port
+Change the other ports as well, assign them to the main VLAN by selecting the Port Profile LAN or another appropriate Port Profile.
+
+Make sure that you Allow All Tagged VLAN traffic on the Uplink port (recognized by the up arrow ^) and the access points port
+
+Assign VLAN to Wireless Devices
+If you have a UniFi doorbell, for example, you might also want to assign this device to the camera’s VLAN. The problem is that we can’t set a VLAN on the doorbell itself. The same problem occurs with a lot of IoT devices, on most, you can’t configure a VLAN ID.
+
+So the only option is to create a separate SSID (wireless network) for each VLAN and assign the wireless network to the correct VLAN.
+
+Note
+
+We can also use Private Pre-Shared keys for this. This way you only have one SSID, but depening on the used password, a device is assigned to a different virtual network (VLAN).
+
+But I have noticed, that not all devices seem to work well with this yet, so make sure you test it out properly.
+Open Settings and select WiFi
+Click on Create New WiFi network
+Enter a name and password for the wireless network
+Change network to the correct VLAN (IoT for example)
+Click Add WiFi network
+Assign VLAN to UniFi WiFi network
+You can change the WiFi connection of your UniFi Doorbell in the Protect Console > Devices > Settings > WiFi Connection.
+
+Creating Firewall Exceptions
+Sometimes you need to allow access between specific devices in different VLANs. In these cases, there are again two options to allow this. We can create a Traffic Rule or add a Firewall rule.
+
+Using a Traffic Rule
+Traffic Rules are the most convenient to use for this. We can simply create a new rule where we can select the device that we want to give access to the specified VLAN. For example, to give the LAB01 notebook access to the Default VLAN, we can create the following traffic rule:
+
+Action: Allow
+Source: <select-device>
+Destination: Local Network
+Select network: Default
+Traffic Direction: Source to Destination
+Schedule: Always
+
+Using a Firewall Rule
+When using a Firewall rule, we need to create an allow rule and place the rule above the Block VLAN to VLAN rule. Let’s take the following example, allowing IoT devices to access a Raspberry PI in the main VLAN.
+
+When you create an allow rule, try to be as specific as possible. If it’s only between two devices, then use the IP Address of both devices. If you know the protocol, then specify the port number as well.
+
+Create a new firewall rule:
+
+Type: LAN In
+Description: IoT to Raspberry Pi
+Action: Allow
+Source Type: Network
+Network: IoT
+Destination Type: IP Address
+IPv4 Address: 192.168.1.x
+Allow access rule
+Next, we will need to move the rule above the Block VLAN to VLAN rule that we have created in the beginning. You can drag and drop rules using the 6 dots at the beginning of the rule:
+
+In the Traffic & Firewall Rules select Advanced
+Choose LAN In
+Drag the new rule above the Block VLAN to VLAN (Rule index 2003)
+Drag Firewall rules
+Wrapping Up
+VLANs allow you to secure your local network by making sure that devices from one VLAN can’t access the other. Because inter-VLAN access is by default allowed in UniFi, we will need to create quite an amount of rules before we can safely use it.
+

@@ -1,0 +1,51 @@
+UDM Pro vs. Cloud Gateway Ultra
+
+
+
+
+ACETechAug
+7.01K views
+3 replies
+Created
+2 years ago
+Activity
+2 years ago
+I normally deploy the UDM Pro with unifi switches and access points.
+
+Is the Cloud Gateway Ultra router designed to take the place of the UDM Pro? I don't normally need a 2nd WAN port. I have at most 15 access points. I also don't use a router with wifi due to the network closets are not where users sit.
+
+Thanks.
+
+This thread is locked and replying has been disabled.
+
+mpreissner
+2 years ago
+Accepted Response
+In that case, then it's a great alternative. Although keep in mind that the UCG-Ultra has only a 1gbps pipe between the switch chip and the CPU, and the switch ports are all 1gbps. So if you have a heavy WiFi environment or heavy inter-vlan traffic, then that's a reason to go with the UDMP with a Pro or higher PoE switch.
+
+
+3
+Newest
+Oldest
+
+mpreissner
+2 years ago
+Do you use any of the other applications like Protect, Talk, Connect, etc.? If so, the UCG-Ultra doesn't support any of them. So no, it's not really meant to replace the UDM Pro. It's great for small deployments - like homes or home-based businesses - where Network might be the only need they have.
+
+Reply
+
+2
+
+ACETechAug
+2 years ago
+I use no other applications. the ultra had IDS/IPS, 1Gb band speed, and up to 30 devices with 100+ users (I have at most 50 on the UDM Pro). I don't use the camera recording so a HDD is not needed.
+
+Thanks!
+
+Reply
+
+
+mpreissner
+2 years ago
+Accepted Response
+In that case, then it's a great alternative. Although keep in mind that the UCG-Ultra has only a 1gbps pipe between the switch chip and the CPU, and the switch ports are all 1gbps. So if you have a heavy WiFi environment or heavy inter-vlan traffic, then that's a reason to go with the UDMP with a Pro or higher PoE switch.

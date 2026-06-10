@@ -1,0 +1,102 @@
+Need Ubiquiti R&D attention on an issue? Mention 
+@UI-Team
+
+ in your post.
+
+
+0
+How much power from POE do my Access Points really need?
+
+
+
+Avatar for ARAMP1
+ARAMP1
+17.06K views
+7 replies
+Created
+8 years ago
+Activity
+8 years ago
+I currently have 5 Unifi access points, two AP Pros, two AC In-Wall Pros, and one outdoor AC Mesh Pro.  I'm probably going to add at least one more once some building upgrades are done in the next couple years. 
+
+ 
+
+My plan is to go with a single POE switch for all the access points.  It looks like the smallest Ubiquiti rackmount switch that I can go with is a 16 port 150W.   I'd like to go with a smaller Netgear 8 port which come in 130W and 190W.  
+
+ 
+
+How do I figure out how much power I need?
+
+This thread is locked and replying has been disabled.
+Newest
+Oldest
+
+gfunkdave
+8 years ago
+Read the data sheet for each model and add up their power requirements. They all take around 5-8W. You should be fine.
+
+ 
+
+The in-wall can draw more than that if you plug in something that needs POE and enable POE passthrough.
+
+Reply
+
+3
+
+dpurgert
+8 years ago
+I'd strongly recommend against Netgear (or any of the consumer brands) -- they put a lot of pretty pictures on the box, and a lot of bullet points in the datasheets; but when it comes down to it, they tend to fall short of the mark.
+
+ 
+
+You'd be better off with a 12-16 port switch right now anyway (it's best to keep ~20-25% of the ports free for expansion -- and with 5 APs right now today ... )
+
+Reply
+
+1
+Avatar for ARAMP1
+ARAMP1
+8 years ago
+Believe it or not, I've had very good luck with Netgear switches (though I may be the only one in the US that has, LOL).  I'm been running a couple of their rack mounted ProSafe Smart Managed switches for a while now (bough one new and one used) for some time now and have never had an issue with eather.  I've never used any of their smaller desktop switches though.  
+
+Reply
+
+Avatar for eejimm
+eejimm
+8 years ago
+Netgear stuff isn't bad, it's just not UniFi.  There's nothing particularly bad about consumer gear - I actually have an old dumb TrendNet 8 port (4 PoE) switch on the back of my desk running a UVP-Executive and a GrandStream phone, and they have been working fine for years.   But I wouldn't put them in any mission-critical installation, and being dumb devices I can't monotor or do anything fancy with them.   Doesn't mean they're bad, just means they have limitations vs. the US-24-250 under my desk or the US-48-L2 on the other side of the office.   Use what's appropriate for your needs and go on down the road...  ;-)
+
+Jim
+
+Reply
+
+Avatar for osunifi
+osunifi
+8 years ago
+I am using multiple Netgear GS105PE. It was the only PoE powered switch with PoE passthrough that was available back almost two years ago. It's been running fine (it powers my unifi APs) and wired clients. Starting with it I had an issue that after rebooting the switch it would not passthrough PoE. Opened a ticket and a week later I received an engineering FW build. That fixed the issue.
+
+Months later they released a higher version number to the public.
+
+So my experience has not been bad at all.
+
+ 
+
+ 
+Reply
+
+
+sethmos
+8 years ago
+I measured 3.2 Watt PoE for the original Unifi AP Pro and 3.4 Watt for the newer Unifi AC Pro. Those were idle though.
+
+Reply
+
+1
+
+stevenwilkes
+8 years ago
+I have several small Netgear PoE switches as well as a Unifi 8-150. The Netgear ones have been fine but needed a firmware update recently to handle some of the Unifi AP multicast traffic which occasionally used to flood the Netgear switches and brought down anything plugged into them. Since the firmware update, they have been fine. 
+
+Reply
+
+1
