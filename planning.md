@@ -1,7 +1,7 @@
 # Project 1 Planning: The Unofficial Guide
 
 > Write this document before you write any pipeline code.
-> Your spec and architecture diagram are what you'll use to direct AI tools (Claude, Copilot, etc.) to generate your implementation — the more specific they are, the more useful the generated code will be.
+> Your spec and architecture diagram are what you'll use to direct AI tools (Claude, Copilot, etc.) to generate your implementation. The more specific they are, the more useful the generated code will be.
 > Update the Retrieval Approach and Chunking Strategy sections if you change your approach during implementation.
 > Update this file before starting any stretch features.
 
@@ -11,9 +11,9 @@
 
 <!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
 
-My domain is the Official UniFi Home Networking and Troubleshooting Guide. It will help in purchasing the right Ubiquiti gear, configuring it (VLANs, PoE, etc.), and fixing it when the firmware updates break things.
+My domain is the Unofficial UniFi Home Networking and Troubleshooting Guide. It will help in purchasing the right Ubiquiti gear, configuring it (VLANs, PoE, etc.), and fixing it when the firmware updates break things.
 
-Ubiquiti's unofficial docs tell what a device is, but not which model actually fits a real home, which firmware versions are stable for most people, or how to segment IoT devices safely. We can find this knowledge from forum threads and reddit from people who have encountered these problems.
+Ubiquiti's official docs tell what a device is, but not which model actually fits a real home, which firmware versions are stable for most people, or how to segment IoT devices safely. We can find this knowledge from forum threads and reddit from people who have encountered these problems.
 
 ## Documents
 
@@ -47,20 +47,20 @@ Ubiquiti's unofficial docs tell what a device is, but not which model actually f
      A review-heavy corpus warrants different chunking than a long FAQ. -->
 
 **Chunk size:**
-~800 characters (180–200 tokens)
+~800 characters (180 to 200 tokens)
 
 **Overlap:**
 ~150 characters (35 tokens, roughly 18%)
 
 **Reasoning:**
 The binding constraint is the embedding model, not a guess. `all-MiniLM-L6-v2` has a
-maximum sequence length of \*\*256 word pieces and silently truncates anything longer.\** So if I
+maximum sequence length of **256 word pieces and silently truncates anything longer.** So if I
 embed a 600 word forum post as one chunk, everything after the first 200 words is thrown away
-and never searchable. Capping chunks at ~800 chars (~180–200 tokens) keeps every chunk fully
-*inside\* what the model actually reads, with margin.
+and never searchable. Capping chunks at ~800 chars (~180 to 200 tokens) keeps every chunk fully
+*inside* what the model actually reads, with margin.
 
 - **My corpus is mixed, so a one-size cut is wrong.** It's part short **forum replies** (often
-  1–4 sentences that is already a complete thought) and part long **blog guides** (multi paragraph,
+  1 to 4 sentences that is already a complete thought) and part long **blog guides** (multi paragraph,
   headed sections). Splitting on paragraph/sentence boundaries keeps a short forum reply intact
   as a single chunk, while breaking a long guide into topic coherent pieces instead of slicing
   mid-sentence.
@@ -182,7 +182,7 @@ flowchart LR
      "I'll give Claude my Chunking Strategy section and ask it to implement chunk_text()
      with my specified chunk size and overlap" is a plan. -->
 
-**Milestone 3 — Ingestion and chunking:**
+**Milestone 3: Ingestion and chunking:**
 
 - _Input I'll give:_ my Documents + Chunking Strategy sections and the architecture diagram.
 - _Expect back:_ `load_documents()` (read every `.txt` in `documents/`), `clean_text()` (strip
@@ -191,7 +191,7 @@ flowchart LR
 - _How I'll verify:_ print 5 random chunks and confirm each is standalone readable and under
   ~256 tokens; spot check that chunk metadata points at the right source file.
 
-**Milestone 4 — Embedding and retrieval:**
+**Milestone 4: Embedding and retrieval:**
 
 - _Input I'll give:_ my Retrieval Approach section + diagram.
 - _Expect back:_ code to embed all chunks with `all-MiniLM-L6-v2`, store them in ChromaDB with
@@ -200,7 +200,7 @@ flowchart LR
 - _How I'll verify:_ run 3 of my eval questions, confirm top results are on topic with distances
   below ~0.5, and that wrong source results trace back to a metadata bug.
 
-**Milestone 5 — Generation and interface:**
+**Milestone 5: Generation and interface:**
 
 - _Input I'll give:_ my grounding requirement (answer from retrieved context only; refuse if not
   covered) and desired output format (answer + source list).
